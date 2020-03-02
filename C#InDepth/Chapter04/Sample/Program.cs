@@ -14,6 +14,16 @@ namespace Sample
 
             Console.WriteLine("Got Book");
             Console.WriteLine(book.Title);
+
+            Console.WriteLine("-----");
+
+            var comment = await service.GetCommentAsync(10);
+            Console.WriteLine("Got comment");
+            Console.WriteLine(comment.body);
+            
+            Console.WriteLine("-----");
+
+            await service.GetAllAsync();
         }
     }
 }
