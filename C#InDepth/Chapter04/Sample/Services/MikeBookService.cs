@@ -14,7 +14,8 @@ namespace Sample.Services
 
         public async Task<Book> GetBookAsync()
         {
-            var booksTask = FileReader.GetBooksAsync();
+            var booksTask = FileReader.GetBooksAsync()
+                .ConfigureAwait(false);
 
             Console.WriteLine("Finding book...");
 
