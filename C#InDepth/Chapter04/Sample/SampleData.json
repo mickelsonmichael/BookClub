@@ -1,0 +1,19 @@
+{
+    "Books" : [
+        {
+            "Title" : "C# in Depth",
+            "Author" : "Jon Skeet",
+            "YearRead" : 2020
+        },
+        {
+            "Title" : "The Art of Unit Testing",
+            "Author" : "Roy Osherove",
+            "YearRead": 2019
+        },
+        {
+            "Title" : "ASP.NET Core in Action",
+            "Author" : "I forget",
+            "YearRead" : 2019
+        }
+    ]
+}
