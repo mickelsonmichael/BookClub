@@ -9,6 +9,11 @@
             "Title" : "The Art of Unit Testing",
             "Author" : "Roy Osherove",
             "YearRead": 2019
+        },
+        {
+            "Title" : "ASP.NET Core in Action",
+            "Author" : "I forget",
+            "YearRead" : 2019
         }
     ]
 }
