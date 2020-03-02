@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using Sample.Repo;
+using Sample.Services;
 
 namespace Sample
 {
@@ -9,12 +8,12 @@ namespace Sample
     {
         async static Task Main(string[] args)
         {
-            var repo = new FileReader();
+            var service = new MikeBookService();
 
-            var books = await repo.GetBooksAsync();
+            var book = await service.GetBookAsync();
 
-            Console.WriteLine("Got Books");
-            Console.WriteLine(books.Count());
+            Console.WriteLine("Got Book");
+            Console.WriteLine(book.Title);
         }
     }
 }
