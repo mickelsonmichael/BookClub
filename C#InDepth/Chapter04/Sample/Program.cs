@@ -1,12 +1,20 @@
 ﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using Sample.Repo;
 
 namespace Sample
 {
     class Program
     {
-        static void Main(string[] args)
+        async static Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var repo = new FileReader();
+
+            var books = await repo.GetBooksAsync();
+
+            Console.WriteLine("Got Books");
+            Console.WriteLine(books.Count());
         }
     }
 }
