@@ -6,24 +6,40 @@ namespace Chapter05
 {
     class Program
     {
+        private static MikeBookService Service = new MikeBookService();
+
         async static Task Main(string[] args)
         {
-            var service = new MikeBookService();
+            await DemoGetBook();
+            await DemoGetComments();
+            await DemoParallel();
 
-            var book = await service.GetBookAsync();
+            await ValueTaskDemo.Demo();
+        }
+
+        private static async Task DemoGetBook()
+        {
+            var book = await Service.GetBookAsync();
 
             Console.WriteLine("Got Book");
             Console.WriteLine(book.Title);
 
             Console.WriteLine("-----");
+        }
 
-            var comment = await service.GetCommentAsync(10);
+        private static async Task DemoGetComments()
+        {
+            var comment = await Service.GetCommentAsync(10);
             Console.WriteLine("Got comment");
             Console.WriteLine(comment.body);
             
             Console.WriteLine("-----");
+        }
 
-            await service.GetAllAsync();
+        private static async Task DemoParallel()
+        {
+            await Service.GetAllAsync();
+            Console.WriteLine("-----");
         }
     }
 }
