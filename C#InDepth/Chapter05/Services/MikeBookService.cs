@@ -28,7 +28,8 @@ namespace Chapter05.Services
         public async Task<Comment> GetCommentAsync(int id)
         {
             // start the task now
-            var comments = PlaceholderRepo.GetCommentsAsync();
+            var comments = PlaceholderRepo.GetCommentsAsync()
+                .ConfigureAwait(false);
             
             // if we wanted to, we could just await the results right away
             // var comments = await PlaceholderRepo.GetCommentsAsync();
@@ -44,19 +45,16 @@ namespace Chapter05.Services
         // by starting both tasks then waiting for the results
         public async Task GetAllAsync()
         {
-            var tasks = new List<Task>(); // create a list of tasks to do
-
-            Console.WriteLine("Start getting books");
-
             // start the GetBooksAsync task running
-            // Add it to the list of current tasks
-            tasks.Add(FileReader.GetBooksAsync());
+            Console.WriteLine("Start getting books in parallel");
+            var bookTask = FileReader.GetBooksAsync();
 
-            Console.WriteLine("Start getting comments");
-            
             // start the GetCommentsAsync task running
-            // Add it to the list of current tasks
-            tasks.Add(PlaceholderRepo.GetCommentsAsync());
+            Console.WriteLine("Start getting comments in parallel");
+            var commentsTask = PlaceholderRepo.GetCommentsAsync();
+
+            // create a list of tasks to do
+            var tasks = new Task[] { bookTask, commentsTask }; 
 
             await Task.WhenAll(tasks) // when all the tasks have finished
                 .ContinueWith((task) => Console.WriteLine("All done")); // do this thing (anonymous method, lambda, or any other method with a matching signature)
