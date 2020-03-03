@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Sample.Business;
-using Sample.Repo;
+using Chapter05.Business;
+using Chapter05.Repo;
 
-namespace Sample.Services
+namespace Chapter05.Services
 {
     public class MikeBookService : IBookService
     {

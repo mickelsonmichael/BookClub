@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Sample.Business;
+using Chapter05.Business;
 
-namespace Sample.Repo
+namespace Chapter05.Repo
 {
     public class PlaceholderRepo : IPlaceholderRepo
     {

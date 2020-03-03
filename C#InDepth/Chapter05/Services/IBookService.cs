@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using Sample.Business;
+using Chapter05.Business;
 
-namespace Sample.Services
+namespace Chapter05.Services
 {
     public interface IBookService
     {

@@ -1,9 +1,8 @@
-
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Sample.Business;
+using Chapter05.Business;
 
-namespace Sample.Repo
+namespace Chapter05.Repo
 {
     public interface IPlaceholderRepo
     {

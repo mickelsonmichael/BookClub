@@ -1,7 +1,6 @@
-using System;
 using System.Collections.Generic;
 
-namespace Sample.Business
+namespace Chapter05.Business
 {
     public class BookSet
     {

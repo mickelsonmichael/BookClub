@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Sample.Services;
+using Chapter05.Services;
 
-namespace Sample
+namespace Chapter05
 {
     class Program
     {

@@ -1,11 +1,11 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using Sample.Business;
+using Chapter05.Business;
 using System.IO;
 using System.Threading.Tasks;
 using System;
 
-namespace Sample.Repo
+namespace Chapter05.Repo
 {
     public class FileReader : IFileReader
     {

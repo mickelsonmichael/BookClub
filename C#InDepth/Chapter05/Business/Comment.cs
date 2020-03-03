@@ -1,4 +1,4 @@
-namespace Sample.Business
+namespace Chapter05.Business
 {
     public class Comment
     {
