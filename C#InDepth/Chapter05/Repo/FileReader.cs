@@ -7,7 +7,7 @@ using System;
 
 namespace Chapter05.Repo
 {
-    public class FileReader : IFileReader
+    public class SampleFileReader : ISampleFileReader
     {
         public async Task<IEnumerable<Book>> GetBooksAsync()
         {

@@ -11,7 +11,7 @@ namespace Chapter05.Services
 {
     public class MikeBookService : IBookService
     {
-        private IFileReader FileReader = new FileReader();
+        private ISampleFileReader FileReader = new SampleFileReader();
         private IPlaceholderRepo PlaceholderRepo = new PlaceholderRepo();
 
         public async Task<Book> GetBookAsync()
