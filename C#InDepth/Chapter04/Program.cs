@@ -1,4 +1,7 @@
 ﻿
+using System;
+using Chapter04.Examples;
+
 namespace Chapter04
 {
     class Program
@@ -10,6 +13,12 @@ namespace Chapter04
            Arguments.Demo();
 
            GenericVariance.Demo();
+
+           string todo = DynamicJson.WhatToDo();
+
+           Console.WriteLine(todo);
+
+           DynamicJson.MakeAPost();
         }
     }
 
