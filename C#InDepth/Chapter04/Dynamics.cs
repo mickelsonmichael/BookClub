@@ -45,13 +45,12 @@ namespace Chapter04
 
             // same concept applies to LINQ methods
             // extension methods also cannot be called in a dynamic context
-            List<dynamic> list = new List<dynamic> { 2, 4, 6 };
+            dynamic list = new List<int> { 2, 4, 6 };
             // dynamic notHere = list.Select(x => x == "here");
 
-            // to get around the lack of extension methods,
-            // we can call them directly
-            dynamic isHere = Enumerable.Any(list, x => sqr(x) > 30);
-            Console.WriteLine(isHere);
+            // This will be invalid since list is dynamic
+            // dynamic isHere = list.Find((x => x == 6);
+        
 
             // expression trees cannot be used with dynamic
             // dynamic there = list.AsQueryable().First();
