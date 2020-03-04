@@ -19,6 +19,8 @@ namespace Chapter04
            Console.WriteLine(todo);
 
            DynamicJson.MakeAPost();
+
+           ReflectionDemo.Compare();
         }
     }
 
