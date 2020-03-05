@@ -57,9 +57,8 @@ returned task, detect when the task has failed or completed, and so on. In some 
 - If a task is canceled, the Wait() method and Result properties will throw an AggregateException containing an OperationCanceled-
 Exception (in practice, a TaskCanceledException that derives from Operation-CanceledException), but the status becomes Canceled instead of Faulted. (pg 174 para 6)
 - When you await a task, if it's either faulted or canceled, an eception will be thrown... the first exception *within* the `AggregateException` is thrown. (pg 175, para 1)
-- Typically, if you want to check the exceptions in detail, the simplest approach is to use `Task.Exception` for each of the original tasks. (pg 175, para 1)
-- If there are multipl exceptions in a faulted task, 'GetResult' can throw only one of them... (pg 175 para 3)
-- Typically, if you want to check the exceptions in detail, the simplest approach is to use Task.Exception for each of the original tasks. (pg 175 para 1)
+- If there are multiple exceptions in a faulted task, 'GetResult' can throw only one of them... (pg 175 para 3)
+- Typically, if you want to check the exceptions in detail, the simplest approach is to use Task.Exception for each of the original tasks. (pg 176 para 1)
 - If you validate the parameters as you would in a normal synchronous code, the caller won't have any indication of the problem until the task is awaited. (pg 177, para 4)
 - The idea is to write a *nonasync* method that returns a task and is implemented by validating the arguments and then calling a separate async funciton that assumets the argument has been validated... In C# 7 and above, you can use a local async method. (pg 178, para 4)
 - There are various ways of using the cancellation token, but the most idiomatic approach is to call ThrowIfCancellation-
@@ -78,7 +77,8 @@ Requested, which will throw OperationCanceledException if the token has been can
 ## 5.8 - Custom task types in C# 7
 
 - If an async method uses an `await` expression on something that's incomplete, object allocation is unavoidable... In those cases, `ValueTask<Result>` provides no benefit and can even be a little more expensive. (pg 182, para 7)
-- ... the async/await infrastruture caches a task that it can return from any async method declared to return `Task` that completed synchronously and without exception. (pg 184, para 4, NOTE) - The task type can be generic in a single type parameter or nongeneric. If it’s generic, that type parameter must be the type of GetResult in the awaiter type; if it’s nongeneric, GetResult must have a void return type. (pg 185 para 2)
+- ... the async/await infrastruture caches a task that it can return from any async method declared to return `Task` that completed synchronously and without exception. (pg 184, para 4, NOTE) 
+- The task type can be generic in a single type parameter or nongeneric. If it’s generic, that type parameter must be the type of GetResult in the awaiter type; if it’s nongeneric, GetResult must have a void return type. (pg 185 para 2)
 
 ## 5.9 - Async Main methods in C# 7.1
 
