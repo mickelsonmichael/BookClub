@@ -7,7 +7,7 @@
 - The natural flow of not executing the next statement until this one has completed is still maintained but without blocking. (pg 152 para 4)
 - ... you don't need to dispose of tasks in general. (pg 153, para 2, NOTE)
 - `HttpClient` is in some senses the new and improved `WebClient`... it contains only ashnchronous operations. (pg 154, para 1, NOTE)
-- ... the await operator performs an unwattping operation -- at least when the value being awaited is a 'Task<TResult>'. (pg 154 para 5)
+- ... the await operator performs an unwrapping operation -- at least when the value being awaited is a 'Task<TResult>'. (pg 154 para 5)
 - [A] method returns as soon as it hits the await expression. (pg 154, para 8)
 - A *continuation* is effectively a callback to be executed when an asyncrhonous operation (or any `Task`) has completed. (pg 155, para 2, DEFINITION)
 - The `Task` class has a method specifically for attaching continuations: `Task.ContinueWith` (pg 155, para 2, DEFINITION)
