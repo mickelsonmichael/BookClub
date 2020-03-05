@@ -16,7 +16,7 @@
 
 - ... multithreading ... not required for asynchronous execution (pg 155 para 5)
 - When you start doing something, you tell that operation what you wat to happen when that operation has completed (pg 156 para 1)
-- Continutations are naturally represented as delegates in ,NET, and they're typically actions that receive the results of the asynchronous operation (pg 156 para 2) 
+- Continutations are naturally represented as delegates in .NET, and they're typically actions that receive the results of the asynchronous operation (pg 156 para 2) 
 - Essentially, all that `await` in C# does is ask the compiler to build a continuation for you. (pg 156, para 3)
 - ... the asynchronous operation starts and returns a token you can use to provide the continuation later. (pg 156 para 4)
 - Task gets a token, await uses the token to 'await' the operation and know when it is completed (my own notes summarizing para 2 pg 157)
@@ -35,7 +35,6 @@ returned task, detect when the task has failed or completed, and so on. In some 
 - ... async methods can be generic, static or nonstatic, and specify any of the regular access modifiers (pg 162, para 5)
 - None of the parameters in an async method can use the `out` or `ref` modifiers. (pg 162, para 6)
 - ... pointer types can't be used as async method parameter types. (pg 162, para 6)
-- 
 
 ## 5.4 - Await Expressions
 
