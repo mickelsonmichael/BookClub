@@ -8,7 +8,9 @@ namespace Chapter04
     {
         public static void Demo()
         {
-             dynamic text = "My text";
+            Console.WriteLine("# Rules of Dynamics");
+
+            dynamic text = "My text";
             var my = text.Substring(2);
             //var my = text.SUBSTR(2);
 
@@ -55,7 +57,7 @@ namespace Chapter04
             // expression trees cannot be used with dynamic
             // dynamic there = list.AsQueryable().First();
 
-            Console.WriteLine("====");
+            Console.WriteLine("=====");
         }
 
         public class TestObj

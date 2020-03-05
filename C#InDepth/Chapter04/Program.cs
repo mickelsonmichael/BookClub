@@ -14,11 +14,15 @@ namespace Chapter04
 
            GenericVariance.Demo();
 
+            Console.WriteLine("# Dynamics - JSON");
+
            string todo = DynamicJson.WhatToDo();
 
            Console.WriteLine(todo);
 
            DynamicJson.MakeAPost();
+
+            Console.WriteLine("=====\n#Dynamics - Reflection");
 
            ReflectionDemo.Compare();
         }
