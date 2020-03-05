@@ -49,7 +49,7 @@ returned task, detect when the task has failed or completed, and so on. In some 
 
 ## 5.6 - Asynchronous method flow
 
- ... await always operates on only a single value. (pg 168 para 6)
+- ... await always operates on only a single value. (pg 168 para 6)
 - If the operation failed and it captured an exception to represent that failure, the exception is thrown. (pg 169, para 6)
 - ... it's up to you to make sure that you always write async methods so they return quickly. (pg 172, para 3)
 - ... you should generally avoid performing long-running blocking work in an async method. Separate it out into another method that you can create a `Task` for. (pg 172, para 3)
