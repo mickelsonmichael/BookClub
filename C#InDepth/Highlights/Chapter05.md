@@ -7,7 +7,7 @@
 - The natural flow of not executing the next statement until this one has completed is still maintained but without blocking. (pg 152 para 4)
 - ... you don't need to dispose of tasks in general. (pg 153, para 2, NOTE)
 - `HttpClient` is in some senses the new and improved `WebClient`... it contains only ashnchronous operations. (pg 154, para 1, NOTE)
-- ... the await operator performs an unwrapping operation -- at least when the value being awaited is a 'Task<TResult>'. (pg 154 para 5)
+- ... the await operator performs an unwrapping operation -- at least when the value being awaited is a `Task<TResult>`. (pg 154 para 5)
 - [A] method returns as soon as it hits the await expression. (pg 154, para 8)
 - A *continuation* is effectively a callback to be executed when an asyncrhonous operation (or any `Task`) has completed. (pg 155, para 2, DEFINITION)
 - The `Task` class has a method specifically for attaching continuations: `Task.ContinueWith` (pg 155, para 2, DEFINITION)
@@ -16,11 +16,11 @@
 
 - ... multithreading ... not required for asynchronous execution (pg 155 para 5)
 - When you start doing something, you tell that operation what you wat to happen when that operation has completed (pg 156 para 1)
-- Continutations are naturally represented as delegates in .NET, and they're typically actions that receive the results of the asynchronous operation (pg 156 para 2) 
+- Continutations are naturally represented as delegates in .NET, and they're typically actions that receive the results of the asynchronous operation (pg 156 para 2)
 - Essentially, all that `await` in C# does is ask the compiler to build a continuation for you. (pg 156, para 3)
 - ... the asynchronous operation starts and returns a token you can use to provide the continuation later. (pg 156 para 4)
 - Task gets a token, await uses the token to 'await' the operation and know when it is completed (my own notes summarizing para 2 pg 157)
-- For more information on `SynchronizationContext`, read Stephen Cleary's MSDN magazine article on the topic (http://mng.bz/5cDw). In particular, pay careful attention if you're an ASP.NET developer; the ASP.NET context can easily trap unwary developers into creating deadlocks within code that looks fine. (pg 157, para 5)
+- For more information on `SynchronizationContext`, read Stephen Cleary's MSDN magazine article on the topic (<http://mng.bz/5cDw>). In particular, pay careful attention if you're an ASP.NET developer; the ASP.NET context can easily trap unwary developers into creating deadlocks within code that looks fine. (pg 157, para 5)
 - In real-world applications, you sould take great care using these methods. They both block until they complete. (pg 158 Sidebar)
 
 ## 5.3 - Async method declarations
@@ -29,7 +29,7 @@
 - ... the `async` modifier has no representation in the generated code... (pg 160, para 4)
 - `Task<TResult>` represents an operation that returns a value of type `TResult`, whereas `Task` need not produce a result at all. (pg 161, para 4)
 - It’s still useful to return a Task, though, because it allows the calling code to attach its own continuations to the
-returned task, detect when the task has failed or completed, and so on. In some cases, you can think of Task as being like a Task<void> type, if such a thing were valid, (pg 161 para 4)
+returned task, detect when the task has failed or completed, and so on. In some cases, you can think of `Task` as being like a `Task<void>` type, if such a thing were valid, (pg 161 para 4)
 - The ability to return `void` from an async method is designed for compatibility with event handlers (pg 161, para 6)
 - Event subsription is pretty much the only time I'd recommend returning `void` from an asynchronous method. (pg 162, para 4, WARNING)
 - ... async methods can be generic, static or nonstatic, and specify any of the regular access modifiers (pg 162, para 5)
@@ -44,7 +44,7 @@ returned task, detect when the task has failed or completed, and so on. In some 
 
 ## 5.5 - Wrapping of return values
 
-- the method will almost certainly return to the caller before it hits the return statement, and it has to propagate the information to that caller somehow. A Task<TResult> (often known as a future in computer science) is the promise of a value—or an exception—at a later time. (pg 167 para 4)
+- the method will almost certainly return to the caller before it hits the return statement, and it has to propagate the information to that caller somehow. A `Task<TResult>` (often known as a future in computer science) is the promise of a value—or an exception—at a later time. (pg 167 para 4)
 - ... if the `return` statement occurs within the scope of a `try` block that has an associated `finally` block... the expression used to compute the return value is evaluated immediately... If the `finally` block throws an exception... the whole thing will fail. (pg 167, para 5)
 
 ## 5.6 - Asynchronous method flow
@@ -77,7 +77,7 @@ Requested, which will throw OperationCanceledException if the token has been can
 ## 5.8 - Custom task types in C# 7
 
 - If an async method uses an `await` expression on something that's incomplete, object allocation is unavoidable... In those cases, `ValueTask<Result>` provides no benefit and can even be a little more expensive. (pg 182, para 7)
-- ... the async/await infrastruture caches a task that it can return from any async method declared to return `Task` that completed synchronously and without exception. (pg 184, para 4, NOTE) 
+- ... the async/await infrastruture caches a task that it can return from any async method declared to return `Task` that completed synchronously and without exception. (pg 184, para 4, NOTE)
 - The task type can be generic in a single type parameter or nongeneric. If it’s generic, that type parameter must be the type of GetResult in the awaiter type; if it’s nongeneric, GetResult must have a void return type. (pg 185 para 2)
 
 ## 5.9 - Async Main methods in C# 7.1
