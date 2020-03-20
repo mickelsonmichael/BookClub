@@ -2,21 +2,30 @@
 
 - "... in debug builds, the generated state machines are classes rather than structs."
   - pg 194, para 4, *Debug and release builds differ, and future implementations may, too*
+ - “The differences mostly affect performance” pg 194 para 6, Debug and release builds differ, and future implementations may, too*
 - "I'm going to present only asynchronous methods, not async anonymous functions; the machinery between the two is the same anyway"
   - pg 195, para 1
 
 ## 6.1 Structure of the Generated Code
 
-- "... the implementation... is in the form of a *state machine*."
+- "... the implementation... is in the form of a *state machine*. The compiler will generate a private nested struct to represent the asynchronous method"
   - pg. 195, para. 2
+ -  “I’m going to talk about the state machine pausing. This corresponds to a point where the async method reaches an await expression and the operation being awaited hasn’t completed yet”  pg 195 para 3, Note*
+ - “four kinds of state, in common execution order: Not started, Executing, Paused, Complete (either successfully or faulted)” pg 195 para 4
+- “Only the Paused set of states depends on the structure of the async method.” Pg 195 para 5
+- “The state is recorded when the state machine needs to pause; the whole purpose is to allow it to continue the code execution later from the point it reached.” Pg 195 para 5
 - "I typically use a mixture of ildasm and Redgate Reflector for this sort of work, setting the Optimization level to C# 1 to prevent the decompiler from reconstructing the async method for us."
   - pg. 196, para. 4, *Do try this at home*
 - "...`AsyncTestMethodBuilder`... is a value type, and it's part of the common async infrastrucutre."
   - pg. 198, para. 1
+- [AsyncTaskMethodBuilder] “The builder provides functionality that the generated code uses to propagate success and failure, handle awaiting, and so forth.” Pg 198 para 4
 - "Both the state machine and the `AsyncTaskMethodBuilder` are *mutable* value types."
   - pg. 198, para. 5
 - "... mutable value types and public fields are almost always a bad idea."
   - pg. 199, para. 1
+- “The state is just an integer with one of the following values: –1—Not started, or currently executing (it doesn’t matter which), –2—Finished (either successfully or faulted),  Anything else—Paused at a particular await expression” pg200 para 2
+- “The crucial point to remember is that you need fields only for values that you need to come back to after the state machine resumes at some point.” Pg 200 para 4
+- “Only one awaiter is relevant at a time, because any particular state machine can await only one value at a time.” Pg 200 para 5
 - "Before C# 7, the builder type was always `AsyncVoidMethodBuilder`, `AsyncTaskMethodBuilder`, or `AsyncTaskMethodBuilder<T>`. With C# 7 and custom task types, the builder type specified by the `AsyncTaskMethodBuilderAttribute` is applied to the custom task type."
   - pg. 200, para. 5
 - "... you need fields only for values that you need to come back to after the state machine resumes at some point."
@@ -29,6 +38,7 @@
   - pg. 201, para. 5
 - "Unlike real local variables, the compiler does reuse temporary stack variables of the same type and generates only as many fields as it needs to."
   - pg. 202, para. 4
+- “MoveNext() returns if any of the following occurs: The state machine needs to pause to await an incomplete value. Execution reaches the end of the method or a return statement. An exception is thrown but not caught in the async method. Note that in the final case, the MoveNext() method doesn’t end up throwing an exception. Instead, the task associated with the async call becomes faulted” pg 202 para 7
 - "... the `MoveNext()` method... return type is `void`, not a task type."
   - pg. 203, para. 1
 
