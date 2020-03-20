@@ -97,3 +97,46 @@ array = { 1, 2, 3, 4, 5 };
   - pg. 97, para. 1
 - "If you use a lambda expression in a performance-critical piece of code, you should be aware of how many objects will be created to support the variables it captures."
   - pg. 100, para. 3
+- "*Expression trees* are representations of code as data."
+  - pg. 101, para. 3
+- "...it's more common to ask the compiler to [build up expression trees] for you by converting a lambda exxpression into an expression tree."
+  - pg. 101, para. 4
+- `Expression<Func<int, int, int>> adder = (x, y) => x + y;`
+  - pg. 101, Listing 3.12
+- "This demonstrates that the code is available for examination at execution time, which is the whole point of expression trees."
+  - pg. 101, para. 5
+- `Expression<TDelegate>`
+  - pg. 101, para. 6
+- "[`TDelegate`] must be a delegate type (That's not expressed as a type constraint, but it's enforced at execution time.)."
+  - pg. 101, para. 7
+- "...only *expression-bodied* lambda expressions can be converted to expression trees."
+  - pg. 102, para. 4
+- "This is one reason why object and collection initializers are so important: they allow initialization to be captured in a single expression."
+  - pg. 102, para. 5
+
+## 3.6 Extension methods
+
+- "The type of the first parameter is sometimes called the "target" of the extension method and seomtimes called the *extended type*."
+  - pg. 104, para. 2
+- "The compiler adds the `[Extension]` attribute to both the method and the class declaring it...`"
+  - pg. 104, para. 4
+- "...if the compiler can use an instance method, it won't even look for extension methods."
+  - pg. 104, para 6
+- "[LINQ queries read] in the same order as [they execute]."
+  - pg. 106, para. 4
+
+## 3.7 Query expressions
+
+- "*range variable*
+  - pg. 108, para 2
+  - In the statement `from word in words`, `word` is the *range variable*
+- `let length = word.Length` [is a new range varaible]
+  - pg. 109, Listing 3.21
+- `.Where(tmp => tmp.length > 4)`... [`tmp`] is called a *transparent identifier*.
+  - pg. 109, para. 4
+- "Query expressions really shine when the compiler is doing more work for you by handling all those transparent identifiers."
+  - pg. 110, para. 6
+- "The compiler has special handling for `select` clauses that select just the current query item."
+  - pg. 110, footnote 5
+
+## 3.8 The end result: LINQ
