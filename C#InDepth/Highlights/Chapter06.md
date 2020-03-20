@@ -34,8 +34,45 @@
 
 ## 6.2 A simple `MoveNext()` implementation
 
+- "... the `MoveNext()` method is invoked once when the async method is first called and then once each time it needs to resume from being paused at an await expression."
+  - pg. 207, para. 3
+- "If every await expresion takes the fast path, `MoveNext()` will be called only once.`
+  - pg. 207, para. 3
+- "... special exceptions (`ThreadAbordexception` and `StackOverflowException`, for example) will ever cause `MoveNext()` to end with an exception"
+  - pg. 208, para. 1
+- "...the start of the `MoveNext()` method is always effectively a `switch` statement used to jump right to the piece of code within the method based on the state."
+  - pg. 208, para. 2
+- "`MoveNext()` should neer end up being called in the executing or completeed states."
+  - pg. 208, para. 4, *What about other states?*
+- "There aren't... distinct state numbers for not started and executing: both use -1"
+  - pg. 208, para. 4, *What about other states?*
+- "Within the state machine, `return` is used when the state machine is paused after scheduling a continuation for an awaiter."
+  - pg. 208, para. 5
+- "You have to call `GetResult()` even if there isn't a resut `value` to let the awaiter propogate errors if necessary."
+  - pg. 209, para. 3, Item 9
+- "The call to b`builder.AwaitUnsafeOnCompleted(ref awaiter1, ref this)` is the part that does the boxing dance with a call back into `SetStateMachine`... and schedules the continuation."
+  - pg. 210, para. 3
+- "...even small async methods - even those using `ValueTask<TResult>` - can't be sinsibly inlined by the JIT compiler."
+  - pg. 210, para. 6
+
 ## 6.3 How control flow affects `MoveNext()`
 
+- "...it's always been valid to use `await` in a `try` block, but in C# 5, it was invalid to use it in a `catch` or `finally` block. That restriction was lifted in C# 6..."
+  - pg. 213, para. 5
+- "...even in IL, you're not allowed to jump from outside a `try` block to inside it."
+  - pg. 215, para. 1
+- "If the `finally` block is executing because you're passing the state machine and returning to the caller, the code in the original async method's `finally` block shouldn't execute."
+  - pg. 215, para. 4
+- "...where I've always used a `switch` statement for "jump to X" pieces of code, the compiler can sometimes use simpler branching code. Consistency... doesn't matter to the complier."
+  - pg. 216, para. 1
+
 ## 6.4 Execution contexts and flow
+
+- "Execution contexts aren't like [other contexts]; you pretty much always want the same execution context when your async method continues, even if it's on a different thread."
+  - pg. 217, para. 1
+- "...preservation of the execution contet is called *flow*. An execution context is said to flow across await expressions, meaning that all your code operates in the same execution context."
+  - pg. 217, para. 2
+- "`ICriticalNotifyCompletion.UnsafeOnCompleted` is marked with `[SecurityCritical]`. It can be called only by trusted code, such as the framework's `AsyncTaskMethodBuilder` class."
+  - pg. 217, para. 3s
 
 ## 6.5 Custom task types revisited
