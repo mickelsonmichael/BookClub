@@ -41,6 +41,10 @@
 - “MoveNext() returns if any of the following occurs: The state machine needs to pause to await an incomplete value. Execution reaches the end of the method or a return statement. An exception is thrown but not caught in the async method. Note that in the final case, the MoveNext() method doesn’t end up throwing an exception. Instead, the task associated with the async call becomes faulted” pg 202 para 7
 - "... the `MoveNext()` method... return type is `void`, not a task type."
   - pg. 203, para. 1
+ - “(In debug builds, where the state machine is a class, the implementation is empty.)” pg 204 para 3
+- “When a state machine takes its first step, it’s on the stack as a local variable of the stub method. If it pauses, it has to box itself (onto the heap) so that all that information is still in place when it resumes. After it’s been boxed, SetStateMachine is called on the boxed value using the boxed value as the argument.” pg 204 para 3
+- “The method has to be called on the boxed value; it can be called only after boxing, because that’s when you have the reference to the boxed value…” pg 204 para 4
+- “The result is that the state machine isn’t boxed at all if it doesn’t need to be and is boxed exactly once if necessary.” Pg 204 para 5
 
 ## 6.2 A simple `MoveNext()` implementation
 
@@ -67,6 +71,8 @@
 
 ## 6.3 How control flow affects `MoveNext()`
 
+- “…introducing control flow doesn’t add to the generated code complexity any more than it would in the synchronous code.” Pg 211 para 2
+- “…the C# compiler doesn’t convert an async method into equivalent C# that doesn’t use async/await. It only has to generate appropriate IL.” pg 213 para 1
 - "...it's always been valid to use `await` in a `try` block, but in C# 5, it was invalid to use it in a `catch` or `finally` block. That restriction was lifted in C# 6..."
   - pg. 213, para. 5
 - "...even in IL, you're not allowed to jump from outside a `try` block to inside it."
