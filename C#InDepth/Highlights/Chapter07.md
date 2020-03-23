@@ -19,7 +19,7 @@
   - pg. 224, para. 1
 - "NLog was the only logging framework I found with direct support and then only conditionally based on the target framework."
   - pg. 224, Footnote 1
-- "...the compiler would have to embed all the line-number information for every dynamically invoked memeber just in case it was required, thereby increasing the resulting assembly size for no benefit in 99.9% of cases."
+- "...the compiler would have to embed all the line-number information for every dynamically invoked member just in case it was required, thereby increasing the resulting assembly size for no benefit in 99.9% of cases."
   - pg. 226, para. 6, **Dynamically Invoked Members**
 - "...(indexers) is specified to use the name `Item` unless `IndexerNameAttribute` has been applied to the indexer."
   - pg. 228, para. 2, **Non-obvious Member Names**
