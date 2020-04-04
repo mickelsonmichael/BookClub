@@ -19,18 +19,25 @@ for a delegate, then whenever the delegate is invoked, the delegate will use the
   - pg. 223, para. 3,, **NOTE**
 - "The most obvious case in which caller information is useful is when writing to a log file."
   - pg. 224, para. 1
-- But it’d be entirely reasonable to write your own extension methods for ILogger that use these attributes and create an appropriate state object to be logged. - pg 224 para. 3
-- The less obvious use of just one of these attributes, [CallerMemberName], may be obvious to you if you happen to implement INotifyPropertyChanged frequently - pg 224, para. 6
+- But it’d be entirely reasonable to write your own extension methods for ILogger that use these attributes and create an appropriate state object to be logged. 
+  - pg 224 para. 3
+- The less obvious use of just one of these attributes, [CallerMemberName], may be obvious to you if you happen to implement INotifyPropertyChanged frequently 
+  - pg 224, para. 6
 - "NLog was the only logging framework I found with direct support and then only conditionally based on the target framework."
   - pg. 224, Footnote 1
-- [Dynamically invoked members] If the member being invoked includes an optional parameter with a caller information attribute but the invocation doesn’t include a corresponding argument, the default value specified in the parameter is used as if the attribute weren’t present.  - pg 226, para. 5
+- [Dynamically invoked members] If the member being invoked includes an optional parameter with a caller information attribute but the invocation doesn’t include a corresponding argument, the default value specified in the parameter is used as if the attribute weren’t present.  
+  - pg 226, para. 5
 - "...the compiler would have to embed all the line-number information for every dynamically invoked member just in case it was required, thereby increasing the resulting assembly size for no benefit in 99.9% of cases."
   - pg. 226, para. 6, **Dynamically Invoked Members**
 - "...(indexers) is specified to use the name `Item` unless `IndexerNameAttribute` has been applied to the indexer."
   - pg. 228, para. 2, **Non-obvious Member Names**
 - "The Roslyn compiler uses the names that are present in the IL for [calls from an instance constructor, static constructor, finalizer, or operator]: `.ctor`, `.cctor`, `Finalize`, and operator names such as `op_Addition`."
   - pg. 228, para. 3, **Non-obvious Member Names**
-- [Implicit constructor implications] The language specification calls out constructors as an example in which caller member information isn’t provided by the compiler unless the call is explicit - pg 228, - para 5
-- [Query expression implications] the language specification calls out query expressions as one place where caller information is provided by the compiler even though the call is implicit. - pg 229, para. 3
-- The Main method uses reflection to fetch the attribute from all the places you’ve applied it. - pg 231, para. 3
-- [in old versions of .NET]  …use the Microsoft.Bcl NuGet package - pg 232, para. 3
+- [Implicit constructor implications] The language specification calls out constructors as an example in which caller member information isn’t provided by the compiler unless the call is explicit 
+  - pg 228, - para 5
+- [Query expression implications] the language specification calls out query expressions as one place where caller information is provided by the compiler even though the call is implicit. 
+  - pg 229, para. 3
+- The Main method uses reflection to fetch the attribute from all the places you’ve applied it. 
+  - pg 231, para. 3
+- [in old versions of .NET]  …use the Microsoft.Bcl NuGet package 
+  - pg 232, para. 3
