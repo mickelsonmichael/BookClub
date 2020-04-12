@@ -67,7 +67,7 @@
 - …they can make the code harder to read 
   - pg 274, para. 6
 
-## 9.5 - Uses, guidelines, and limitations
+## 9.5 - Accessing identifiers with nameof
 
 - The nameof operator … it takes an expression referring to a member or local variable, and the result is a compile-time constant string with the simple name for that member or variable. 
   - pg 275, para. 5
