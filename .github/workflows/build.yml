@@ -16,6 +16,6 @@ jobs:
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
-      run: dotnet restore src/BookClub/BookClub.csproj
+      run: dotnet restore Web/BookClub/BookClub.csproj
     - name: Build
-      run: dotnet build --configuration Release --no-restore src/BookClub/BookClub.csproj
+      run: dotnet build --configuration Release --no-restore Web/BookClub/BookClub.csproj
