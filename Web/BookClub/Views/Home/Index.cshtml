@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Book>
+
+@{
     ViewData["Title"] = "Home";
 }
 
@@ -8,3 +10,8 @@
         This is a simple web application for tracking the book club's latest notes and current readings
     </p>
 </div>
+
+@foreach(var book in Model)
+{
+    <img class="img-responsive" height="140" src="@book.Image" alt="@book.Name" />
+}
