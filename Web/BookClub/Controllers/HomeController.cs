@@ -1,7 +1,7 @@
 ﻿using BookClub.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using Repo;
+using System.Diagnostics;
 
 namespace BookClub.Controllers
 {
