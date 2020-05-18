@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookClub", "BookClub\BookClub.csproj", "{96D0D881-1C72-4AFF-A820-CD6752102E9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo", "BookClub.Repo\Repo.csproj", "{D348B641-16BB-4B91-BDDD-FBC872701F09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,17 @@ Global
 		{96D0D881-1C72-4AFF-A820-CD6752102E9A}.Release|x64.Build.0 = Release|Any CPU
 		{96D0D881-1C72-4AFF-A820-CD6752102E9A}.Release|x86.ActiveCfg = Release|Any CPU
 		{96D0D881-1C72-4AFF-A820-CD6752102E9A}.Release|x86.Build.0 = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|x64.Build.0 = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Debug|x86.Build.0 = Debug|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x64.ActiveCfg = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x64.Build.0 = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x86.ActiveCfg = Release|Any CPU
+		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
