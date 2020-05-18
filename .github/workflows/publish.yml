@@ -19,7 +19,7 @@ jobs:
     - name: Build and Publish
       run: |
         dotnet build --configuration Release Web/BookClub/BookClub.csproj
-        dotnet public -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish' Web/BookClub/BookClub.csproj
+        dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/publish' Web/BookClub/BookClub.csproj
     - name: Deploy to Azure
       uses: azure/webapps-deploy@v2
       with:
