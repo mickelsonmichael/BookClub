@@ -7,9 +7,8 @@ namespace BookClub.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index(
-            [FromServices] BookClubDbContext dbContext
-        ) => View(dbContext.Books);
+        public IActionResult Index([FromServices] BookClubDbContext context)
+            => View(context.Books);
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

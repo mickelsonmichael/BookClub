@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Cosmos;
+using Microsoft.EntityFrameworkCore.Sqlite;
 using Repo;
+using Microsoft.Data.Sqlite;
 
 namespace BookClub
 {
@@ -27,15 +23,8 @@ namespace BookClub
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<BookClubDbContext>(opt => {
-                var config = Configuration.GetSection("Db").Get<DbSettings>();
 
-                opt.UseCosmos(
-                    accountEndpoint: config.Endpoint,
-                    accountKey: config.Key,
-                    databaseName: "BookClubDb"
-                );
-            });
+            services.AddDbContext<BookClubDbContext>(opt => opt.CreateDb());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
