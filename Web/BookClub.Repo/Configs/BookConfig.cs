@@ -11,6 +11,10 @@ namespace Repo.Configs
         {
             builder.Property(x => x.BookId)
                 .ValueGeneratedOnAdd();
+
+            builder.Property(b => b.CreatedDate)
+                .HasDefaultValueSql("datetime('now')");
+            //.HasDefaultValue(DateTime.Now); // This won't work. The value will be set on context configuration, not during the add
         }
     }
 }

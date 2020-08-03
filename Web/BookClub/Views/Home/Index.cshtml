@@ -18,7 +18,9 @@
             <img class="img-responsive" height="140" src="@book.Image" alt="@book.Name" />
             <strong>@book.Name</strong>
             <span>@book.Author.Name</span>
+            <span>Created @book.CreatedDate</span>
         </div>
     }
 </div>
 
+<a asp-action="AddBook" class="btn btn-primary">Add Random Book</a>

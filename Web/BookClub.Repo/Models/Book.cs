@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace Repo.Models
@@ -11,6 +12,7 @@ namespace Repo.Models
         public string Image { get; set; }
         public bool Current { get; set; }
         public bool Complete { get; set; }
+        public DateTime CreatedDate { get; private set; }
         [Required]
         public Author Author { get; set; }
     }
