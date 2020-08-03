@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Repo;
 
 namespace BookClub
 {
@@ -9,6 +10,7 @@ namespace BookClub
         {
             CreateHostBuilder(args)
                 .Build()
+                .CreateDb()
                 .Run();
         }
 

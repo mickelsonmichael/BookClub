@@ -24,7 +24,7 @@ namespace BookClub
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<BookClubDbContext>(opt => opt.CreateDb());
+            services.AddDbContext<BookClubDbContext>(opt => opt.ConfigureDb());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
