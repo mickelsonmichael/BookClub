@@ -4,10 +4,11 @@
 
 ## Current Book
 
-**C# in Depth** (4th Edition) by Jon Skeet
+**Entity Framework Core in Action** by Jon P Smith
 
 ## Previous Conquests
 
 - The Art of Unit Testing
 - ASP.NET Core in Action
 - The Pragmatic Programmer
+- *C# in Depth* by Jon Skeet
