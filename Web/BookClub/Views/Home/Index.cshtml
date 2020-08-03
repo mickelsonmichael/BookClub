@@ -11,7 +11,14 @@
     </p>
 </div>
 
-@foreach(var book in Model)
-{
-    <img class="img-responsive" height="140" src="@book.Image" alt="@book.Name" />
-}
+<div class="d-flex">
+    @foreach(var book in Model)
+    {
+        <div class="d-flex flex-column border rounded p-2 m-1" style="width: 130px;">
+            <img class="img-responsive" height="140" src="@book.Image" alt="@book.Name" />
+            <strong>@book.Name</strong>
+            <span>@book.Author.Name</span>
+        </div>
+    }
+</div>
+
