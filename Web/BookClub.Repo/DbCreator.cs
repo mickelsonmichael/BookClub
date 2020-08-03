@@ -2,11 +2,16 @@ using System.Linq;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Repo.Models;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using System.Data;
 
 namespace Repo
 {
     public static class DbCreator
     {
+        private static SqliteConnection connection;
+
         private static Author[] SeedAuthors = new Author[]
         {
             new Author { Name = "Jon Skeet" },
@@ -21,13 +26,19 @@ namespace Repo
             new Book { Name = "ASP.NET Core in Action", Author = SeedAuthors.Single(x => x.Name == "Andrew Lock"), Edition = "First", Complete = true, Image = "https://images.manning.com/360/480/resize/book/3/a3544c6-0057-465a-a17e-d1fbd7f61b80/Lock-ANCore-HI.png" }
         };
 
-        public static DbContextOptionsBuilder CreateDb(this DbContextOptionsBuilder optionsBuilder)
+        public static DbContextOptionsBuilder ConfigureDb(this DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite(CreateConnection());
 
-            using var context = new BookClubDbContext(
-                (DbContextOptions<BookClubDbContext>)optionsBuilder.Options
-            );
+            return optionsBuilder;
+        }
+
+        public static IHost CreateDb(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<BookClubDbContext>();
 
             context.Database.EnsureCreated();
 
@@ -36,15 +47,23 @@ namespace Repo
                 SeedDatabase(context);
             }
 
-            return optionsBuilder;
+            return host;
         }
 
         private static SqliteConnection CreateConnection()
         {
-            // create the database in-memory
-            var connection = new SqliteConnection("Filename=:memory:");
+            if (connection == null)
+            {
+                // create the database in-memory
+                connection = new SqliteConnection("Filename=:memory:");
+            }
 
-            connection.Open();
+            if (connection.State == ConnectionState.Closed)
+            {
+                // ensure the connection is open
+                connection.Open();
+            }
+
 
             return connection;
         }
