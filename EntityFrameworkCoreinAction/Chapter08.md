@@ -64,3 +64,65 @@ modelBuilder.HasDbFunction(
 
 - You must manually add the UDFs to the database with SQL
 - You can leverage migrations to do this, but that is discussed in chapter 11
+- For beginners, you can use the `context.Database.ExecuteSqlCommand(string)`
+
+### 8.2.3 Using a registered scalar UDF in your database queries
+
+- You can call the static method before you enumerate your results like any other static method
+- Be careful, because if you call `AsEnumerable` or `ToList` _before_ you call your UDF function, the client-side implementation will be used
+- The server UDF version will only be utilized if it is before the results are pulled from the database. [See this link](https://docs.microsoft.com/en-us/ef/core/querying/client-eval#explicit-client-evaluation)
+- UDFs can be used in filtering, selecting, and more
+
+```c#
+// The UdfClass is a custom class containing your static method
+var stuff = context.Books.Select(b => new {
+    Id = b.BookId,
+    Title = b.Title,
+    Rating = UdfClass.AverageVotes(b.BookId)
+}).ToList();
+```
+
+## 8.3 Computed column - a dynamically calculated column value
+
+- Column that is calculated when you read the column
+- EF core will read back the column each time a select, update, or insert is performed
+- The value is calculated each time, so this can be expensive if the function isn't simple enough
+
+```c#
+modelBuilder.Entity<Author>()
+    .Property(a => a.NumberOfBooks)
+    .HasComputedColumnSql("COUNT()");
+```
+
+## 8.4 Setting a default value for a database column
+
+- There are three methods to doing this
+- Defaults can only be applied to scalar properties, but they can be backing/shadow
+- Defaults will only be applied if they match the CLR default (e.g. if the date == default(DateTime) or int == default(int))
+- The defaults won't be applied until `SaveChanges` is called. If you need them before that call, you will have to use C# methods like property initializers
+- "**default values happen only on new rows added to the database. They don't apply to updates.**"
+
+### 8.4.1 Adding a constant as a default constraint
+
+- You can use the Fluent API to set the default
+- EF Core will read the value when `SaveChanges` is called. **Not before**.
+- **This will be a constant value**. Using `HasDefaultValue(DateTime.Now)` will not work; it would instead use the time when the context was configured (application startup)
+
+```c#
+modelBuilder.Entity<Book>()
+    .Property("PublishedDate")
+    .HasDefaultValue(new DateTime(2000, 1, 1));
+```
+
+### 8.4.2 Adding an SQL fragment as a default constraint
+
+- You can use SQL functions in place of C# functions for the default
+- This can be useful with `CreatedDate` columns; set the property to `private set` and the devs won't be able to accidentally change the values at runtime
+- You can't reference another column in the default constraint
+- You can also call UDF functions as well
+
+```c#
+modelBuilder.Entity<Book>()
+    .Property(b => b.CreatedDate)
+    .HaDefaultValueSql("GETUTCDATE()");
+```
