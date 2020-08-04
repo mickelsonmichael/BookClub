@@ -12,14 +12,14 @@ namespace Repo
     {
         private static SqliteConnection connection;
 
-        private static Author[] SeedAuthors = new Author[]
+        public static Author[] SeedAuthors = new Author[]
         {
             new Author { Name = "Jon Skeet" },
             new Author { Name = "Jon P Smith" },
             new Author { Name = "Andrew Lock" }
         };
 
-        private static Book[] SeedBooks = new Book[]
+        public static Book[] SeedBooks = new Book[]
         {
             new Book { Name = "C# in Depth", Edition = "Fourth", Author = SeedAuthors.Single(x => x.Name == "Jon Skeet"), Complete = true, Image = "https://csharpindepth.com/images/Cover.png" },
             new Book { Name = "Entity Framework Core in Action", Author = SeedAuthors.Single(x => x.Name == "Jon P Smith"), Edition = "First", Current = true, Image = "https://images.manning.com/360/480/resize/book/2/2cd7852-84a5-44f5-a05b-451d68478e31/Smith-EFC-HI.png" },
@@ -68,7 +68,7 @@ namespace Repo
             return connection;
         }
 
-        private static void SeedDatabase(BookClubDbContext context)
+        public static void SeedDatabase(BookClubDbContext context)
         {
             context.Authors.AddRange(SeedAuthors);
             context.SaveChanges();

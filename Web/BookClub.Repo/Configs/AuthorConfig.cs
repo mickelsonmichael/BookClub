@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repo.Models;
+using Repo.ValueGenerators;
 
 namespace Repo.Configs
 {
@@ -11,6 +12,9 @@ namespace Repo.Configs
 
             builder.Property(a => a.AuthorId)
                 .ValueGeneratedOnAdd();
+
+            builder.Property(a => a.FriendlyId)
+                .HasValueGenerator<FriendlyIdGenerator>();
         }
     }
 }
