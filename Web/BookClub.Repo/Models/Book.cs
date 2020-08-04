@@ -8,6 +8,7 @@ namespace Repo.Models
         public string BookId { get; set; }
         [Required]
         public string Name { get; set; }
+        [ConcurrencyCheck]
         public string Edition { get; set; }
         public string Image { get; set; }
         public bool Current { get; set; }

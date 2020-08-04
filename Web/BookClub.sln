@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26124.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookClub", "BookClub\BookClub.csproj", "{96D0D881-1C72-4AFF-A820-CD6752102E9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookClub", "BookClub\BookClub.csproj", "{96D0D881-1C72-4AFF-A820-CD6752102E9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repo", "BookClub.Repo\Repo.csproj", "{D348B641-16BB-4B91-BDDD-FBC872701F09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repo", "BookClub.Repo\Repo.csproj", "{D348B641-16BB-4B91-BDDD-FBC872701F09}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookClub.Repo.UnitTests", "BookClub.Repo.UnitTests\BookClub.Repo.UnitTests.csproj", "{BFD7EB54-27BE-4097-BE96-B182AB5E8622}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{96D0D881-1C72-4AFF-A820-CD6752102E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -44,5 +43,23 @@ Global
 		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x64.Build.0 = Release|Any CPU
 		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x86.ActiveCfg = Release|Any CPU
 		{D348B641-16BB-4B91-BDDD-FBC872701F09}.Release|x86.Build.0 = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|x64.Build.0 = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|x64.ActiveCfg = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|x64.Build.0 = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFD7EB54-27BE-4097-BE96-B182AB5E8622}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BD25A9E6-519E-4F3C-8DCC-973FE466125B}
 	EndGlobalSection
 EndGlobal
