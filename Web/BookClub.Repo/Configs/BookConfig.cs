@@ -12,12 +12,12 @@ namespace Repo.Configs
                 .ValueGeneratedOnAdd();
 
             builder.Property(b => b.CreatedDate)
-                .HasDefaultValueSql("datetime('now')");
+                .HasDefaultValueSql("GETDATE()");
             //.HasDefaultValue(DateTime.Now); // This won't work. The value will be set on context configuration, not during the add
 
             // Computed columns example
-            // builder.Property(b => b.Current)
-            //     .HasComputedColumnSql("[StartedDate] IS NOT NULL AND [CompletedDate] IS NULL");
+            builder.Property(b => b.Current)
+                .HasComputedColumnSql("CAST(IS NOT NULL [StartedDate] AND IS NULL [CompletedDate] as bit)");
         }
     }
 }

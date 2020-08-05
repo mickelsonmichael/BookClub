@@ -14,29 +14,29 @@ namespace Repo.UnitTests.Chapter08
             this._fixture = fixture;
         }
 
-        // [Fact]
-        // public void CurrentBookColumn_IsTrue_WhenStartDateAndNoEndDate()
-        // {
-        //     using var transaction = _fixture.Connection.BeginTransaction();
-        //     using var context = _fixture.OpenContext(transaction);
+        [Fact]
+        public void CurrentBookColumn_IsTrue_WhenStartDateAndNoEndDate()
+        {
+            using var context = _fixture.OpenContext();
+            using var transaction = context.Database.BeginTransaction();
 
-        //     var author = new Author();
+            var author = new Author();
 
-        //     context.Authors.Add(author);
-        //     context.SaveChanges();
+            context.Authors.Add(author);
+            context.SaveChanges();
 
-        //     var book = new Book
-        //     {
-        //         Name = "Test Book",
-        //         Author = author,
-        //         CompletedDate = null,
-        //         StartDate = DateTime.Now
-        //     };
+            var book = new Book
+            {
+                Name = "Test Book",
+                Author = author,
+                CompletedDate = null,
+                StartDate = DateTime.Now
+            };
 
-        //     context.Books.Add(book);
-        //     context.SaveChanges();
+            context.Books.Add(book);
+            context.SaveChanges();
 
-        //     Assert.True(book.Current);
-        // }
+            Assert.True(book.Current);
+        }
     }
 }
