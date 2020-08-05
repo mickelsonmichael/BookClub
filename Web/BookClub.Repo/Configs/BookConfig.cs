@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Repo.Models;
-using System;
 
 namespace Repo.Configs
 {
@@ -15,6 +14,10 @@ namespace Repo.Configs
             builder.Property(b => b.CreatedDate)
                 .HasDefaultValueSql("datetime('now')");
             //.HasDefaultValue(DateTime.Now); // This won't work. The value will be set on context configuration, not during the add
+
+            // Computed columns example
+            // builder.Property(b => b.Current)
+            //     .HasComputedColumnSql("[StartedDate] IS NOT NULL AND [CompletedDate] IS NULL");
         }
     }
 }
