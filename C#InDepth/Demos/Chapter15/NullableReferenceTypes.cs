@@ -25,6 +25,10 @@ namespace Chapter15
                 // should be perfectly valid
                 Console.WriteLine(Nullable.Length);
             }
+
+            // Bang operator (!) lets compiler know that you 
+            // know what's best and it should keep quiet
+            Console.WriteLine(Nullable!.Length);
         }
     }
 }
