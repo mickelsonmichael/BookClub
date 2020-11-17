@@ -4,7 +4,7 @@
 
 ## Current Book
 
-**Entity Framework Core in Action** by Jon P Smith
+**Refactoring** by Martin Fowler
 
 ## Previous Conquests
 
@@ -12,3 +12,4 @@
 - ASP.NET Core in Action
 - The Pragmatic Programmer
 - *C# in Depth* by Jon Skeet
+- *Entity Framework Core in Action* by Jon P. Smith
