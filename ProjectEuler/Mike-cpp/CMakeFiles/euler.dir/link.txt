@@ -1,0 +1,1 @@
+/usr/bin/c++     CMakeFiles/euler.dir/40.cc.o  -o euler  /usr/local/lib/libbenchmark.a -pthread /usr/lib/x86_64-linux-gnu/librt.so 

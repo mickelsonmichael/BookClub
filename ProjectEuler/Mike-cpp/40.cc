@@ -1,34 +1,40 @@
 #include <iostream>
+#include <benchmark/benchmark.h>
 
 using namespace std;
 
-int main() {
+void Solve() {
   string s;
+  
+  size_t max = 1000000;
   size_t n = 1, result = 1, count = 0;
+  size_t dec = 1;
 
-  while(n <= 1000000) {
+  while(n <= max) {
     s = to_string(n);
 
     for (char c : s) {
       count += 1;
-      switch (count) {
-        case 1:
-	case 10:
-	case 100:
-	case 1000:
-	case 10000:
-	case 100000:
-	case 1000000:
-	  int val = c - '0';
-          result *= val;
-      } 
+      
+      if (count == dec) {
+        int val = c - '0';
+        result *= val;
+        dec *= 10;	
+      }
     }
 
     n++;
   } 
 
-  cout << result << '\n';
-
-  return 0;
+ // cout << result << '\n';
 }
+
+static void Benchmark_Solve(benchmark::State &state) {
+  for (auto _ : state)
+	  Solve();
+}
+
+BENCHMARK(Benchmark_Solve)->Unit(benchmark::kMillisecond);
+
+BENCHMARK_MAIN();
 

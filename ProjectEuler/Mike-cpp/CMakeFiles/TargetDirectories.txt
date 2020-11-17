@@ -1,0 +1,3 @@
+/home/me/dev/BookClub/ProjectEuler/Mike-cpp/CMakeFiles/rebuild_cache.dir
+/home/me/dev/BookClub/ProjectEuler/Mike-cpp/CMakeFiles/edit_cache.dir
+/home/me/dev/BookClub/ProjectEuler/Mike-cpp/CMakeFiles/euler.dir
