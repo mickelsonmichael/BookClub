@@ -1,7 +1,7 @@
-using Microsoft.Data.Sqlite;
+using BookClub.Repo.UnitTests;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Debug;
 using System;
 using System.Data.Common;
 
@@ -14,17 +14,21 @@ namespace Repo.UnitTests
         private static readonly ILoggerFactory _loggerFactory
             = LoggerFactory.Create(builder => builder.AddDebug());
 
-        public SqliteConnection Connection { get; }
+        public IConfiguration Configuration { get; }
+        public string ConnectionString { get; }
 
         public BookClubDbFixture()
         {
-            Connection = new SqliteConnection("Filename=:memory:");
-            Connection.Open();
+            Configuration = TestConfiguration.GetConfiguration();
+            ConnectionString = Configuration.GetConnectionString("TestConnection");
 
             SeedDatabase();
         }
 
-        public void Dispose() => Connection.Dispose();
+        public void Dispose()
+        {
+            // nothing to dispose
+        }
 
         private void SeedDatabase()
         {
@@ -48,7 +52,7 @@ namespace Repo.UnitTests
         {
             var options = new DbContextOptionsBuilder<BookClubDbContext>()
                     .UseLoggerFactory(_loggerFactory)
-                    .UseSqlite(Connection);
+                    .UseSqlServer(ConnectionString);
 
             var context = new BookClubDbContext(
                 options.Options

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Transactions;
 using Xunit;
 
 namespace Repo.UnitTests
@@ -16,8 +17,8 @@ namespace Repo.UnitTests
         [Fact]
         public void ConcurrentCheck_ThrowsException()
         {
-            using var transaction = _fixture.Connection.BeginTransaction();
-            using var context = _fixture.OpenContext(transaction);
+            using var context = _fixture.OpenContext();
+            using var transaction = context.Database.BeginTransaction();
 
             var book = context.Books.First();
 
@@ -35,8 +36,8 @@ namespace Repo.UnitTests
         [Fact]
         public void ConcurrentCheck_AllowsUpdate()
         {
-            using var transaction = _fixture.Connection.BeginTransaction();
-            using var context = _fixture.OpenContext(transaction);
+            using var context = _fixture.OpenContext();
+            using var transaction = context.Database.BeginTransaction();
 
             var book = context.Books.First();
 

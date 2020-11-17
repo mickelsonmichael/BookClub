@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -21,9 +22,32 @@ namespace Repo
 
         public static Book[] SeedBooks = new Book[]
         {
-            new Book { Name = "C# in Depth", Edition = "Fourth", Author = SeedAuthors.Single(x => x.Name == "Jon Skeet"), Complete = true, Image = "https://csharpindepth.com/images/Cover.png" },
-            new Book { Name = "Entity Framework Core in Action", Author = SeedAuthors.Single(x => x.Name == "Jon P Smith"), Edition = "First", Current = true, Image = "https://images.manning.com/360/480/resize/book/2/2cd7852-84a5-44f5-a05b-451d68478e31/Smith-EFC-HI.png" },
-            new Book { Name = "ASP.NET Core in Action", Author = SeedAuthors.Single(x => x.Name == "Andrew Lock"), Edition = "First", Complete = true, Image = "https://images.manning.com/360/480/resize/book/3/a3544c6-0057-465a-a17e-d1fbd7f61b80/Lock-ANCore-HI.png" }
+            new Book
+            {
+                Name = "C# in Depth",
+                Edition = "Fourth",
+                Author = SeedAuthors.Single(x => x.Name == "Jon Skeet"),
+                Image = "https://csharpindepth.com/images/Cover.png",
+                StartDate = new DateTime(2020, 01, 28),
+                CompletedDate = new DateTime(2020, 06, 09)
+            },
+            new Book
+            {
+                Name = "Entity Framework Core in Action",
+                Author = SeedAuthors.Single(x => x.Name == "Jon P Smith"),
+                Edition = "First",
+                Image = "https://images.manning.com/360/480/resize/book/2/2cd7852-84a5-44f5-a05b-451d68478e31/Smith-EFC-HI.png",
+                StartDate = new DateTime(2020, 06, 16)
+            },
+            new Book
+            {
+                Name = "ASP.NET Core in Action",
+                Author = SeedAuthors.Single(x => x.Name == "Andrew Lock"),
+                Edition = "First",
+                Image = "https://images.manning.com/360/480/resize/book/3/a3544c6-0057-465a-a17e-d1fbd7f61b80/Lock-ANCore-HI.png",
+                StartDate = new DateTime(2019, 09, 16),
+                CompletedDate = new DateTime(2019, 11, 12)
+            }
         };
 
         public static DbContextOptionsBuilder ConfigureDb(this DbContextOptionsBuilder optionsBuilder)
