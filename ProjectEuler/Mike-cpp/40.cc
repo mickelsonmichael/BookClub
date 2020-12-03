@@ -3,30 +3,29 @@
 
 using namespace std;
 
+// Brute force method
 void Solve() {
-  string s;
-  
-  size_t max = 1000000;
-  size_t n = 1, result = 1, count = 0;
-  size_t dec = 1;
+  const unsigned int max = 1000000;
+  unsigned int result = 1, digit_pos = 0, target = 1;
 
-  while(n <= max) {
-    s = to_string(n);
+  for (unsigned int i = 1; i <= max; i++) {
+    string iStr = to_string(i); // convert the number to a string
 
-    for (char c : s) {
-      count += 1;
-      
-      if (count == dec) {
+    // increment over each digit in the number
+    for (char c : iStr) {
+      digit_pos += 1;
+     
+      // if we're at the target position, grab the digit
+      if (digit_pos == target) {
         int val = c - '0';
         result *= val;
-        dec *= 10;	
+        target *= 10;	
       }
     }
-
-    n++;
   } 
 
- // cout << result << '\n';
+  // Output result to standard output
+	// cout << result << '\n';
 }
 
 static void Benchmark_Solve(benchmark::State &state) {
