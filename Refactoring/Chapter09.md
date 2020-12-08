@@ -59,4 +59,10 @@ _ALERT: There has been yet another Domain-Driven Design reference in this chapte
 ## Change Value to Reference
 
 The inverse of [Change Reference to Value](#change-reference-to-value), this refacotring involves changing a value type into a reference type to encourage sharing of data. The example in the book is of a series of orders with a single customer; an update to `order1.customer.lastname` should be reasonably reflected in the `order2.customer.lastname` instance (assuming they are from the same customer). In the actual code representation of the example, Fowler simply changes `let customer = new Customer(customerData);` into `let customer = customerRepository.get(customerData.id);`, which centralizes the reference to the customer in one location (the repository).
+
+## Replace Magic Literal
+
+This section wasn't in the physical copy of the book, but seeing as it was on the website, I decided to add the notes for it here. Part of the reason for this decision is because I like this refactoring quite a bit; in my opinion, using a static number anywhere in your code has the chance to be a _huge_ issue. For example, in the Nasdaq project I've been working on, we create buffers with the default size of 1024, which I know has a semantic meaning, but simply 1024 doesn't help me understand the meaning behind it. In addition, in the merge request for the code involving that 1024 constant, I accidentally put 1025 in place of a 1024 in one spot. Luckily, my co-worker caught it during the review, but if he hadn't , I have no idea what the ramifications of that mistake may have been (possibly just a slightly less efficient code, but I can't say), but what I do know is that if that code was wrapped in a constant like `public const int Kilobyte = 1024` then it would have been nearly impossible to make a typo like 1025. Between the IDE and the compiler, the issue would have been caught before the review had even began, and less time would have been wasted by fewer people (sorry Graham).
+
+So yeah, use your constants.
 	
