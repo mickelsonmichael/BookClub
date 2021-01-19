@@ -1,12 +1,11 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Form from "./components/Form";
+import ShallowMerge from "./chapter03/shallowMerge";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
 
 function App() {
   return (
     <div className="App">
-      <Form />
+      <ShallowMerge />
     </div>
   );
 }
