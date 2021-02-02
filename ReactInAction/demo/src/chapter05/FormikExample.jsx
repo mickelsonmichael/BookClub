@@ -41,11 +41,12 @@ export default class FormikExample extends Component {
                 <hr />
 
                 <Formik initialValues={initialValues} onSubmit={this.handleSubmit}>
-                    {() => {
+                    {({ setFieldValue }) => {
                         return (
                         <Form>
                             <label>Select a color for the square: </label>
                             <Field name="color" />
+                                <button onClick={() => setFieldValue("color", "red")}>Reset</button>
 
                             <button type="submit">Change the Color</button>
                         </Form>
