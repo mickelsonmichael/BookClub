@@ -32,8 +32,9 @@ export default class ControlledInput extends Component {
 
             <p>
                 Clicking this button will change the value of the input: 
-                <button onClick={() => this.setState({ name: "Spartacus"})}>I am Spartacus.</button>
             </p>
+            <button onClick={() => this.setState({ name: "Spartacus" })}>I am Spartacus.</button>
+
         </section>
     }
 }

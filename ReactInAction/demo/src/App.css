@@ -26,3 +26,8 @@ section h2 {
   font-size: large;
   font-weight: bold;
 }
+
+section label {
+  display: block;
+  margin-bottom: 1px;
+}

@@ -52,3 +52,5 @@ function sortNumbersImmutably(n) {
 }
 
 const sorted = sortNumbersImmutably(numbers);
+
+console.log(sorted);

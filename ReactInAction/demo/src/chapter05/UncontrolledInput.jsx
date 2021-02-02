@@ -35,14 +35,14 @@ export default class UncontrolledInput extends Component {
                     onChange={this.handleChange}
                 />
 
-                <p>I too love {this.state.favoriteFood}</p>
+                <p>I too love <strong>{this.state.favoriteFood}</strong></p>
 
                 <p>
                     Clicking the button and setting the state will have no impact on the input itself,
                     but will still update the store, leading to inconsistencies
-
-                    <button onClick={() => this.setState({ favoriteFood: "chocolate milk"})}>I like chocolate milk.</button>
                 </p>
+
+                <button onClick={() => this.setState({ favoriteFood: "chocolate milk" })}>I like chocolate milk.</button>
             </section>
         );
     }

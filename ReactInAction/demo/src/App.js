@@ -1,5 +1,6 @@
 import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
+import Chapter03 from "./chapter03";
 import Chapter05 from "./chapter05";
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 
@@ -9,6 +10,7 @@ function App() {
       <BrowserRouter>
         <nav>
           <Link to="/">Home</Link>
+          <Link to="/chapter-03">Chapter 03</Link>
           <Link to="/chapter-05">Chapter 05</Link>
         </nav>
         <main>
@@ -16,6 +18,8 @@ function App() {
             <Route exact path="/">
               <p>Select a section above</p>
             </Route>
+
+            <Route path="/chapter-03" component={Chapter03} />
             <Route path="/chapter-05" component={Chapter05} />
           </Switch>
         </main>

@@ -5,11 +5,11 @@ import NoControl from "./NoControl";
 import UncontrolledInput from "./UncontrolledInput";
 
 const Chapter05 = () => [
-    (<ControlledInput />),
-    (<UncontrolledInput />),
-    (<NoControl />),
-    (<FormikExample />),
-    (<FormikValidationExample />)
+    <ControlledInput key="controlled" />,
+    <UncontrolledInput key="uncontrolled" />,
+    <NoControl key="no-control" />,
+    <FormikExample key="formik" />,
+    <FormikValidationExample key="formik-plus" />
 ]
 
 export default Chapter05;
