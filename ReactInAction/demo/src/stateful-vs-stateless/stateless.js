@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Stateless = () => {
     // logic here
     const [counter, setCounter] = useState(0);
+
+    useEffect(() => {
+        // componentWillUpdate
+    }, [counter]);
 
     const increment = () => setCounter(prev => prev + 1);
 

@@ -1,23 +1,12 @@
 import React from "react";
-import { Button } from "reactstrap";
+import LikeButton from "./like-button";
+import DislikeButton from "./dislike-button/DislikeButton";
 
 const Form = () => {
-  const [isClicked, setIsClicked] = React.useState(false);
-
   return (
     <div>
-      <Button type="text" onClick={() => setIsClicked(true)}>
-        Bootstrap
-      </Button>
-      {isClicked ? "clicked" : "not"}
-      <button
-        type="button"
-        onClick={() => {
-          throw new Error("here it is");
-        }}
-      >
-        Normal
-      </button>
+      <LikeButton />
+      <DislikeButton />
     </div>
   );
 };
