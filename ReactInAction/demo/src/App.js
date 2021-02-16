@@ -1,8 +1,9 @@
 import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.css";
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import Chapter03 from "./chapter03";
 import Chapter05 from "./chapter05";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import Chapter07 from "./chapter07";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Link to="/">Home</Link>
           <Link to="/chapter-03">Chapter 03</Link>
           <Link to="/chapter-05">Chapter 05</Link>
+          <Link to="/chapter-07">Chapter 07</Link>
         </nav>
         <main>
           <Switch>
@@ -21,6 +23,7 @@ function App() {
 
             <Route path="/chapter-03" component={Chapter03} />
             <Route path="/chapter-05" component={Chapter05} />
+            <Route path="/chapter-07" component={Chapter07} />
           </Switch>
         </main>
       </BrowserRouter>
