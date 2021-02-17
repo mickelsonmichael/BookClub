@@ -22,17 +22,17 @@ export default class MikeRouterExample extends Component {
 
     render() {
         return (
-            <>
+            <section>
                 <h2>Mike's Router</h2>
                 <MikeRouter location={this.state.location}>
                     <Route path="route1" component={RouteTest} text="route 1" />
                     <Route path="route2" component={RouteTest} text="route 2" />
                 </MikeRouter>
                 <div>
-                    <Button onClick={() => this.setLocation("route1")}>Go to Route 1</Button>
-                    <Button onClick={() => this.setLocation("route2")}>Go to Route 2</Button>
+                    <Button color="danger" onClick={() => this.setLocation("route1")}>Go to Route 1</Button>
+                    <Button color="warning" onClick={() => this.setLocation("route2")}>Go to Route 2</Button>
                 </div>
-            </>
+            </section>
         )
     }
 }

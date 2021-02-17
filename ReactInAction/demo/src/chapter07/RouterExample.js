@@ -22,17 +22,17 @@ export default class RouterExample extends Component {
 
     render() {
         return (
-            <>
+            <section>
                 <h2>Book Router</h2>
                 <Router location={this.state.location}>
                     <Route path="route1" component={RouteTest} text="route 1" />
                     <Route path="route2" component={RouteTest} text="route 2" />
                 </Router>
                 <div>
-                    <Button onClick={() => this.setLocation("route1")}>Go to Route 1</Button>
-                    <Button onClick={() => this.setLocation("route2")}>Go to Route 2</Button>
+                    <Button color="primary" onClick={() => this.setLocation("route1")}>Go to Route 1</Button>
+                    <Button color="success" onClick={() => this.setLocation("route2")}>Go to Route 2</Button>
                 </div>
-            </>
+            </section>
         )
     }
 }
