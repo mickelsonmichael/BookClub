@@ -21,13 +21,15 @@ export default class ClassRef extends Component {
         })
     }
 
+    // use innerRef instead of ref for reactstrap wrapping
+    // reactstrap will pass the innerRef into the ref of the input component
     render() {
         return (
             <section>
                 <h2>Class Ref Example</h2>
                 <form onSubmit={this.handleFormSubmit}>
                     <Label>Enter your name</Label>
-                    <Input ref={(node) => { this.input = node }} placeholder="John Doe" />
+                    <Input innerRef={(node) => { this.input = node }} placeholder="John Doe" />
                     <Button color="primary" type="submit">Submit</Button>
                 </form>
                 { this.state.result && <p>Hi, {this.state.result}</p> }

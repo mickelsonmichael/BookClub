@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Counter /> snapshot 1`] = `
+<div
+  className="d-flex align-items-center m-4"
+>
+  <button
+    aria-label={null}
+    className="decrement btn btn-danger"
+    onClick={[Function]}
+    type="button"
+  >
+    -
+  </button>
+  <input
+    className="d-inline-block mx-2 w-25 text-center form-control"
+    disabled={true}
+    type="text"
+    value={0}
+  />
+  <button
+    aria-label={null}
+    className="increment btn btn-success"
+    onClick={[Function]}
+    type="button"
+  >
+    +
+  </button>
+</div>
+`;
