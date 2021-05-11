@@ -1,0 +1,84 @@
+#!csharp
+
+# Chapter 09 - The pipeline, deeper
+
+## Piping `ByValue`
+
+Every command in PowerShell accepts input of a certain type (e.g. `string`, `int[]`, etc.), and each command can specify a _single_ parameter to accept inputs of that type. For example, one of the properties could accept inputs of type `string[]`, but **only** one for that type. You can check for the properties accepting a certain type by running the `Help --full <command>` cmndlet.
+
+In the case of the `Set-Content` cmndlet, there is only one property, `Value`, that will match with an input of `Object[]`. 
+
+#!pwsh
+
+# The -Value property accepts inputs of type `Object[]`
+Help -Full Set-Content
+
+#!pwsh
+
+# Get-History returns a type of `Microsoft.PowerShell.Commands.HistoryInfo`
+Get-History | Get-Member
+
+#!pwsh
+
+# `Microsoft.PowerShell.Commands.HistoryInfo` can be converted to an `Object` thus is passed as the `-Value` property
+Get-History | Set-Content ./history.txt
+
+#!csharp
+
+## Piping `ByPropertyName`
+
+When none of the Parameters accept the incoming type, PowerShell will use simple property name matching. The properties of the output (e.g. `Name`) are matched with the properties of the incoming command (e.g. `-Name`) and used to populate the entries.
+
+#!pwsh
+
+# The output Import-Csv is a `System.Management.Automation.PSCustomObject`
+# with a Name property and Value property
+Import-Csv ./variables.csv | Get-Member
+
+#!pwsh
+
+# Set-Alias has both a -Name and -Value parameter
+Get-Help -Full Set-Variable
+
+#!pwsh
+
+# PowerShell passes the Name and Value properties into the Set-Alias cmndlet as parameters
+Import-Csv ./variables.csv | Set-Alias;
+say "hi"
+
+#!csharp
+
+## Custom Properties
+
+This method is less a utility of PowerShell, more an ability of `Select-Object`. You can manipulate an object to have new properties using the hash table syntax. Using this method, you can match any properties required of the cmndlet you are targeting.
+
+#!pwsh
+
+Import-Csv ./cats.csv | Select *,
+    @{name='Color';expression={$_.Fur}},
+    @{name='Status';expression={'Cutie 10,000'}} | Out-Host;
+
+#!csharp
+
+Additionally, `Select-Object` can convert a collection of objects into a collection of properties on those objects which can be further used to enhance the pipeline using the `-ExpandProperty` property. Unlike the `-Property` property of `Select-Object`, the `-ExpandProperty` property will convert the list into an appropriate object insted of a `PSCustomObject`.
+
+#!pwsh
+
+# the modified list returns a collection of `String` now that it's been "expanded"
+Import-Csv ./cats.csv | Select -ExpandProperty Name | Get-Member
+
+#!pwsh
+
+Import-Csv ./cats.csv | Select -ExpandProperty Name | Out-Host
+
+#!csharp
+
+## Parenthetical Commands
+
+When all else fails, you can always nest cmndlets inside of other commands and work with them that way.
+
+#!pwsh
+
+Set-Variable -Name "Cats" -Value ($cats | Select -ExpandProperty Name)
+
+echo $Cats
