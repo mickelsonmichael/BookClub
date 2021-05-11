@@ -1,0 +1,46 @@
+#!csharp
+
+# Chapter 09 - The pipeline, deeper
+
+## Piping `ByValue`
+
+Every command in PowerShell accepts input of a certain type (e.g. `string`, `int[]`, etc.), and each command can specify a _single_ parameter to accept inputs of that type. For example, one of the properties could accept inputs of type `string[]`, but **only** one for that type. You can check for the properties accepting a certain type by running the `Help --full <command>` cmndlet.
+
+In the case of the `Set-Content` cmndlet, there is only one property, `Value`, that will match with an input of `Object[]`. 
+
+#!pwsh
+
+# The -Value property accepts inputs of type `Object[]`
+Help -Full Set-Content
+
+#!pwsh
+
+# Get-History returns a type of `Microsoft.PowerShell.Commands.HistoryInfo`
+Get-History | Get-Member
+
+#!pwsh
+
+# `Microsoft.PowerShell.Commands.HistoryInfo` can be converted to an `Object` thus is passed as the `-Value` property
+Get-History | Set-Content ./history.txt
+
+#!csharp
+
+## Piping `ByPropertyName`
+
+When none of the Parameters accept the incoming type, PowerShell will use simple property name matching. The properties of the output (e.g. `Name`) are matched with the properties of the incoming command (e.g. `-Name`) and used to populate the entries.
+
+#!pwsh
+
+# The output Import-Csv is a `System.Management.Automation.PSCustomObject`
+# with a Name property and Value property
+Import-Csv ./variables.csv | Get-Member
+
+#!pwsh
+
+# Set-Variable has both a -Name and -Value parameter
+Get-Help -Full Set-Variable
+
+#!pwsh
+
+Import-Csv ./variables.csv | Set-Alias
+echo $Mylo
