@@ -1,4 +1,4 @@
-#!csharp
+#!markdown
 
 # Chapter 09 - The pipeline, deeper
 
@@ -23,7 +23,7 @@ Get-History | Get-Member
 # `Microsoft.PowerShell.Commands.HistoryInfo` can be converted to an `Object` thus is passed as the `-Value` property
 Get-History | Set-Content ./history.txt
 
-#!csharp
+#!markdown
 
 ## Piping `ByPropertyName`
 
@@ -37,7 +37,7 @@ Import-Csv ./variables.csv | Get-Member
 
 #!pwsh
 
-# Set-Alias has both a -Name and -Value parameter
+# Set-Variable has both a -Name and -Value parameter
 Get-Help -Full Set-Variable
 
 #!pwsh
@@ -46,7 +46,7 @@ Get-Help -Full Set-Variable
 Import-Csv ./variables.csv | Set-Alias;
 say "hi"
 
-#!csharp
+#!markdown
 
 ## Custom Properties
 
@@ -58,7 +58,7 @@ Import-Csv ./cats.csv | Select *,
     @{name='Color';expression={$_.Fur}},
     @{name='Status';expression={'Cutie 10,000'}} | Out-Host;
 
-#!csharp
+#!markdown
 
 Additionally, `Select-Object` can convert a collection of objects into a collection of properties on those objects which can be further used to enhance the pipeline using the `-ExpandProperty` property. Unlike the `-Property` property of `Select-Object`, the `-ExpandProperty` property will convert the list into an appropriate object insted of a `PSCustomObject`.
 
@@ -71,7 +71,7 @@ Import-Csv ./cats.csv | Select -ExpandProperty Name | Get-Member
 
 Import-Csv ./cats.csv | Select -ExpandProperty Name | Out-Host
 
-#!csharp
+#!markdown
 
 ## Parenthetical Commands
 
