@@ -39,8 +39,7 @@
 
 ## 1.3 The elements of API design
 
-- **API styles** include RPC, SOAP, REST, gRPC, and GraphQL
+- **API styles** include [RPC](https://en.wikipedia.org/wiki/Remote_procedure_call), [SOAP](https://en.wikipedia.org/wiki/SOAP), [REST](https://en.wikipedia.org/wiki/Representational_state_transfer), [gRPC](https://en.wikipedia.org/wiki/GRPC), and [GraphQL](https://graphql.org/)
 - All the API styles share a core set of fundamentals that you should learn
 - Changes to a design should be done with extreme caution
   - New versions that are too dissimilar to previous versions may not appeal to users
-
