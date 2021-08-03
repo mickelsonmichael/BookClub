@@ -1,0 +1,21 @@
+openapi: "3.0.0"
+info:
+  title: "Book Club Example API"
+  description: "An example API created specifically to demonstrate the Open API Standard"
+  version: "0.0.0"
+components:
+  parameters:
+    "isbn":
+      name: "ISBN"
+      required: "true"
+      in: "path"
+      description: "The International Standard Book Number for the Book."
+      schema:
+        type: "string"
+paths:
+  /books/{isbn}:
+    get:
+      description: "Retrieve a book by the ISB number"
+      parameters:
+        - $ref: "#/components/parameters/isbn"
+          
