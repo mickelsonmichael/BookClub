@@ -73,6 +73,37 @@ How would you organize the following goals?
 - `POST /images` | Adds image to current user's feed
 - `GET /me` | Gets the current user's information
 
+##### Mike
+
+- **Users**
+  - `GET /me` | Gets the current user's information
+  - `GET /users/{userId}` | Gets another user's information
+  - `GET /users/{userId}/images` | Gets another user's feed
+- **Images/Feeds**
+  - `GET /images` | Gets current user's feed
+  - `POST /images` | Adds image to current user's feed
+  - `DELETE /images/{imageId}` | Removes an image from the current user's feed
+
+##### Bryan
+
+- **Me**
+  - `GET /me` | Gets the current user's information
+  - `GET /images` | Gets current user's feed
+  - `POST /images` | Adds image to current user's feed
+  - `DELETE /images/{imageId}` | Removes an image from the current user's feed
+- **Other Users**
+  - `GET /users/{userId}` | Gets another user's information
+  - `GET /users/{userId}/images` | Gets another user's feed
+
+##### Raghda
+
+- `POST /images` | Adds image to current user's feed
+- `GET /me` | Gets the current user's information
+- `GET /images` | Gets current user's feed
+- `GET /users/{userId}/images` | Gets another user's feed
+- `GET /users/{userId}` | Gets another user's information
+- `DELETE /images/{imageId}` | Removes an image from the current user's feed
+
 ## 7.2 Sizing an API
 
 You don't want your API to be so large that it becomes unwieldy and difficult to use. Keep your inputs as small as possible and your outputs as small as convenient.
@@ -95,7 +126,7 @@ Take the data below, for example:
   "title": "The Design of Web APIs",
   "ratings": [
     { "username": "mike", "rating": 4 },
-    { "username": "graham", "rating": 3 },
+    { "username": "graham", "rating": 3 }
   ]
 }
 ```
@@ -109,19 +140,18 @@ How would you organize and split this shopping API goals list?
 
 | Goal | Category | API |
 | ---- | -------- | --- |
-| Create user | USERS | `PUT /user` |
-| Search for products | | | 
-| Get product's information | | |
-| Add product to shopping cart | | |
-| Remove product from cart | | |
-| Check out cart | | |
-| Get cart detail | | |
-| List orders | | |
-| Add produt to catalog | | |
-| Update a product | | |
-| Replace a product | | |
-| Delete a product | | |
-| Get an order's status | | |
-| Update user | | |
-| Delete user | | |
-
+| Search for products | PRODUCTS | `GET /products` | 
+| Get product's information | PRODUCTS | `GET /products/{productId}` |
+| Add product to catalog | PRODUCTS | `POST /products` |
+| Update a product | PRODUCTS | `PATCH /products/{productId}` |
+| Replace a product | PRODUCTS | `PUT /products/{productId}` |
+| Delete a product | PRODUCTS | `DELETE /products/{productId}` |
+| Create user | USERS | `POST /users` |
+| Update user | USERS | `PATCH /users/{userId}` |
+| Delete user | USERS | `DELETE /users/{userId}` |
+| Get cart detail | CART | `GET /cart` |
+| Add product to shopping cart | CART | `POST /cart/products` |
+| Remove product from cart | CART | `DELETE /cart/products/{productId}` |
+| List orders | ORDER | `GET /orders` |
+| Get an order's status | ORDER | `GET /orders/{orderId}` |
+| Check out cart | ORDER | `POST /orders` |
