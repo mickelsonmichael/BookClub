@@ -28,6 +28,8 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*React Hooks in Action*](https://www.manning.com/books/react-hooks-in-action) by John Larsen
 - [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp) by Erico Buonanno
 - [*Real-World Functional Programming: With examples in F# and C#*](https://www.manning.com/books/real-world-functional-programming?query=functional) by Tomas Petricek, Jon Skeet
+- [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action)
+- [*API Security in Action*](https://www.manning.com/books/api-security-in-action)
 
 ### Topics of Interest
 
