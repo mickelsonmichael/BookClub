@@ -32,3 +32,5 @@ Aurnaud Lauret is a French API Architect who goes by the name "the API Handyman"
 | Aug. 31, 2021 | 9 | Lyn |
 | Sept. 8, 2021 | 10 | Raghda/Mike |
 | Sept. 14, 2021 | 11 | Graham |
+| Sept. 21, 2021 | 12 | Mike |
+| Sept. 28, 2021 | 13 | Lyn |
