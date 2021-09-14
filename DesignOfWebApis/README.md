@@ -18,3 +18,17 @@ Aurnaud Lauret is a French API Architect who goes by the name "the API Handyman"
 - [Podcast: API Design and Usability with Arnaud Lauret](https://idratherbewriting.com/blog/api-design-usability-arnaud-lauret-podcast/)
 - [Podcast: The API Handyman Cometh](https://share.transistor.fm/s/56abc057)
 
+## Schedule
+
+| Date | Chapter | Presenter |
+| ---- | ------- | --------- |
+| July 13, 2021 | 1 | Mike | 
+| July 20, 2021 | 2, 3 | Graham |
+| July 27, 2021 | 4 | Lyn |
+| Aug. 3, 2021 | 5 | Raghda |
+| Aug. 10, 2021 | 6 | Bryan |
+| Aug. 17, 2021 | 7 | Mike |
+| Aug. 24, 2021 | 8 | ~~Graham~~ Mike |
+| Aug. 31, 2021 | 9 | Lyn |
+| Sept. 8, 2021 | 10 | Raghda/Mike |
+| Sept. 14, 2021 | 11 | Graham |
