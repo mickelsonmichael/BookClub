@@ -1,14 +1,24 @@
 openapi: "3.0.0"
 info:
   title: "Book Club Example API"
-  description: "An example API created specifically to demonstrate the Open API Standard"
-  version: "0.0.0"
+  description: |
+    An example API created specifically to demonstrate the Open API Standard
+
+    # Changelog
+
+    ## Version 0.0.1
+
+    Added this stuff
+  version: "0.0.1"
 components:
   parameters:
     "isbn":
       name: "ISBN"
       required: true
       in: "path"
+      x-implementation:
+        description: |
+          This is some long-winded description of how to implement this property.
       description: |
         The [International Standard Book Number](https://www.isbn-international.org/content/what-isbn) for the Book.
 
@@ -25,7 +35,7 @@ components:
 paths:
   /books/{isbn}:
     get:
-      description: "Retrieve a book by the ISB number"
+      description: "Retrieve a book by the ISB number."
       tags: [ Books ]
       parameters:
         - $ref: "#/components/parameters/isbn"

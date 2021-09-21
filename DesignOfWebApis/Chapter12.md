@@ -119,3 +119,11 @@ Finally, there is the [`Sunset` HTTP Header](https://datatracker.ietf.org/doc/ht
 > - Creating documentation helps to test the API design.
 
 *Lauret, A. (2019). Documenting an API. In The design of web apis (pp. 333–333). Manning Publications Co.*
+
+## Discussion - September 21, 2021
+
+- We discussed the use of documentation-generation beyond Swashbuckle, like Graham's experience with [Sandcastle](https://en.wikipedia.org/wiki/Sandcastle_(software)) and Mike and Lyn's experience with [DocFx](https://dotnet.github.io/docfx/index.html).
+- Bryan also mentioned that Swagger provides a code-generation software [Sagger Codegen](https://github.com/swagger-api/swagger-codegen) which supports ASP.NET and .NET Core 2.0+
+- When the section addressing implementer documentation and the `x-` property prefix, there was some confusion on how best to implement documentation for a developer vs documentation for a consumer. How do you write a single document and ensure that there is no information leakage when that document is published to the "consumer" view. Lauret mentions that you should strip all the `x-` properties out but this seems dangerous and not directly supported by the OpenAPI spec.
+- A similar discussion occurred when Graham asked about how to write an OpenAPI document that supports multiple languages, for example both English and French. Unfortunately, there isn't a well-supported way to maintain a single document, and for the time being it may be required to maintain multiple API specs for multiple languages, or just accept that the specification is written in English.
+- The previous two concerns could be potentially addressed in a coming version of the OpenAPI specification according to [this issue opened on May 12, 2021](https://github.com/OAI/OpenAPI-Specification/issues/2572). That would include the ability to create "override" or "overlay" documents that you can create allowing you to "copy" a base specification and replace some properties and attributes as you see fit, similar to a Resource file in .NET.
