@@ -1,21 +1,44 @@
 openapi: "3.0.0"
 info:
   title: "Book Club Example API"
-  description: "An example API created specifically to demonstrate the Open API Standard"
-  version: "0.0.0"
+  description: |
+    An example API created specifically to demonstrate the Open API Standard
+
+    # Changelog
+
+    ## Version 0.0.1
+
+    Added this stuff
+  version: "0.0.1"
 components:
   parameters:
     "isbn":
       name: "ISBN"
-      required: "true"
+      required: true
       in: "path"
-      description: "The International Standard Book Number for the Book."
+      x-implementation:
+        description: |
+          This is some long-winded description of how to implement this property.
+      description: |
+        The [International Standard Book Number](https://www.isbn-international.org/content/what-isbn) for the Book.
+
+        The numbers and their basic description are as follows:
+
+        - **Prefix** - 3 digits, either 978 or 979
+        - **Registration group** - identifies the country, region, or language area. Between 1 and 5 digits.
+        - **Registrant** - Publisher or imprint. Up to 7 digits.
+        - **Publication** - Edition and format of the title. Up to 6 digits.
+        - **Check digit** - Checksum of the number, single digit.
       schema:
         type: "string"
+        pattern: /[978|979]-\d{1,5}-\d{1,7}-\d{1,6}-\d/
 paths:
   /books/{isbn}:
     get:
-      description: "Retrieve a book by the ISB number"
+      description: "Retrieve a book by the ISB number."
+      tags: [ Books ]
       parameters:
         - $ref: "#/components/parameters/isbn"
-          
+      responses:
+        200:
+          description: "Successfully retrieved the book."
