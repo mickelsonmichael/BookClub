@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*The Design of Web APIs*](https://www.manning.com/books/the-design-of-web-apis?query=design) by Arnaud Lauret
+### [*API Security in Action*](https://www.manning.com/books/api-security-in-action) by Neil Madden
 
 ## Previous Conquests
 
@@ -16,6 +16,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 6. [*Refactoring*](https://martinfowler.com/books/refactoring.html) by Martin Fowler
 7. [*React in Action*](https://www.manning.com/books/react-in-action?query=react%20in%20action) by Mark Tielens Thomas
 8. [*Learn Windows PowerShell in a month of Lunches*](https://www.manning.com/books/learn-windows-powershell-in-a-month-of-lunches-third-edition?query=learn%20windows%20powershell) by Don Jones, Jeffery D. Hicks
+9. [*The Design of Web APIs*](https://www.manning.com/books/the-design-of-web-apis?query=design) by Arnaud Lauret
 
 ## Future Prospects
 
@@ -28,8 +29,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*React Hooks in Action*](https://www.manning.com/books/react-hooks-in-action) by John Larsen
 - [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp) by Erico Buonanno
 - [*Real-World Functional Programming: With examples in F# and C#*](https://www.manning.com/books/real-world-functional-programming?query=functional) by Tomas Petricek, Jon Skeet
-- [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action)
-- [*API Security in Action*](https://www.manning.com/books/api-security-in-action)
+- [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action) by Justin Richer, Antonio Sanso
 
 ### Topics of Interest
 
@@ -47,3 +47,5 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [Immutability in React and Redux](https://daveceddia.com/react-redux-immutability-guide/) - informative blog post about how immutability works
 - [Project Euler](https://projecteuler.net/) - challenge questions for any programming language
 - [binarysearch.io](https://binarysearch.io/) - challenge questions that can be done live against other "players"
+- [OpenAPI Map](https://openapi-map.apihandyman.io/) - by the API Handyman (Arnaud Lauret), a site for discovering the OpenAPI Specification
+- <http://apistylebook.com/> - by the API Handyman (Arnaud Lauret), used to discover API style guides and topics from accross the internet
