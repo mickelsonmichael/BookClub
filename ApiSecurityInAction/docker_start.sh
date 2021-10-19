@@ -2,8 +2,8 @@
 
 if [[ -z "${CHAPTER}" ]]
 then
-    echo "CHAPTER env var not set, defaulting to last chapter."
-    CHAPTER="chapter13-end"
+    echo "CHAPTER env var not set, defaulting to chapter 03 end."
+    CHAPTER="chapter03-end"
 fi
 
 echo "Starting $CHAPTER"
