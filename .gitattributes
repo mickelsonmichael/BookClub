@@ -1,0 +1,2 @@
+# make sure sh files keep the right line-endings
+*.sh text=lf

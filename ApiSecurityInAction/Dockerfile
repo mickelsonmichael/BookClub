@@ -1,9 +1,11 @@
-FROM maven:3-openjdk-8
+FROM maven:3-openjdk-11
 
-RUN mkdir /src/
-WORKDIR /src/
+WORKDIR /src
 
-COPY download_repo.sh .
+COPY download_repo.sh ./
+COPY docker_start.sh ./
+RUN chmod +x ./download_repo.sh && ./download_repo.sh
+RUN chmod +x ./docker_start.sh
 
-RUN ./download_repo.sh
-
+EXPOSE 4567
+ENTRYPOINT [ "/src/docker_start.sh" ]
