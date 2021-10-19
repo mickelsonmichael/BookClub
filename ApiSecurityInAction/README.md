@@ -19,3 +19,9 @@ docker run --rm -it -p 4567:4567 --env CHAPTER=chapter03-end api_sec
 ```
 
 Once the container is running, you should be able to make requests through Postman as long as you turn off SSL Verification. Postman will fail the requests and display a popup with a link to easily do this.
+
+If you are looking to run your own code in the container, you can overwrite the entry command and provide a [shared volume](https://docs.docker.com/storage/volumes/) pointing to your application code. See the below example:
+
+```bash
+docker run --rm -it -p 4567:4567 --mount source=/path/to/code,destination=/src/my_code api_sec bash
+```
