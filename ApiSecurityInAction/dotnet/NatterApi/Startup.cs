@@ -51,7 +51,7 @@ namespace NatterApi
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseMiddleware<AuthMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
 

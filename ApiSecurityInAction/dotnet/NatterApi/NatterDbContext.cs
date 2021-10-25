@@ -6,8 +6,8 @@ namespace NatterApi
     public class NatterDbContext : DbContext
     {
         #nullable disable
-        public DbSet<Space> Spaces { get; }
-        public DbSet<User> Users { get; }
+        public DbSet<Space> Spaces { get; private set; }
+        public DbSet<User> Users { get; private set; }
         #nullable enable
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

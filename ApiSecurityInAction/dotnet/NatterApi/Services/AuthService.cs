@@ -26,6 +26,17 @@ namespace NatterApi.Services
             return user;
         }
 
+        public bool TryLogin(string username, string password)
+        {
+            ValidateUsername(username);
+
+            byte[] hashedPassword = GetHashed(password);
+
+            User user = _dbContext.Users.Find(username); 
+
+            return user == null || user.PasswordHash != hashedPassword;
+        }
+
         public void ValidateCredentials(string username, string password)
         {
             ValidateUsername(username);

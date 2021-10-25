@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using NatterApi.Exceptions;
+using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 
@@ -22,6 +23,13 @@ namespace NatterApi.Controllers
             [FromBody, Required] CreateSpaceRequest request
         )
         {
+            string? username = HttpContext.GetNatterUsername();
+
+            if (username == null || request.Owner != username)
+            {
+                return Unauthorized();
+            }
+
             Space space = request.CreateSpace();
 
             _context.Add(space);
