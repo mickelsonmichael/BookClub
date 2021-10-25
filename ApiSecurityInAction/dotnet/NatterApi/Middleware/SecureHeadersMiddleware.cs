@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Http;
 
 namespace NatterApi.Middleware
@@ -21,7 +20,7 @@ namespace NatterApi.Middleware
 
                 EnforceContentTypeEncoding(context.Response);
 
-                RemoveXSSHeader(context.Response);
+                DisableXSSHeader(context.Response);
 
                 SetContentTypeOptionsToNoSniff(context.Response);
 
@@ -54,7 +53,7 @@ namespace NatterApi.Middleware
         /// Section 2.6.1
         /// Disabling the X-SS-Protection header increases security on several browsers.
         /// Most browsers disable this service by default, but for added security we manually disable it via this header.
-        private void RemoveXSSHeader(HttpResponse response)
+        private void DisableXSSHeader(HttpResponse response)
         {
             response.Headers.Add("X-XSS-Protection", "0");
         }
