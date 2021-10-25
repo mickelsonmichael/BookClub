@@ -1,27 +1,33 @@
 using System;
-using System.Text;
 using System.Text.RegularExpressions;
-using CryptSharp.Utility;
+using Microsoft.Extensions.Logging;
 using NatterApi.Models;
+using Scrypt;
 
 namespace NatterApi.Services
 {
     public class AuthService
     {
-        public AuthService(NatterDbContext dbContext)
+        public AuthService(NatterDbContext dbContext, ILogger<AuthService> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
         public User Register(string username, string password)
         {
             ValidateCredentials(username, password);
 
-            byte[] hashedPassword = GetHashed(password);
+            /// Section 3.3.3
+            /// Hashing the password using SCrypt
+            string hashedPassword = _encoder.Encode(password);
 
             User user = new(username, hashedPassword!);
 
+            _logger.LogInformation("Registering username \"{Username}\".", username);
+
             _dbContext.Add(user);
+            _dbContext.SaveChanges();
 
             return user;
         }
@@ -30,11 +36,11 @@ namespace NatterApi.Services
         {
             ValidateUsername(username);
 
-            byte[] hashedPassword = GetHashed(password);
+            _logger.LogInformation("Checking credentials for \"{Username}\".", username);
 
-            User user = _dbContext.Users.Find(username); 
+            User user = _dbContext.Users.Find(username);
 
-            return user == null || user.PasswordHash != hashedPassword;
+            return user != null && _encoder.Compare(password, user.PasswordHash);
         }
 
         public void ValidateCredentials(string username, string password)
@@ -61,27 +67,8 @@ namespace NatterApi.Services
             }
         }
 
-        /// Section 3.3.3
-        /// Hashing the password using the SCrypt library and a random salt
-        public byte[] GetHashed(string value)
-        {
-            byte[] output = new byte[128];
-
-            SCrypt.ComputeKey(
-                Encoding.UTF8.GetBytes(value),
-                GetRandomSalt(),
-                16384,
-                8,
-                1,
-                maxThreads: null,
-                output
-            );
-
-            return output;
-
-            static byte[] GetRandomSalt() => Encoding.UTF8.GetBytes(Guid.NewGuid().ToString());
-        }
-
         private readonly NatterDbContext _dbContext;
+        private readonly ILogger<AuthService> _logger;
+        private readonly ScryptEncoder _encoder = new();
     }
 }

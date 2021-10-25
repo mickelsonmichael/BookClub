@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Services;
@@ -19,12 +20,14 @@ namespace NatterApi.Middleware
             _next = next;
         }
 
-        public async Task InvokeAsync(HttpContext context, AuthService authService)
+        public async Task InvokeAsync(HttpContext context, AuthService authService, ILogger<AuthMiddleware> logger)
         {
             IEnumerable<string> authHeaders = context.Request.Headers["Authorization"];
 
             if (authHeaders == null || !authHeaders.Any() || !authHeaders.First().StartsWith("Basic"))
             {
+                logger.LogInformation("Skipping authorization.");
+
                 // skip auth
                 await _next(context);
 
@@ -51,6 +54,8 @@ namespace NatterApi.Middleware
 
             string username = components[0];
             string password = components[1];
+
+            logger.LogDebug("Attempting to login {Username}.", username);
 
             if (authService.TryLogin(username, password))
             {

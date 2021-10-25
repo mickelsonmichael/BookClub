@@ -1,12 +1,12 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace NatterApi.Models
 {
-    public class Message
-    {
-        public Guid MessageId { get; init; }
-        public string? Author { get; init; }
-        public DateTime? MessageTime { get; init; }
-        public string? MessageText { get; init; }
-    }
+    public record Message(
+        int MessageId,
+        string Author,
+        DateTime MessageTime,
+        string MessageText
+    );
 }

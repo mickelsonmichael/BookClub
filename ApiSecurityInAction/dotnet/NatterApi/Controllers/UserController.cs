@@ -1,11 +1,6 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
-using CryptSharp.Utility;
-using System.Text;
 using NatterApi.Services;
 
 namespace NatterApi.Controllers

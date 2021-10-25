@@ -1,13 +1,13 @@
-using System;
 using System.Collections.Generic;
 
 namespace NatterApi.Models
 {
-    public class Space
+    public record Space(
+        int Id,
+        string Name,
+        string Owner
+    )
     {
-        public Guid Id { get; init; }
-        public string? Name { get; init; }
-        public string? Owner { get; init; }
-        public ICollection<Message>? Messages { get; init; }
+        public IEnumerable<Message>? Messages { get; set; }
     }
 }

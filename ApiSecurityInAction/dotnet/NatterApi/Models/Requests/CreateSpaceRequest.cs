@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 
 namespace NatterApi.Models.Requests
 {
@@ -7,11 +7,10 @@ namespace NatterApi.Models.Requests
         string Owner
     )
     {
-        public Space CreateSpace() => new()
-        {
-            Id = Guid.NewGuid(),
-            Name = Name,
-            Owner = Owner
-        };
+        public Space CreateSpace() => new(
+            0,
+            Name,
+            Owner
+        );
     }
 }

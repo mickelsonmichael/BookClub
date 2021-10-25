@@ -9,9 +9,9 @@ namespace NatterApi.Models
         [Key]
         public string Username { get; set; }
         [JsonIgnore] // prevent accidental hash leakage
-        public byte[] PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
 
-        public User(string username, byte[] passwordHash)
+        public User(string username, string passwordHash)
         {
             Username = username;
             PasswordHash = passwordHash;

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
 using NatterApi.Models;
@@ -25,14 +27,15 @@ namespace NatterApi.Controllers
         {
             string? username = HttpContext.GetNatterUsername();
 
-            if (username == null || request.Owner != username)
-            {
-                return Unauthorized();
-            }
+            // if (username == null || request.Owner != username)
+            // {
+            //     return Unauthorized();
+            // }
 
             Space space = request.CreateSpace();
 
             _context.Add(space);
+            _context.SaveChanges();
 
             string url = $"/spaces/{space.Id}";
 
@@ -42,10 +45,8 @@ namespace NatterApi.Controllers
             );
         }
 
-        [HttpGet("/{spaceId:guid}")]
-        public IActionResult GetSpace(
-            Guid spaceId // by using a Guid instead of a string, we let ASP.NET handle dangerous values for us automatically
-        )
+        [HttpGet("/{spaceId:int}")]
+        public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
 
