@@ -1,17 +1,22 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Testing;
 using NatterApi.Test.TestHelpers;
 using Xunit;
 
 namespace NatterApi.Test
 {
-    public class Chapter02Tests : TestWithKestrel
+    public class Chapter02Tests
     {
+        private readonly WebApplicationFactory<Startup> _factory = new();
+
         [Fact]
         public async Task XSSHeaderDisabled()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             HttpAssert.HasHeader("X-XSS-Protection", response, expectedValue: "0");
         }
@@ -19,7 +24,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task ContentTypeIncludesCharset()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             string contentType = response.Content.Headers.GetValues("Content-Type").First();
 
@@ -29,7 +36,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task NoSniff()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             HttpAssert.HasHeader("X-Content-Type-Options", response, expectedValue: "nosniff");
         }
@@ -37,7 +46,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task PreventFrames()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             HttpAssert.HasHeader("X-Frame-Options", response, expectedValue: "DENY");
 
@@ -49,7 +60,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task NoStoreCacheControl()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             HttpAssert.HasHeader("Cache-Control", response, expectedValue: "no-store");
         }
@@ -57,7 +70,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task DisablesDefaultSrc()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             string securityPolicy = response.Headers.GetValues("Content-Security-Policy").First();
 
@@ -67,7 +82,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task Sandbox()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             string securityPolicy = response.Headers.GetValues("Content-Security-Policy").First();
 
@@ -77,7 +94,9 @@ namespace NatterApi.Test
         [Fact]
         public async Task DoesNotContainServerInfo()
         {
-            HttpResponseMessage response = await GetResponse();
+            HttpClient client = _factory.CreateClient();
+
+            HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
             Assert.False(response.Headers.Contains("Server"));
         }

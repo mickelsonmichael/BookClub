@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NatterApi.Exceptions;
+using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 
@@ -43,10 +44,10 @@ namespace NatterApi.Controllers
             int spaceId
         )
         {
-            // if (HttpContext.GetNatterUsername() != request.Author)
-            // {
-            //     return Unauthorized();
-            // }
+            if (HttpContext.GetNatterUsername() != request.Author)
+            {
+                return Unauthorized();
+            }
 
             _logger.LogInformation("Requested addition of message to {SpaceId}.\n{Message}", spaceId, request);
 

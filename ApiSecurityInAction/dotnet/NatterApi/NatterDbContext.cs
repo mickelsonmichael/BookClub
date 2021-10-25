@@ -1,3 +1,4 @@
+using System;
 using Microsoft.EntityFrameworkCore;
 using NatterApi.Models;
 
@@ -13,7 +14,7 @@ namespace NatterApi
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase("NatterDb");
+            optionsBuilder.UseInMemoryDatabase($"NatterDb-{Guid.NewGuid()}");
         }
     }
 }

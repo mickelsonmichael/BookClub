@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
 using NatterApi.Models;
@@ -19,6 +17,14 @@ namespace NatterApi.Controllers
             _context = context;
         }
 
+        [HttpGet]
+        public IActionResult GetSpaces()
+        {
+            List<Space> spaces = _context.Spaces.ToList();
+
+            return Ok(spaces);
+        }
+
         // Page 36
         [HttpPost]
         public IActionResult CreateSpace(
@@ -27,10 +33,10 @@ namespace NatterApi.Controllers
         {
             string? username = HttpContext.GetNatterUsername();
 
-            // if (username == null || request.Owner != username)
-            // {
-            //     return Unauthorized();
-            // }
+            if (username == null || request.Owner != username)
+            {
+                return Unauthorized();
+            }
 
             Space space = request.CreateSpace();
 

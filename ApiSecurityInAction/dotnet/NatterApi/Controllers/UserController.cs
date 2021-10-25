@@ -13,8 +13,10 @@ namespace NatterApi.Controllers
             _auth = auth;
         }
 
+        /// <summary>
         /// Section 3.3.4
         /// Registering a user
+        /// </summary>
         [HttpPost]
         public IActionResult Register(
             [FromBody] RegisterUser registrationInfo

@@ -24,7 +24,7 @@ namespace NatterApi
         {
             services.AddRateLimiting();
 
-            services.AddDbContext<NatterDbContext>();
+            services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
             services.AddScoped<AuthService>();
 
             services.AddControllers();
@@ -48,7 +48,7 @@ namespace NatterApi
 
             app.UseRouting();
 
-            //app.UseMiddleware<AuthMiddleware>();
+            app.UseMiddleware<AuthMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
 
