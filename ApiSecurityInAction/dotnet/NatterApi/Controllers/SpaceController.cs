@@ -4,12 +4,13 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
+using NatterApi.Filters;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 
 namespace NatterApi.Controllers
 {
-    [ApiController, Route("/spaces")]
+    [ApiController, Route("/spaces"), AuthFilter]
     public class SpaceController : ControllerBase
     {
         public SpaceController(NatterDbContext context)

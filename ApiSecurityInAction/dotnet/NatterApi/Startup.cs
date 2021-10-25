@@ -24,7 +24,8 @@ namespace NatterApi
         {
             services.AddRateLimiting();
 
-            services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
+            services.AddDbContext<NatterDbContext>();
+            
             services.AddScoped<AuthService>();
 
             services.AddControllers();

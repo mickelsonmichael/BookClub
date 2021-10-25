@@ -25,7 +25,7 @@ namespace NatterApi.Test.TestHelpers
 
         private static HttpRequestMessage GetDefault()
         {
-            return new(HttpMethod.Get, "/spaces");
+            return new(HttpMethod.Get, "/status");
         }
     }
 }
