@@ -8,6 +8,6 @@ namespace NatterApi.Models
         string Owner
     )
     {
-        public IEnumerable<Message>? Messages { get; set; }
+        public ICollection<Message>? Messages { get; set; }
     }
 }
