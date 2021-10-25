@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using NatterApi.Extensions;
 using NatterApi.Middleware;
+using NatterApi.Services;
 
 namespace NatterApi
 {
@@ -24,6 +25,7 @@ namespace NatterApi
             services.AddRateLimiting();
 
             services.AddDbContext<NatterDbContext>();
+            services.AddScoped<AuthService>();
 
             services.AddControllers();
 
