@@ -1,9 +1,11 @@
+using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using NatterApi.Extensions;
 using NatterApi.Middleware;
 
 namespace NatterApi
@@ -19,6 +21,8 @@ namespace NatterApi
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRateLimiting();
+
             services.AddDbContext<NatterDbContext>();
 
             services.AddControllers();
@@ -32,6 +36,8 @@ namespace NatterApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseIpRateLimiting();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

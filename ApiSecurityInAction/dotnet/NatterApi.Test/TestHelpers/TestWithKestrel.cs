@@ -21,13 +21,16 @@ namespace NatterApi.Test.TestHelpers
             }).Start();
         }
 
-        protected async Task<HttpResponseMessage> GetResponse(HttpRequestMessage request = null)
+        protected async Task<HttpResponseMessage> GetResponse(HttpRequestMessage request = null, bool ensureStatusCode = true)
         {
             HttpClient client = _host.GetTestClient();
 
             HttpResponseMessage response = await client.SendAsync(request ?? GetDefault());
 
-            response.EnsureSuccessStatusCode();
+            if (ensureStatusCode)
+            {
+                response.EnsureSuccessStatusCode();
+            }
 
             return response;
         }
