@@ -98,7 +98,7 @@ namespace NatterApi.Test
 
             HttpResponseMessage response = await RequestHelpers.GetResponse(client).ConfigureAwait(false);
 
-            Assert.False(response.Headers.Contains("Server"));
+            HttpAssert.HasHeader("Server", response, expectedValue: string.Empty);
         }
     }
 }
