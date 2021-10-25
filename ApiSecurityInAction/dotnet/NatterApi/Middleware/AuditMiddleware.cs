@@ -40,7 +40,7 @@ namespace NatterApi.Middleware
             );
 
             using IServiceScope scope = _services.CreateScope();
-            using NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
+            NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
 
             dbContext.AuditLog.Add(auditMessage);
             await dbContext.SaveChangesAsync().ConfigureAwait(false);
@@ -60,7 +60,7 @@ namespace NatterApi.Middleware
             );
 
             using IServiceScope scope = _services.CreateScope();
-            using NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
+            NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
 
             dbContext.AuditLog.Add(auditMessage);
             await dbContext.SaveChangesAsync().ConfigureAwait(false);

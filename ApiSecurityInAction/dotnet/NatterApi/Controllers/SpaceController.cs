@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
 using NatterApi.Filters;
@@ -42,6 +44,11 @@ namespace NatterApi.Controllers
             Space space = request.CreateSpace();
 
             _context.Add(space);
+            _context.SaveChanges();
+
+            Permission permission = new(space.Id, username, "rwd");
+
+            _context.Add(permission);
             _context.SaveChanges();
 
             string url = $"/spaces/{space.Id}";
