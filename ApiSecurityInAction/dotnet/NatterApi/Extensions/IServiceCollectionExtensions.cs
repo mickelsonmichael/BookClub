@@ -6,9 +6,11 @@ namespace NatterApi.Extensions
 {
     public static class IServiceCollectionExtensions
     {
+        /// <summary>
         /// Section 3.2
         /// This section adds the AspNetCoreRateLimit library
         /// to the middleware pipeline.
+        /// </summary>
         public static IServiceCollection AddRateLimiting(this IServiceCollection services)
         {
             return services.AddOptions()
