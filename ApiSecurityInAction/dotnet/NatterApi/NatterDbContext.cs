@@ -7,6 +7,7 @@ namespace NatterApi
     {
         #nullable disable
         public DbSet<Space> Spaces { get; }
+        public DbSet<User> Users { get; }
         #nullable enable
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
