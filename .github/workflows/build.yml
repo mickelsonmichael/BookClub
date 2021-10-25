@@ -1,8 +1,8 @@
-name: .NET Core Build
+name: .NET
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ master, main ]
 
 jobs:
   build:
@@ -12,10 +12,19 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.8.2
       with:
         dotnet-version: 3.1.101
     - name: Install dependencies
       run: dotnet restore Web/BookClub/BookClub.csproj
     - name: Build
       run: dotnet build --configuration Release --no-restore Web/BookClub/BookClub.csproj
+
+  test-api-security-in-action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@vs
+      - uses: actions/setup-dotnet@v1.8.2
+        with:
+          dotnet-version: 5.0
+      - run: dotnet test ApiSecurityInAction/dotnet/NatterAPI.sln
