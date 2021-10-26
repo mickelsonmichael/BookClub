@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
+using NatterApi.Filters;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 
@@ -63,7 +64,7 @@ namespace NatterApi.Controllers
             return Created($"/spaces/{spaceId}/messages/{message.MessageId}", message);
         }
 
-        [HttpGet("{messageId:int}")]
+        [HttpGet("{messageId:int}"), AuthFilter(AccessLevel.Read)]
         public IActionResult GetMessage(int spaceId, int messageId)
         {
             _logger.LogInformation("Requested details for space {SpaceId} message {MessageId}.", spaceId, messageId);
