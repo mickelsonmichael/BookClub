@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -59,7 +60,7 @@ namespace NatterApi.Controllers
             );
         }
 
-        [HttpGet("/{spaceId:int}")]
+        [HttpGet("{spaceId:int}")]
         public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
@@ -70,6 +71,46 @@ namespace NatterApi.Controllers
             }
 
             return Ok(space);
+        }
+
+        [HttpPost("{spaceId:int}/members"), AuthFilter(AccessLevel.Read)]
+        public IActionResult AddMember(
+            [FromBody, Required] AddMemberRequest request,
+            int spaceId
+        )
+        {
+            if (!Regex.IsMatch(request.Permissions, "r?w?d?"))
+            {
+                return BadRequest($"Invalid permissions \"{request.Permissions}\"");
+            }
+
+            User? user = _context.Users.Find(request.Username);
+
+            if (user == null)
+            {
+                return BadRequest("Invalid username.");
+            }
+
+            Space? space = _context.Spaces.Find(spaceId);
+
+            if (space == null)
+            {
+                return NotFound($"Could not find space with ID {spaceId}");
+            }
+
+            Permission? currentPermission = _context.Permissions.Find(spaceId, request.Username);
+
+            if (currentPermission != null)
+            {
+                _context.Remove(currentPermission);
+            }
+
+            Permission permission = new(spaceId, request.Username, request.Permissions);
+            _context.Add(permission);
+
+            _context.SaveChanges();
+
+            return Ok();
         }
 
         private readonly NatterDbContext _context;

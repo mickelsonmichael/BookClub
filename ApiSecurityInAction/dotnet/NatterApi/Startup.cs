@@ -38,8 +38,6 @@ namespace NatterApi
         {
             app.UseIpRateLimiting();
 
-            app.UseMiddleware<AuditMiddleware>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -52,6 +50,8 @@ namespace NatterApi
             app.UseRouting();
 
             app.UseMiddleware<AuthMiddleware>();
+
+            app.UseMiddleware<AuditMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
 
