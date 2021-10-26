@@ -12,4 +12,7 @@ jobs:
       - uses: actions/setup-dotnet@v1.8.2
         with:
           dotnet-version: "5.0"
-      - run: dotnet test "${GITHUB_WORKSPACE}/ApiSecurityInAction/dotnet/NatterAPI.sln"
+      - name: Test
+        env:
+          SLN_PATH: ${{ github.workspace }}/ApiSecurityInAction/dotnet/Natter.sln
+        run: dotnet test ${{ env.SLN_PATH }}
