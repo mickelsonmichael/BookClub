@@ -73,7 +73,7 @@ namespace NatterApi.Controllers
             return Ok(space);
         }
 
-        [HttpPost("{spaceId:int}/members"), AuthFilter(AccessLevel.Read)]
+        [HttpPost("{spaceId:int}/members"), AuthFilter(AccessLevel.All)]
         public IActionResult AddMember(
             [FromBody, Required] AddMemberRequest request,
             int spaceId

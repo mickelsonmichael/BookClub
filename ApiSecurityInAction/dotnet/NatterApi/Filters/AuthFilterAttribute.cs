@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -16,9 +18,9 @@ namespace NatterApi.Filters
     /// </summary>
     public class AuthFilterAttribute : ActionFilterAttribute
     {
-        public AuthFilterAttribute(string accessLevel = AccessLevel.None)
+        public AuthFilterAttribute(params string[]? accessLevels)
         {
-            _accessLevel = accessLevel;
+            _accessLevels = accessLevels?.ToHashSet() ?? new HashSet<string>();
         }
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -35,7 +37,7 @@ namespace NatterApi.Filters
 
             int? spaceId = httpContext.GetSpaceId();
 
-            if (_accessLevel == AccessLevel.None || spaceId == null)
+            if (_accessLevels.Count == 0 || spaceId == null)
             {
                 return;
             }
@@ -68,11 +70,14 @@ namespace NatterApi.Filters
 
         private bool HasPermissions(string permission)
         {
-            return (_accessLevel == AccessLevel.Delete && permission.Contains("d"))
-                || (_accessLevel == AccessLevel.Read && permission.Contains("r"))
-                || (_accessLevel == AccessLevel.Write && permission.Contains("w"));
+            return HasAllPermissions() || CanDelete() || CanRead() || CanWrite();
+
+            bool HasAllPermissions() => _accessLevels.Contains(AccessLevel.All) && permission.Contains("d") && permission.Contains("r") && permission.Contains("w");
+            bool CanDelete() => _accessLevels.Contains(AccessLevel.Delete) && permission.Contains("d");
+            bool CanRead() => _accessLevels.Contains(AccessLevel.Read) && permission.Contains("r");
+            bool CanWrite() => _accessLevels.Contains(AccessLevel.Write) && permission.Contains("w");
         }
 
-        private readonly string _accessLevel;
+        private readonly ISet<string> _accessLevels;
     }
 }
