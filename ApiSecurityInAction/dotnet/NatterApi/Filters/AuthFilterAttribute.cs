@@ -54,7 +54,7 @@ namespace NatterApi.Filters
         {
             context.Result = new UnauthorizedResult();
 
-            context.HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"/\", charset=\"UFT-8\"");
+            context.HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"/\", charset=\"UTF-8\"");
         }
 
         private string? GetPermissionString(HttpContext context, int spaceId, string username)
