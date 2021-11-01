@@ -47,6 +47,8 @@ namespace NatterApi
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
+
             app.UseRouting();
 
             app.UseMiddleware<AuthMiddleware>();
