@@ -7,6 +7,7 @@ using NatterApi.Models;
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/logs")]
+    [ValidateAntiForgeryToken]
     public class AuditController : ControllerBase
     {
         public AuditController(NatterDbContext dbContext)

@@ -38,9 +38,15 @@ namespace NatterApi
                 .AddCookie(options =>
                 {
                     options.Cookie.Name = "NatterLoginCookie";
-                    options.LoginPath = "/Login/Index";
+                    options.LoginPath = "/User/Login";
                     options.SlidingExpiration = true;
+                    options.Cookie.HttpOnly = true;
                 });
+
+            services.AddAntiforgery(options =>
+            {
+                options.HeaderName = "X-XSRF-TOKEN"; //for those cookies that cannot be httpOnly
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,7 +71,7 @@ namespace NatterApi
             {
                 MinimumSameSitePolicy = SameSiteMode.Strict,
                 HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.None,
+                Secure = CookieSecurePolicy.SameAsRequest,
             };
 
             app.UseCookiePolicy(cookiePolicyOptions);

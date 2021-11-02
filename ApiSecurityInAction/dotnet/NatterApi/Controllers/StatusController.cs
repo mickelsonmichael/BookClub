@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/status")]
+    [ValidateAntiForgeryToken]
     public class StatusController : ControllerBase
     {
         [HttpGet]

@@ -11,6 +11,7 @@ using System.Security.Claims;
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/users")]
+    [ValidateAntiForgeryToken]
     public class UserController : ControllerBase
     {
         public UserController(AuthService auth)

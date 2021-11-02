@@ -14,6 +14,7 @@ using NatterApi.Models.Requests;
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/spaces"), AuthFilter]
+    [ValidateAntiForgeryToken]
     public class SpaceController : ControllerBase
     {
         public SpaceController(NatterDbContext context)
