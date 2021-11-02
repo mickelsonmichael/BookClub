@@ -45,7 +45,7 @@ namespace NatterApi
 
             services.AddAntiforgery(options =>
             {
-                options.HeaderName = "X-XSRF-TOKEN"; //for those cookies that cannot be httpOnly
+                options.HeaderName = "X-XSRF-TOKEN"; //for those cookies that come from javascript
             });
         }
 

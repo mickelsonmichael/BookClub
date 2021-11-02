@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 using NatterApi.Services;
@@ -36,27 +37,24 @@ namespace NatterApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login([FromBody] User userdetails)
+        public IActionResult Login()
         {
-            if ((!string.IsNullOrWhiteSpace(userdetails.Username)) && (!string.IsNullOrEmpty(userdetails.PasswordHash)))
+            string? username = HttpContext.GetNatterUsername();
+            if (username == null)
+                return Unauthorized();
+
+
+            var claimsIdentity = _auth.SetClaims(username);
+
+            var authProperties = new AuthenticationProperties
             {
-                if (_auth.TryLogin(userdetails.Username, userdetails.PasswordHash))
-                {
-                    var claimsIdentity = _auth.SetClaims(userdetails.Username);
+                ExpiresUtc = DateTime.Now.AddMinutes(10),
+            };
 
-                    var authProperties = new AuthenticationProperties
-                    {
-                        ExpiresUtc = DateTime.Now.AddMinutes(10),
-                    };
-
-                    return Ok(HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties));
-                }
-            }
-
-            return Forbid();
+            return Ok(HttpContext.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(claimsIdentity),
+            authProperties));
         }
 
 
