@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Logging;
 using NatterApi.Models;
 using Scrypt;
@@ -65,6 +69,20 @@ namespace NatterApi.Services
             {
                 throw new ArgumentException("Invalid password. Must be at least 8 characters long.");
             }
+        }
+
+        public ClaimsPrincipal SetClaims(string userName)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Role, "User")
+            };
+
+            var claimsIdentity = new ClaimsIdentity(
+                claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return new ClaimsPrincipal(claimsIdentity);
         }
 
         private readonly NatterDbContext _dbContext;
