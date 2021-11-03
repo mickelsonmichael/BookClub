@@ -14,7 +14,6 @@ using NatterApi.Models.Requests;
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/spaces/{spaceId:int}/messages")]
-    [ValidateAntiForgeryToken]
     public class MessageController : ControllerBase
     {
         public MessageController(NatterDbContext dbContext, ILogger<MessageController> logger)
