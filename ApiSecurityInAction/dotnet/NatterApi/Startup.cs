@@ -10,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using NatterApi.Extensions;
 using NatterApi.Middleware;
 using NatterApi.Services;
+using NatterApi.Services.TokenStore;
+using System;
 
 namespace NatterApi
 {
@@ -29,24 +31,22 @@ namespace NatterApi
             services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
 
             services.AddScoped<AuthService>();
+            services.AddScoped<SessionOptions>();
+            services.AddScoped<ITokenService,CookieTokenService>();
+
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "NatterCookie";
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             services.AddControllers();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "NatterApi", Version = "v1" }));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Cookie.Name = "NatterLoginCookie";
-                    options.LoginPath = "/User/Login";
-                    options.SlidingExpiration = true;
-                    options.Cookie.HttpOnly = true;
-                });
-
-            services.AddAntiforgery(options =>
-            {
-                options.HeaderName = "X-XSRF-TOKEN"; //for those cookies that come from javascript
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,20 +67,15 @@ namespace NatterApi
 
             app.UseRouting();
 
-            var cookiePolicyOptions = new CookiePolicyOptions
-            {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
-                HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.SameAsRequest,
-            };
-
-            app.UseCookiePolicy(cookiePolicyOptions);
+            app.UseSession();
 
             app.UseMiddleware<AuthMiddleware>();
 
             app.UseMiddleware<AuditMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
+
+            //app.UseMiddleware<SessionMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

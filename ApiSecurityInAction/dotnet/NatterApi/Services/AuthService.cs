@@ -71,20 +71,6 @@ namespace NatterApi.Services
             }
         }
 
-        public ClaimsPrincipal SetClaims(string userName)
-        {
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Role, "User")
-            };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            return new ClaimsPrincipal(claimsIdentity);
-        }
-
         private readonly NatterDbContext _dbContext;
         private readonly ILogger<AuthService> _logger;
         private readonly ScryptEncoder _encoder = new();

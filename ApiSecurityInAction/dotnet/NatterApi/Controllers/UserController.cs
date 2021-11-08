@@ -35,27 +35,6 @@ namespace NatterApi.Controllers
             return Created($"/users/{username}", new { username = user.Username });
         }
 
-        [HttpPost]
-        public IActionResult Login()
-        {
-            string? username = HttpContext.GetNatterUsername();
-            if (username == null)
-                return Unauthorized();
-
-
-            var claimsIdentity = _auth.SetClaims(username);
-
-            var authProperties = new AuthenticationProperties
-            {
-                ExpiresUtc = DateTime.Now.AddMinutes(10),
-            };
-
-            return Ok(HttpContext.SignInAsync(
-            CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity),
-            authProperties));
-        }
-
 
         private readonly AuthService _auth;
     }

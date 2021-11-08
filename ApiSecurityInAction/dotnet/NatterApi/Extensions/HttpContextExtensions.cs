@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace NatterApi.Extensions
 {
@@ -25,5 +26,17 @@ namespace NatterApi.Extensions
 
             return null;
         }
+
+        public static ISession SetNatterSessionCookie(this HttpContext context, string? username, DateTime expiry)
+        {
+            if (username != null)
+            {
+                context.Session.SetString("username", username);
+                context.Session.SetString("expiry", expiry.ToString("G"));
+            }
+
+            return context.Session;
+        }
+
     }
 }
