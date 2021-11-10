@@ -20,8 +20,7 @@ namespace NatterApi.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost]
-        [Route("/sessions")]
+        [HttpPost("/sessions")]
         public IActionResult Login()
         {
             var tokenId = _tokenService.CreateToken(Request);

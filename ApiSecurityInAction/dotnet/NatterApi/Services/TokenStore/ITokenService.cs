@@ -10,7 +10,7 @@ namespace NatterApi.Services.TokenStore
     public interface ITokenService
     {
         string CreateToken(HttpRequest request);
-        bool ReadToken(HttpRequest request, string tokenId);
+        ISession ReadToken(HttpContext context, string tokenId);
         void DeleteToken(HttpRequest request);
     }
 }

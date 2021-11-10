@@ -21,12 +21,13 @@ namespace NatterApi.Services.TokenStore
         public string CreateToken(HttpRequest request)
         {
             //avoid session fixation
-            if (request.HttpContext.Items["username"] != null)
+            var user = request.HttpContext.GetNatterUsername();
+            if (user != null)
                 DeleteToken(request);
 
             var userName = request.HttpContext.Items["NatterUsername"]?.ToString();
             var expiry = DateTime.Now.AddMinutes(10);
-            var sessionCookie = request.HttpContext.SetNatterSessionCookie(userName, expiry);
+            var sessionCookie = request.HttpContext.SetNatterSession(userName, expiry);
 
             var session = new Session();
             session.SessionCookieId = sessionCookie.Id;
@@ -40,20 +41,19 @@ namespace NatterApi.Services.TokenStore
 
         }
 
-        public bool ReadToken(HttpRequest request, string tokenId)
+        public ISession? ReadToken(HttpContext context, string tokenId)
         {
             //double-submit check
-            var savedTokenId = _dbContext.Sessions.Where(x => x.UserName == request.HttpContext.Items["username"]).FirstOrDefault();
-            if(Convert.FromBase64String(tokenId) == Encoding.ASCII.GetBytes(savedTokenId.SessionCookieId))
-                return true;
+            var savedTokenId = _dbContext.Sessions.Where(x => x.UserName == context.GetNatterUsername()).FirstOrDefault();
+            if (Convert.FromBase64String(tokenId) == Encoding.ASCII.GetBytes(savedTokenId.SessionCookieId))
+                return context.Session;
 
-            return false;
+            return null;
         }
 
         public void DeleteToken(HttpRequest request)
         {
-            //can't delete a session cookie
-            request.HttpContext.Session.SetString("expiry", DateTime.Now.AddDays(-1).ToString("G"));
+            request.HttpContext.Session.Clear();
         }
 
 

@@ -31,7 +31,6 @@ namespace NatterApi
             services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
 
             services.AddScoped<AuthService>();
-            services.AddScoped<SessionOptions>();
             services.AddScoped<ITokenService,CookieTokenService>();
 
             services.AddDistributedMemoryCache();
@@ -40,7 +39,6 @@ namespace NatterApi
                 options.Cookie.Name = "NatterCookie";
                 options.IdleTimeout = TimeSpan.FromMinutes(10);
                 options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
             });
 
             services.AddControllers();
@@ -74,8 +72,6 @@ namespace NatterApi
             app.UseMiddleware<AuditMiddleware>();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
-
-            //app.UseMiddleware<SessionMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

@@ -7,6 +7,9 @@ namespace NatterApi.Extensions
     {
         public static string? GetNatterUsername(this HttpContext context)
         {
+            if (context.Session.GetString("username") != null)
+                return context.Session.GetString("username");
+
             return (string?)context.Items["NatterUsername"];
         }
 
@@ -27,7 +30,7 @@ namespace NatterApi.Extensions
             return null;
         }
 
-        public static ISession SetNatterSessionCookie(this HttpContext context, string? username, DateTime expiry)
+        public static ISession SetNatterSession(this HttpContext context, string? username, DateTime expiry)
         {
             if (username != null)
             {
