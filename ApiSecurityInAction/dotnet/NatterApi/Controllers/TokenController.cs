@@ -21,9 +21,14 @@ namespace NatterApi.Controllers
         }
 
         [HttpPost("/sessions")]
+        [ServiceFilter(typeof(ValidateTokenFilterAttribute))]
         public IActionResult Login()
         {
-            var tokenId = _tokenService.CreateToken(Request);
+            string username = HttpContext.GetNatterUsername();
+            DateTime expiry = DateTime.Now.AddMinutes(10);
+
+            Token token = new(expiry, username);
+            string tokenId = _tokenService.CreateToken(Request, token);
 
             return Created($"/sessions/{tokenId}", tokenId);
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
@@ -18,37 +19,64 @@ namespace NatterApi.Services.TokenStore
             _logger = logger;
         }
 
-        public string CreateToken(HttpRequest request)
+        public string CreateToken(HttpRequest request, Token token)
         {
-            //avoid session fixation
-            var user = request.HttpContext.GetNatterUsername();
-            if (user != null)
-                DeleteToken(request);
+            // avoid session fixation
+            // https://stackoverflow.com/questions/2402312/session-fixation-in-asp-net
 
-            var userName = request.HttpContext.Items["NatterUsername"]?.ToString();
-            var expiry = DateTime.Now.AddMinutes(10);
-            var sessionCookie = request.HttpContext.SetNatterSession(userName, expiry);
+            // if (request.HttpContext.Session.SessionID != null)
+            // {
+            //     AbandonSession(request);
+            // }
 
-            var session = new Session();
-            session.SessionCookieId = sessionCookie.Id;
-            session.CreatedDate = DateTime.Now;
-            session.ExpireDate = expiry;
-            session.UserName = userName;
-            _dbContext.Add(session);
-            _dbContext.SaveChanges();
+            request.HttpContext.SetNatterSession(token);
 
-            return Convert.ToBase64String(Encoding.ASCII.GetBytes(sessionCookie.Id)); //double submit
+            //double submit
 
+            return request.HttpContext.Session.Id;
         }
 
-        public ISession? ReadToken(HttpContext context, string tokenId)
+        private void AbandonSession(HttpRequest request)
         {
-            //double-submit check
-            var savedTokenId = _dbContext.Sessions.Where(x => x.UserName == context.GetNatterUsername()).FirstOrDefault();
-            if (Convert.FromBase64String(tokenId) == Encoding.ASCII.GetBytes(savedTokenId.SessionCookieId))
-                return context.Session;
+            ISession session = request.HttpContext.Session;
 
-            return null;
+            session.Clear();
+
+            // if (request.Cookies["NatterCookie"] != null)
+            // {
+            //     HttpResponse response = request.HttpContext.Response;
+
+            //     response.Cookies["NatterCookie"].Value = string.Empty;
+            //     response.Cookies["NatterCookie"].Expires = DateTime.Now.AddMonths(-20);
+            // }
+        }
+
+        public Token? ReadToken(HttpContext context, string tokenId)
+        {
+            ISession session = context.Session;
+
+            if (session == null || !session.Keys.Any())
+            {
+                return null;
+            }
+
+            string username = session.GetString("username");
+            DateTime expiry = DateTime.Parse(session.GetString("expiry"));
+            string attributesJson = session.GetString("attrs");
+
+            Token token = new(expiry, username);
+
+            token.Attributes.AddRange(
+                JsonSerializer.Deserialize<(string, string)[]>(attributesJson)
+            );
+
+
+            //double-submit check
+            // var savedTokenId = _dbContext.Sessions.Where(x => x.UserName == context.GetNatterUsername()).FirstOrDefault();
+            // if (Convert.FromBase64String(tokenId) == Encoding.ASCII.GetBytes(savedTokenId.SessionCookieId))
+            //     return context.Session;
+
+            return token;
         }
 
         public void DeleteToken(HttpRequest request)
