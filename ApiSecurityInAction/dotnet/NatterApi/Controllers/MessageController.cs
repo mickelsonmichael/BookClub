@@ -13,7 +13,7 @@ using NatterApi.Models.Requests;
 
 namespace NatterApi.Controllers
 {
-    [ApiController, Route("/spaces/{spaceId:int}/messages")]
+    [ApiController, Route("/spaces/{spaceId:int}/messages"), ServiceFilter(typeof(ValidateTokenFilterAttribute))]
     public class MessageController : ControllerBase
     {
         public MessageController(NatterDbContext dbContext, ILogger<MessageController> logger)

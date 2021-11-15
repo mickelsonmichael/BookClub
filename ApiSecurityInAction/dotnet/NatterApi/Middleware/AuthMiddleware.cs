@@ -66,13 +66,6 @@ namespace NatterApi.Middleware
 
             context.SetNatterUsername(username);
 
-            if (SessionFixationService.VerifyFixationToken(context))
-            {
-                logger.LogWarning("Old session detected. Invalidating.");
-
-                context.Session.Clear();
-            }
-
             await _next(context);
         }
 

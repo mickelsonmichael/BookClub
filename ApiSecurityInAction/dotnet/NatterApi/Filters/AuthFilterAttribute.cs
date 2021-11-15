@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
 using NatterApi.Models;
+using NatterApi.Services;
 
 namespace NatterApi.Filters
 {
@@ -45,7 +46,7 @@ namespace NatterApi.Filters
 
             string? perms = GetPermissionString(httpContext, spaceId.Value, username);
 
-            if (perms == null || !HasPermissions(perms))
+            if (perms == null || !HasPermissions(perms) || !SessionFixationService.VerifyFixationToken(httpContext))
             {
                 Unauthorized(context);
             }

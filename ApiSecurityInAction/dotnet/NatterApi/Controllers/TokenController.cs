@@ -9,10 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NatterApi.Services;
 
 namespace NatterApi.Controllers
 {
-    [ApiController, AuthFilter]
+    [ApiController]
     public class TokenController : ControllerBase
     {
         public TokenController(ITokenService tokenService)
@@ -20,15 +21,23 @@ namespace NatterApi.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("/sessions")]
-        [ServiceFilter(typeof(ValidateTokenFilterAttribute))]
+        [HttpPost("/sessions"), ValidateTokenFilter]
         public IActionResult Login()
         {
-            string username = HttpContext.GetNatterUsername();
+            string? username = HttpContext.GetNatterUsername();
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return new UnauthorizedResult();
+            }
+            
             DateTime expiry = DateTime.Now.AddMinutes(10);
 
             Token token = new(expiry, username);
+
             string tokenId = _tokenService.CreateToken(Request, token);
+
+            SessionFixationService.CreateFixationToken(HttpContext);
 
             return Created($"/sessions/{tokenId}", tokenId);
         }
