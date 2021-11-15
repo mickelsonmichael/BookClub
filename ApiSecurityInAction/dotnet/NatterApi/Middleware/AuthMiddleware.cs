@@ -60,6 +60,8 @@ namespace NatterApi.Middleware
                 logger.LogDebug("Login attempt unsuccessful.");
 
                 await _next(context);
+
+                return;
             }
 
             context.SetNatterUsername(username);
