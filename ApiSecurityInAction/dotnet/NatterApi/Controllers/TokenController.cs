@@ -35,13 +35,12 @@ namespace NatterApi.Controllers
 
             Token token = new(expiry, username);
 
-            string tokenId = _tokenService.CreateToken(Request, token);
+            string tokenId = _tokenService.CreateToken(HttpContext, token);
 
             SessionFixationService.CreateFixationToken(HttpContext);
 
-            return Created($"/sessions/{tokenId}", tokenId);
+            return Created("/sessions", tokenId);
         }
-
 
         private readonly ITokenService _tokenService;
     }

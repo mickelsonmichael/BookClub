@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NatterApi.Models.Token;
-using NatterApi.Extensions;
 using System;
 using System.Linq;
 using System.Text;
@@ -16,20 +15,21 @@ namespace NatterApi.Services.TokenStore
             _logger = logger;
         }
 
-        public string CreateToken(HttpRequest request, Token token)
+        public string CreateToken(HttpContext context, Token token)
         {
-            // avoid session fixation
-            // https://stackoverflow.com/questions/2402312/session-fixation-in-asp-net
+            _logger.LogDebug("Updating session from token.");
 
-            request.HttpContext.SetNatterSession(token);
+            context.Session.SetString("username", token.Username);
+            context.Session.SetString("expiry", token.Expiration.ToString("G"));
+            context.Session.SetString("attrs", JsonSerializer.Serialize(token.Attributes));
 
-            //double submit
-
-            return request.HttpContext.Session.Id;
+            return context.Session.Id;
         }
 
         public Token? ReadToken(HttpContext context, string tokenId)
         {
+            _logger.LogDebug("Reading token <{TokenId}> from session.", tokenId);
+
             ISession session = context.Session;
 
             if (session?.Keys.Any() != true)
@@ -50,17 +50,14 @@ namespace NatterApi.Services.TokenStore
                 token.Attributes.AddRange(attributes);
             }
 
-            //double-submit check
-            // var savedTokenId = _dbContext.Sessions.Where(x => x.UserName == context.GetNatterUsername()).FirstOrDefault();
-            // if (Convert.FromBase64String(tokenId) == Encoding.ASCII.GetBytes(savedTokenId.SessionCookieId))
-            //     return context.Session;
-
             return token;
         }
 
-        public void DeleteToken(HttpRequest request)
+        public void DeleteToken(HttpContext context)
         {
-            request.HttpContext.Session.Clear();
+            _logger.LogDebug("Deleting token.");
+            
+            context.Session.Clear();
         }
 
         private readonly ILogger<AuthService> _logger;

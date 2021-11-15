@@ -28,12 +28,5 @@ namespace NatterApi.Extensions
 
             return null;
         }
-
-        public static void SetNatterSession(this HttpContext context, Token token)
-        {
-            context.Session.SetString("username", token.Username);
-            context.Session.SetString("expiry", token.Expiration.ToString("G"));
-            context.Session.SetString("attrs", JsonSerializer.Serialize(token.Attributes));
-        }
     }
 }
