@@ -1,0 +1,35 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Tests",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-natter-tests",
+            "program": "${workspaceFolder}/NatterApi.Test/bin/Debug/net5.0/NatterApi.Test.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NatterApi.Test",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Debug NatterApi",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-natter",
+            "program": "${workspaceFolder}/NatterApi/bin/Debug/net5.0/NatterApi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/NatterApi",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

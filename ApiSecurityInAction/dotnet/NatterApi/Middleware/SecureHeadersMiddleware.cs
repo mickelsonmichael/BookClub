@@ -18,6 +18,11 @@ namespace NatterApi.Middleware
             {
                 HttpContext context = (HttpContext)state;
 
+                if (context.Response.HasStarted)
+                {
+                    return Task.CompletedTask;
+                }
+
                 EnforceContentTypeEncoding(context.Response);
 
                 DisableXSSHeader(context.Response);
@@ -59,7 +64,7 @@ namespace NatterApi.Middleware
         /// </summary>
         private void DisableXSSHeader(HttpResponse response)
         {
-            response.Headers.Add("X-XSS-Protection", "0");
+            response.Headers["X-XSS-Protection"] = "0";
         }
 
         /// <summary>

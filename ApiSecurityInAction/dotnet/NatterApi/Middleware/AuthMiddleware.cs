@@ -1,6 +1,5 @@
 
 using System;
-using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NatterApi.Extensions;
-using NatterApi.Models;
 using NatterApi.Services;
 
 namespace NatterApi.Middleware
@@ -24,7 +22,7 @@ namespace NatterApi.Middleware
         {
             IEnumerable<string> authHeaders = context.Request.Headers["Authorization"];
 
-            if (authHeaders == null || !authHeaders.Any() || !authHeaders.First().StartsWith("Basic"))
+            if (authHeaders?.Any() != true || !authHeaders.First().StartsWith("Basic"))
             {
                 logger.LogInformation("Skipping authorization.");
 
@@ -57,13 +55,21 @@ namespace NatterApi.Middleware
 
             logger.LogDebug("Attempting to login {Username}.", username);
 
-            if (authService.TryLogin(username, password))
+            if (!authService.TryLogin(username, password))
             {
-                context.SetNatterUsername(username);
+                logger.LogDebug("Login attempt unsuccessful.");
+
+                await _next(context);
             }
 
-            /*What you really need to do is add functionality to the AuthMiddleware to check if the session exists and then getting the values for the session from the database 
-             based on the session ID (or moving on to basic auth if no matching token was found in the db)*/
+            context.SetNatterUsername(username);
+
+            if (SessionFixationService.VerifyFixationToken(context))
+            {
+                logger.LogWarning("Old session detected. Invalidating.");
+
+                context.Session.Clear();
+            }
 
             await _next(context);
         }
