@@ -1,17 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NatterApi.Models.Requests;
-using NatterApi.Test.TestHelpers;
 using Xunit;
 using static NatterApi.Test.TestHelpers.CredentialsHelper;
+using static NatterApi.Test.TestHelpers.RequestHelpers;
 
 namespace NatterApi.Test
 {
@@ -69,6 +65,7 @@ namespace NatterApi.Test
 
             HttpResponseMessage victimLoginResponse = await victim.SendAsync(victimLogin);
             string victimSession = GetAuthCookie(victimLoginResponse);
+            string victimCSRF = GetCSRFToken(victimLoginResponse);
 
             HttpRequestMessage victimCreateSpace = new(HttpMethod.Post, "/spaces")
             {
@@ -79,7 +76,7 @@ namespace NatterApi.Test
                 )
             };
 
-            victimCreateSpace.Headers.Add("Cookie", victimSession);
+            victimCreateSpace.Headers.Add("Cookie", $"{victimSession};{victimCSRF}");
 
             HttpResponseMessage createSpaceResponse = await victim.SendAsync(victimCreateSpace);
 
@@ -130,15 +127,6 @@ namespace NatterApi.Test
             HttpResponseMessage badSpaceResponse = await attacker.SendAsync(badSpaceRequest);
 
             Assert.Equal(HttpStatusCode.Unauthorized, badSpaceResponse.StatusCode);
-
-            static string GetAuthCookie(HttpResponseMessage responseMessage)
-            {
-                IEnumerable<string> cookies = responseMessage.Headers.GetValues("Set-Cookie");
-
-                string setNatterCookie = cookies.Single(x => x.Contains("NatterCookie"));
-
-                return setNatterCookie.Substring(0, setNatterCookie.IndexOf(";"));
-            }
         }
     }
 }

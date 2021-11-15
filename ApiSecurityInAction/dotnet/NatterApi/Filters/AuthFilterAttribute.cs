@@ -46,7 +46,7 @@ namespace NatterApi.Filters
 
             string? perms = GetPermissionString(httpContext, spaceId.Value, username);
 
-            if (perms == null || !HasPermissions(perms) || !SessionFixationService.VerifyFixationToken(httpContext))
+            if (perms == null || !HasPermissions(perms))
             {
                 Unauthorized(context);
             }

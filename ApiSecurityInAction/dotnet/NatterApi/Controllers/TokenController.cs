@@ -37,7 +37,7 @@ namespace NatterApi.Controllers
 
             string tokenId = _tokenService.CreateToken(HttpContext, token);
 
-            SessionFixationService.CreateFixationToken(HttpContext);
+            CSRFService.SetToken(HttpContext, tokenId);
 
             return Created("/sessions", tokenId);
         }

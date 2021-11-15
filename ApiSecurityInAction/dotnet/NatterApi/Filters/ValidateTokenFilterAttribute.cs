@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
 using NatterApi.Models.Token;
+using NatterApi.Services;
 using NatterApi.Services.TokenStore;
 
 namespace NatterApi.Filters
@@ -19,7 +20,14 @@ namespace NatterApi.Filters
 
             var tokenService = httpContext.RequestServices.GetRequiredService<ITokenService>();
 
-            Token? token = tokenService.ReadToken(context.HttpContext, null);
+            string? csrfToken = CSRFService.GetToken(httpContext);
+
+            if (string.IsNullOrWhiteSpace(csrfToken))
+            {
+                return;
+            }
+
+            Token? token = tokenService.ReadToken(context.HttpContext, csrfToken);
 
             if (token == null)
             {
