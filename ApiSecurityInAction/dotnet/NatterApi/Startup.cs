@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using NatterApi.Configuration;
 using NatterApi.Extensions;
 using NatterApi.Filters;
 using NatterApi.Middleware;
@@ -32,7 +34,7 @@ namespace NatterApi
             services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
 
             services.AddScoped<AuthService>();
-            services.AddScoped<ITokenService,CookieTokenService>();
+            services.AddScoped<ITokenService, CookieTokenService>();
             services.AddScoped<ValidateTokenFilterAttribute>();
 
             services.AddDistributedMemoryCache();
@@ -54,6 +56,10 @@ namespace NatterApi
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseIpRateLimiting();
+
+            app.UseMiddleware<CorsMiddleware>(
+                Options.Create(new CorsConfig("https://localhost:9999"))
+            );
 
             if (env.IsDevelopment())
             {

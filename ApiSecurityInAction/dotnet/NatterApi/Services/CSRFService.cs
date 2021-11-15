@@ -27,7 +27,7 @@ namespace NatterApi.Services
     /// </summary>
     public static class CSRFService
     {
-        private const string CookieName = "__Host_CSRFToken";
+        private const string CookieName = "X-CSRF-Token";
 
         public static string CreateToken(HttpContext context)
         {

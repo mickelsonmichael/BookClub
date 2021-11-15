@@ -3,8 +3,9 @@ const apiUrl = 'https://localhost:4567';
 function login(username, password) {
     let credentials = 'Basic ' + btoa(username + ':' + password);
 
-    fetch(apiUrl + '/user/login', {
+    fetch(`${apiUrl}/sessions`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': credentials
