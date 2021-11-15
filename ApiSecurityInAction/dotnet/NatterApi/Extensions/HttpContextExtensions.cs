@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Http;
+using NatterApi.Models.Token;
+using System;
+using System.Text.Json;
 
 namespace NatterApi.Extensions
 {
@@ -24,6 +27,13 @@ namespace NatterApi.Extensions
             }
 
             return null;
+        }
+
+        public static void SetNatterSession(this HttpContext context, Token token)
+        {
+            context.Session.SetString("username", token.Username);
+            context.Session.SetString("expiry", token.Expiration.ToString("G"));
+            context.Session.SetString("attrs", JsonSerializer.Serialize(token.Attributes));
         }
     }
 }

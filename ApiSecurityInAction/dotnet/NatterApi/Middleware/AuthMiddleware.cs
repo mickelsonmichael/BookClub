@@ -62,6 +62,9 @@ namespace NatterApi.Middleware
                 context.SetNatterUsername(username);
             }
 
+            /*What you really need to do is add functionality to the AuthMiddleware to check if the session exists and then getting the values for the session from the database 
+             based on the session ID (or moving on to basic auth if no matching token was found in the db)*/
+
             await _next(context);
         }
 

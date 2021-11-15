@@ -1,7 +1,13 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 using NatterApi.Services;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace NatterApi.Controllers
 {
@@ -28,6 +34,7 @@ namespace NatterApi.Controllers
 
             return Created($"/users/{username}", new { username = user.Username });
         }
+
 
         private readonly AuthService _auth;
     }
