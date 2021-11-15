@@ -14,29 +14,17 @@ namespace NatterApi.Middleware
         {
             RemoveCacheControl(context.Response);
 
-            context.Response.OnStarting(state =>
-            {
-                HttpContext context = (HttpContext)state;
+            EnforceContentTypeEncoding(context.Response);
 
-                if (context.Response.HasStarted)
-                {
-                    return Task.CompletedTask;
-                }
+            DisableXSSHeader(context.Response);
 
-                EnforceContentTypeEncoding(context.Response);
+            SetContentTypeOptionsToNoSniff(context.Response);
 
-                DisableXSSHeader(context.Response);
+            DenyFrameOptions(context.Response);
 
-                SetContentTypeOptionsToNoSniff(context.Response);
+            SetSecurityPolicyHeader(context.Response);
 
-                DenyFrameOptions(context.Response);
-
-                SetSecurityPolicyHeader(context.Response);
-
-                RemoveServerInfo(context.Response);
-
-                return Task.CompletedTask;
-            }, context);
+            RemoveServerInfo(context.Response);
 
             await _next(context);
         }
