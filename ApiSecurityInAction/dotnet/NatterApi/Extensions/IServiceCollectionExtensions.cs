@@ -23,7 +23,7 @@ namespace NatterApi.Extensions
                             {
                                 Endpoint = "*",
                                 Period = "1s",
-                                Limit = 2
+                                Limit = 100
                             }
                         };
                 })
