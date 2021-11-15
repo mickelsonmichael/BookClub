@@ -70,11 +70,11 @@ namespace NatterApi
 
             app.UseSession();
 
+            app.UseMiddleware<SecureHeadersMiddleware>();
+
             app.UseMiddleware<AuthMiddleware>();
 
             app.UseMiddleware<AuditMiddleware>();
-
-            app.UseMiddleware<SecureHeadersMiddleware>();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
         }

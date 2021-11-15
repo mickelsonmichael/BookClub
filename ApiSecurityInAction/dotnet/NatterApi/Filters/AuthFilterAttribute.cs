@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
 using NatterApi.Models;
+using NatterApi.Services;
 
 namespace NatterApi.Filters
 {
@@ -16,6 +17,7 @@ namespace NatterApi.Filters
     /// action or controller to require the method or class be restricted
     /// to only authenticated users.
     /// </summary>
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class AuthFilterAttribute : ActionFilterAttribute
     {
         public AuthFilterAttribute(params string[]? accessLevels)
@@ -39,7 +41,7 @@ namespace NatterApi.Filters
 
             if (_accessLevels.Count == 0 || spaceId == null)
             {
-                return;
+                return; // no permissions needed, proceed
             }
 
             string? perms = GetPermissionString(httpContext, spaceId.Value, username);
@@ -77,6 +79,8 @@ namespace NatterApi.Filters
             bool CanRead() => _accessLevels.Contains(AccessLevel.Read) && permission.Contains("r");
             bool CanWrite() => _accessLevels.Contains(AccessLevel.Write) && permission.Contains("w");
         }
+
+
 
         private readonly ISet<string> _accessLevels;
     }

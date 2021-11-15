@@ -22,7 +22,7 @@ namespace NatterApi.Test
         [Trait("Topic", "Rate limiting")]
         public void LimitRequests()
         {
-            const int requests = 5;
+            const int requests = 15;
             HttpClient client = _factory.CreateClient();
 
             Task<HttpResponseMessage>[] responses = Enumerable.Range(1, requests)

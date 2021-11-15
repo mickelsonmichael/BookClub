@@ -1,9 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using NatterApi.Models.Requests;
 
@@ -75,7 +76,7 @@ namespace NatterApi.Test.TestHelpers
 
             message.Headers.Authorization = value;
         }
-        
+
         private static string Base64Credentials(string username, string password)
         {
             string joined = $"{username}:{password}";
@@ -87,7 +88,7 @@ namespace NatterApi.Test.TestHelpers
 
         public static async Task RegisterUser(HttpClient client, string username, string password)
         {
-            HttpRequestMessage request = new (HttpMethod.Post, "/users")
+            HttpRequestMessage request = new(HttpMethod.Post, "/users")
             {
                 Content = GetJsonContent(new RegisterUser(username, password))
             };
@@ -105,6 +106,24 @@ namespace NatterApi.Test.TestHelpers
         private static HttpRequestMessage GetDefault()
         {
             return new(HttpMethod.Get, "/status");
+        }
+
+        public static string GetAuthCookie(HttpResponseMessage responseMessage)
+        {
+            IEnumerable<string> cookies = responseMessage.Headers.GetValues("Set-Cookie");
+
+            string setNatterCookie = cookies.Single(x => x.Contains("NatterCookie"));
+
+            return setNatterCookie.Substring(0, setNatterCookie.IndexOf(";"));
+        }
+
+        public static string GetCSRFToken(HttpResponseMessage responseMessage)
+        {
+            IEnumerable<string> cookies = responseMessage.Headers.GetValues("Set-Cookie");
+
+            string setNatterCookie = cookies.Single(x => x.Contains("__Host_CSRFToken"));
+
+            return setNatterCookie.Substring(0, setNatterCookie.IndexOf(";"));
         }
     }
 }

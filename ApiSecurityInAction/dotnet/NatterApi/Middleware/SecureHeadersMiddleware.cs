@@ -14,24 +14,17 @@ namespace NatterApi.Middleware
         {
             RemoveCacheControl(context.Response);
 
-            context.Response.OnStarting(state =>
-            {
-                HttpContext context = (HttpContext)state;
+            EnforceContentTypeEncoding(context.Response);
 
-                EnforceContentTypeEncoding(context.Response);
+            DisableXSSHeader(context.Response);
 
-                DisableXSSHeader(context.Response);
+            SetContentTypeOptionsToNoSniff(context.Response);
 
-                SetContentTypeOptionsToNoSniff(context.Response);
+            DenyFrameOptions(context.Response);
 
-                DenyFrameOptions(context.Response);
+            SetSecurityPolicyHeader(context.Response);
 
-                SetSecurityPolicyHeader(context.Response);
-
-                RemoveServerInfo(context.Response);
-
-                return Task.CompletedTask;
-            }, context);
+            RemoveServerInfo(context.Response);
 
             await _next(context);
         }
@@ -59,7 +52,7 @@ namespace NatterApi.Middleware
         /// </summary>
         private void DisableXSSHeader(HttpResponse response)
         {
-            response.Headers.Add("X-XSS-Protection", "0");
+            response.Headers["X-XSS-Protection"] = "0";
         }
 
         /// <summary>

@@ -2,9 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Transactions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
 using NatterApi.Filters;
@@ -13,7 +11,7 @@ using NatterApi.Models.Requests;
 
 namespace NatterApi.Controllers
 {
-    [ApiController, Route("/spaces"), AuthFilter]
+    [ApiController, Route("/spaces"), ValidateTokenFilter]
     public class SpaceController : ControllerBase
     {
         public SpaceController(NatterDbContext context)
@@ -21,7 +19,7 @@ namespace NatterApi.Controllers
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet, AuthFilter]
         public IActionResult GetSpaces()
         {
             List<Space> spaces = _context.Spaces.ToList();
@@ -30,7 +28,7 @@ namespace NatterApi.Controllers
         }
 
         // Page 36
-        [HttpPost]
+        [HttpPost, AuthFilter]
         public IActionResult CreateSpace(
             [FromBody, Required] CreateSpaceRequest request
         )
@@ -60,7 +58,7 @@ namespace NatterApi.Controllers
             );
         }
 
-        [HttpGet("{spaceId:int}")]
+        [HttpGet("{spaceId:int}"), AuthFilter(AccessLevel.Read)]
         public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
