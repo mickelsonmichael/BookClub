@@ -23,7 +23,7 @@ namespace NatterApi.Services.TokenStore
             context.Session.SetString("expiry", token.Expiration.ToString("G"));
             context.Session.SetString("attrs", JsonSerializer.Serialize(token.Attributes));
 
-            return context.Session.Id;
+            return CSRFService.CreateToken(context);
         }
 
         public Token? ReadToken(HttpContext context, string tokenId)
@@ -56,7 +56,7 @@ namespace NatterApi.Services.TokenStore
         public void DeleteToken(HttpContext context)
         {
             _logger.LogDebug("Deleting token.");
-            
+
             context.Session.Clear();
         }
 

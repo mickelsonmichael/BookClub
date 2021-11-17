@@ -1,14 +1,10 @@
 using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
-using NatterApi.Configuration;
 using NatterApi.Extensions;
 using NatterApi.Filters;
 using NatterApi.Middleware;
@@ -49,17 +45,12 @@ namespace NatterApi
             services.AddControllers();
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "NatterApi", Version = "v1" }));
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseIpRateLimiting();
-
-            app.UseMiddleware<CorsMiddleware>(
-                Options.Create(new CorsConfig("https://localhost:9999"))
-            );
 
             if (env.IsDevelopment())
             {
@@ -70,9 +61,11 @@ namespace NatterApi
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            app.UseMiddleware<NatterCorsMiddleware>();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseSession();
 
@@ -82,7 +75,7 @@ namespace NatterApi
 
             app.UseMiddleware<AuditMiddleware>();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints => endpoints.MapControllers().RequireCors(CorsExtensions.CorsPolicyName));
         }
     }
 }
