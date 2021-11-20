@@ -7,6 +7,6 @@ namespace NatterApi.Services.TokenStore
     {
         string CreateToken(HttpContext context, Token token);
         Token? ReadToken(HttpContext context, string tokenId);
-        void DeleteToken(HttpContext context);
+        void DeleteToken(HttpContext context, string tokenId);
     }
 }

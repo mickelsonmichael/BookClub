@@ -8,6 +8,7 @@ namespace NatterApi.Models.Token
         string Username
     )
     {
+        public string Id { get; set; } = string.Empty;
         public List<(string, string)> Attributes = new();
     }
 }

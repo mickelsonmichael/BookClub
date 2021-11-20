@@ -53,7 +53,7 @@ namespace NatterApi.Services.TokenStore
             return token;
         }
 
-        public void DeleteToken(HttpContext context)
+        public void DeleteToken(HttpContext context, string tokenId)
         {
             _logger.LogDebug("Deleting token.");
 
