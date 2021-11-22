@@ -11,19 +11,19 @@ function login(username, password) {
             'Authorization': credentials
         }
     })
-    .then(res => {
-       if (res.ok) {
-         res.text().then(token => {
-            document.cookie = `bearerToken=${token};Secure;SameSite=Strict'`;
+        .then(res => {
+            if (res.ok) {
+                res.text().then(token => {
+                    localStorage.setItem("token", token);
 
-            window.location.replace('/natter.html');
-         });
-       }
-    })
-    .catch(error => console.error('Error logging in: ', error));
+                    window.location.replace('/natter.html');
+                });
+            }
+        })
+        .catch(error => console.error('Error logging in: ', error));
 }
 
-window.addEventListener('load', function(e) {
+window.addEventListener('load', function (e) {
     document.getElementById('login')
         .addEventListener('submit', processLoginSubmit);
 });
