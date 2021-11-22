@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using NatterApi.Models.Token;
 using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
 {
@@ -65,6 +67,26 @@ namespace NatterApi.Services.TokenStore
             _logger.LogDebug("Reading token <{TokenId}>.", tokenId);
 
             return _dbContext.Tokens.Find(tokenId);
+        }
+
+        public async Task ClearExpiredTokens()
+        {
+            _logger.LogDebug("Checking for expired tokens.");
+
+            DateTime now = DateTime.Now;
+
+            IQueryable<Token> expiredTokens = _dbContext.Tokens.Where(token => token.Expiration < now);
+            
+            int expiredTokenCount = expiredTokens.Count();
+
+            if (expiredTokenCount > 0)
+            {
+                _logger.LogInformation("Clearing out {Count} expired tokens.", expiredTokenCount);
+
+                _dbContext.RemoveRange(expiredTokens);
+                
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         private readonly NatterDbContext _dbContext;

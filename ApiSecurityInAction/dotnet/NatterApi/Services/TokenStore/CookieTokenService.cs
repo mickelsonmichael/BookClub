@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
 {
@@ -58,6 +59,12 @@ namespace NatterApi.Services.TokenStore
             _logger.LogDebug("Deleting token.");
 
             context.Session.Clear();
+        }
+
+        public Task ClearExpiredTokens()
+        {
+            // do nothing because you can't
+            return Task.CompletedTask;
         }
 
         private readonly ILogger<AuthService> _logger;
