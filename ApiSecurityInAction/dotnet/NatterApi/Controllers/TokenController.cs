@@ -42,6 +42,23 @@ namespace NatterApi.Controllers
             return Created("/sessions", tokenId);
         }
 
+        [HttpGet("/sessions")]
+        public IActionResult Logout()
+        {
+            string? tokenId = Request.Headers["Authorization"].FirstOrDefault();
+
+            if (tokenId == null || !tokenId.StartsWith("Bearer"))
+            {
+                throw new ArgumentException("Missing token header");
+            }
+
+            tokenId = tokenId.Substring("Bearer ".Length);
+
+            _tokenService.DeleteToken(HttpContext, tokenId);
+
+            return Ok();
+        }
+
         private readonly ITokenService _tokenService;
     }
 }
