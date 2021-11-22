@@ -105,11 +105,11 @@ namespace NatterApi.Middleware
         }
 
         private bool HasAuthenticationHeader(HttpContext context)
-            => context.Request.Headers["Authentication"].Count == 1;
+            => context.Request.Headers["Authorization"].Count == 1;
 
         private (string type, string value) GetAuthenticationMethod(HttpContext context)
         {
-            string value = context.Request.Headers["Authentication"].First();
+            string value = context.Request.Headers["Authorization"].First();
 
             if (value.StartsWith("Basic"))
             {

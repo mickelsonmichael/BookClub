@@ -13,9 +13,9 @@ function login(username, password) {
     })
     .then(res => {
        if (res.ok) {
-         res.json().then(json => {
-            document.cookie = 'csrfToken=' + json.token +
-                ';Secure;SameSite=strict';
+         res.text().then(token => {
+            document.cookie = `bearerToken=${token};Secure;SameSite=Strict'`;
+
             window.location.replace('/natter.html');
          });
        }

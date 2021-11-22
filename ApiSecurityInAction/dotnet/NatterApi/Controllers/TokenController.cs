@@ -21,7 +21,7 @@ namespace NatterApi.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("/sessions"), ValidateTokenFilter]
+        [HttpPost("/sessions")]
         public IActionResult Login()
         {
             string? username = HttpContext.GetNatterUsername();
@@ -36,8 +36,6 @@ namespace NatterApi.Controllers
             Token token = new(expiry, username);
 
             string tokenId = _tokenService.CreateToken(HttpContext, token);
-
-            CSRFService.SetToken(HttpContext, tokenId);
 
             return Created("/sessions", tokenId);
         }
