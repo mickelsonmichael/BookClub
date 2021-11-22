@@ -1,14 +1,11 @@
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Testing;
-using NatterApi.Models.Requests;
 using NatterApi.Test.TestHelpers;
 using Xunit;
 using static NatterApi.Test.TestHelpers.CredentialsHelper;
-using static NatterApi.Test.TestHelpers.RequestHelpers;
 
 namespace NatterApi.Test
 {
@@ -34,8 +31,9 @@ namespace NatterApi.Test
             // =============================================================
             // victim logs in and creates a space the attacker cannot access
             // =============================================================
-            victim.Login()
-                .CreateSpace("victim_space", "victim", out string spaceId);
+            victim.Login();
+
+            (HttpResponseMessage responseMessage, string spaceId) = await victim.CreateSpace("victim_space", "victim");
 
             // ==========================================
             // attacker logs in and gets the token

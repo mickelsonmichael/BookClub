@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NatterApi.Test.TestHelpers
 {
@@ -62,7 +63,7 @@ namespace NatterApi.Test.TestHelpers
             return this;
         }
 
-        public HttpResponseMessage CreateSpace(string name, string owner, out string spaceId)
+        public async Task<(HttpResponseMessage responseMessage, string spaceId)> CreateSpace(string name, string owner)
         {
             Debug.Assert(!string.IsNullOrWhiteSpace(Token));
 
@@ -79,11 +80,11 @@ namespace NatterApi.Test.TestHelpers
 
             request.Headers.Authorization = GetBearerAuthHeader();
 
-            HttpResponseMessage response = _httpClient.SendAsync(request).GetAwaiter().GetResult();
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
 
-            spaceId = response.Headers.Location?.OriginalString.Split('/').Last() ?? string.Empty;
+            string spaceId = response.Headers.Location?.OriginalString.Split('/').Last() ?? string.Empty;
 
-            return response;
+            return (response, spaceId);
         }
 
         public SessionHelper GetSpace(string spaceId)
