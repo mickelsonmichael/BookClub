@@ -35,7 +35,10 @@ namespace NatterApi.Middleware
                 _logger.LogDebug("Allowed origin <{Origin}> detected. Attaching access control headers.", origin);
 
                 context.Response.Headers["Access-Control-Allow-Origin"] = origin;
-                context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+
+                // now that we're using bearer tokens, we don't need credentials
+                // context.Response.Headers["Access-Control-Allow-Credentials"] = "true";
+
                 context.Request.Headers["Vary"] = "Origin";
             }
 
@@ -54,7 +57,7 @@ namespace NatterApi.Middleware
             else
             {
                 _logger.LogDebug("Successfull preflight request from origin <{Origin}>, attaching headers to response.", origin);
-                context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-CSRF-Token";
+                context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization";
                 context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, DELETE";
 
                 context.Response.StatusCode = (int)HttpStatusCode.Created;

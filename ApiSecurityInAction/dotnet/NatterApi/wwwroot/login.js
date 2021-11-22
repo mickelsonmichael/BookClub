@@ -5,7 +5,6 @@ function login(username, password) {
 
     fetch(`${apiUrl}/sessions`, {
         method: 'POST',
-        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': credentials
@@ -16,7 +15,7 @@ function login(username, password) {
                 res.text().then(token => {
                     localStorage.setItem("token", token);
 
-                    window.location.replace('/natter.html');
+                    window.location.replace('/natter.html')
                 });
             }
         })
