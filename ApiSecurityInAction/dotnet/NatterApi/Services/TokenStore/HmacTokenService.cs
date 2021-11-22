@@ -62,12 +62,9 @@ namespace NatterApi.Services.TokenStore
             byte[] providedHmac = Convert.FromBase64String(tokenId.Substring(splitIndex + 1));
             byte[] computedHmac = Hash(realTokenId);
 
-            if (CryptographicOperations.FixedTimeEquals(providedHmac, computedHmac))
-            {
-                return (false, string.Empty);
-            }
-
-            return (true, realTokenId);
+            return CryptographicOperations.FixedTimeEquals(providedHmac, computedHmac)
+                ? (true, realTokenId)
+                : (false, string.Empty);
         }
 
         public Task ClearExpiredTokens()
@@ -83,6 +80,6 @@ namespace NatterApi.Services.TokenStore
         }
 
         private readonly ITokenService _delegate;
-        private readonly HMACSHA256 _hmac = new(); // randomly generate the key
+        private readonly HMACSHA256 _hmac = new(Encoding.UTF8.GetBytes("SomeSecureKey"));
     }
 }

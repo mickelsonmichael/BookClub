@@ -24,14 +24,16 @@ namespace NatterApi.Test
         {
             const int requests = 15;
             HttpClient client = _factory.CreateClient();
+            SessionHelper session = new(client);
 
-            Task<HttpResponseMessage>[] responses = Enumerable.Range(1, requests)
-                .Select(_ => RequestHelpers.GetAsync(client, "/spaces"))
+            session.Register("user", "password")
+                .Login();
+
+            HttpResponseMessage[] responses = Enumerable.Range(1, requests)
+                .Select(n => session.CreateSpace($"space-{n}", "user", out string _))
                 .ToArray();
 
-            Task.WaitAll(responses);
-
-            Assert.Contains(responses, x => x.Result.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
+            Assert.Contains(responses, x => x.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
         }
 
         [Fact]

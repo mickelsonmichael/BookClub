@@ -41,7 +41,7 @@ namespace NatterApi.Services.TokenStore
             // JSON serialization of the attributes property is handled by EF Core
             // see the ModelBuilder method inside the NatterDbContext for implementation
 
-            Token toStore = token with { Id = tokenId };
+            Token toStore = token with { Id = hashedTokenId };
 
             _dbContext.Add(toStore);
             _dbContext.SaveChanges();
