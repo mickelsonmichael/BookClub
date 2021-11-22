@@ -4,7 +4,7 @@ using NatterApi.Models.Token;
 using System;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text.Json;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
@@ -23,11 +23,20 @@ namespace NatterApi.Services.TokenStore
             logger.LogInformation("Utilizing the {TokenStoreType}.", nameof(DatabaseTokenService));
         }
 
+        /// <summary>
+        /// <para>
+        /// 5.3.1 - Hashing database tokens in order to increase security.
+        /// Since SHA-256 is a one-way encryption, if our database is hacked,
+        /// we will still have secure session tokens.
+        /// </para>
+        /// </summary>
         public string CreateToken(HttpContext context, Token token)
         {
             _logger.LogDebug("Creating new token.\n{Token}", token);
 
             string tokenId = CreateUniqueId();
+
+            string hashedTokenId = Hash(tokenId);
 
             // JSON serialization of the attributes property is handled by EF Core
             // see the ModelBuilder method inside the NatterDbContext for implementation
@@ -53,7 +62,9 @@ namespace NatterApi.Services.TokenStore
         {
             _logger.LogDebug("Deleting token <{TokenId}>.", tokenId);
 
-            Token? token = _dbContext.Tokens.Find(tokenId);
+            string hashedId = Hash(tokenId);
+
+            Token? token = _dbContext.Tokens.Find(hashedId);
 
             if (token != null)
             {
@@ -66,7 +77,9 @@ namespace NatterApi.Services.TokenStore
         {
             _logger.LogDebug("Reading token <{TokenId}>.", tokenId);
 
-            return _dbContext.Tokens.Find(tokenId);
+            string hashedId = Hash(tokenId);
+
+            return _dbContext.Tokens.Find(hashedId);
         }
 
         public async Task ClearExpiredTokens()
@@ -87,6 +100,15 @@ namespace NatterApi.Services.TokenStore
                 
                 await _dbContext.SaveChangesAsync();
             }
+        }
+        
+        private string Hash(string value)
+        {
+            byte[] unhashedBytes = Encoding.UTF8.GetBytes(value);
+
+            byte[] hashedBytes = SHA256.HashData(unhashedBytes);
+
+            return Convert.ToBase64String(hashedBytes);
         }
 
         private readonly NatterDbContext _dbContext;
