@@ -3,16 +3,16 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using NatterApi.Models.Token;
 
 namespace NatterApi.Services.TokenStore
 {
     public class HmacTokenService : ITokenService
     {
-        public HmacTokenService(NatterDbContext context, ILogger<DatabaseTokenService> logger)
+        public HmacTokenService()
         {
-            _delegate = new DatabaseTokenService(context, logger);
+            // _delegate = new DatabaseTokenService(context, logger);
+            _delegate = new JsonTokenStore();
         }
 
         public string CreateToken(HttpContext context, Token token)
