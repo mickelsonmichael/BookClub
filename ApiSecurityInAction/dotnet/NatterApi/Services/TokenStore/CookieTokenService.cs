@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
 {
-    public class CookieTokenService : ITokenService
+    public class CookieTokenService : ISecureTokenService
     {
         public CookieTokenService(ILogger<AuthService> logger)
         {

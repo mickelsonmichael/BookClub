@@ -1,22 +1,17 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using NatterApi.Filters;
-using NatterApi.Models;
 using NatterApi.Models.Token;
 using NatterApi.Services.TokenStore;
 using NatterApi.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using NatterApi.Services;
 
 namespace NatterApi.Controllers
 {
     [ApiController]
     public class TokenController : ControllerBase
     {
-        public TokenController(ITokenService tokenService)
+        public TokenController(ISecureTokenService tokenService)
         {
             _tokenService = tokenService;
         }
@@ -30,7 +25,7 @@ namespace NatterApi.Controllers
             {
                 return new UnauthorizedResult();
             }
-            
+
             DateTime expiry = DateTime.Now.AddMinutes(10);
 
             Token token = new(expiry, username);
@@ -45,18 +40,18 @@ namespace NatterApi.Controllers
         {
             string? tokenId = Request.Headers["Authorization"].FirstOrDefault();
 
-            if (tokenId == null || !tokenId.StartsWith("Bearer"))
+            if (tokenId?.StartsWith("Bearer") != true)
             {
                 throw new ArgumentException("Missing token header");
             }
 
-            tokenId = tokenId.Substring("Bearer ".Length);
+            tokenId = tokenId["Bearer ".Length..];
 
             _tokenService.DeleteToken(HttpContext, tokenId);
 
             return Ok();
         }
 
-        private readonly ITokenService _tokenService;
+        private readonly ISecureTokenService _tokenService;
     }
 }

@@ -30,7 +30,13 @@ namespace NatterApi
             services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
 
             services.AddScoped<AuthService>();
-            services.AddScoped<ITokenService, HmacTokenService>();
+
+            services.AddScoped<ITokenService, EncryptedJwtTokenService>();
+
+            services.AddScoped<ISecureTokenService, EncryptedJwtTokenService>();
+
+            services.AddScoped<DatabaseTokenService>();
+
             services.AddScoped<ValidateTokenFilterAttribute>();
 
             services.AddDistributedMemoryCache();
