@@ -7,7 +7,7 @@ using Sodium;
 
 namespace NatterApi.Services.TokenStore
 {
-    public class EncryptedTokenService : ITokenService
+    public class EncryptedTokenService : ISecureTokenService
     {
         public EncryptedTokenService()
         {

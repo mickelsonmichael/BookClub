@@ -7,18 +7,23 @@ using NatterApi.Models.Token;
 
 namespace NatterApi.Services.TokenStore
 {
-    public class HmacTokenService : ITokenService
+    public sealed class HmacTokenService : ISecureTokenService
     {
-        public HmacTokenService()
+        private HmacTokenService(ITokenService tokenService)
         {
-            // _delegate = new DatabaseTokenService(context, logger);
-            _delegate = new JsonTokenStore();
+            _delegate = tokenService;
         }
+
+        public static ISecureTokenService Create(IConfidentialTokenService internalService)
+            => new HmacTokenService(internalService);
+
+        public static IAuthenticatedTokenService Create(ITokenService internalService)
+            => new HmacTokenService(internalService);
 
         public string CreateToken(HttpContext context, Token token)
         {
             string tokenId = _delegate.CreateToken(context, token);
-            
+
             byte[] tag = Hash(tokenId);
 
             return $"{tokenId}.{Convert.ToBase64String(tag)}";
@@ -57,9 +62,9 @@ namespace NatterApi.Services.TokenStore
                 return (false, string.Empty);
             }
 
-            string realTokenId = tokenId.Substring(0, splitIndex);
+            string realTokenId = tokenId[..splitIndex];
 
-            byte[] providedHmac = Convert.FromBase64String(tokenId.Substring(splitIndex + 1));
+            byte[] providedHmac = Convert.FromBase64String(tokenId[(splitIndex + 1)..]);
             byte[] computedHmac = Hash(realTokenId);
 
             return CryptographicOperations.FixedTimeEquals(providedHmac, computedHmac)

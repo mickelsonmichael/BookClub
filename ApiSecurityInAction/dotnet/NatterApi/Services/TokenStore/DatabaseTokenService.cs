@@ -13,7 +13,7 @@ namespace NatterApi.Services.TokenStore
     /// 5.2.1 - Instead of relying on cookies, we store our tokens in the database
     /// See Listing 5.8 for Java implementation.
     /// </summary>
-    public class DatabaseTokenService : ITokenService
+    public class DatabaseTokenService : ISecureTokenService
     {
         public DatabaseTokenService(NatterDbContext dbContext, ILogger<DatabaseTokenService> logger)
         {

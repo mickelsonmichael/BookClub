@@ -11,7 +11,7 @@ using NatterApi.Models.Token;
 
 namespace NatterApi.Services.TokenStore
 {
-    public class EncryptedJwtTokenService : ITokenService
+    public class EncryptedJwtTokenService : ISecureTokenService
     {
         public Task ClearExpiredTokens()
         {

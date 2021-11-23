@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text.Json;
 using System.Threading.Tasks;
 using JWT.Algorithms;
 using JWT.Builder;
@@ -11,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace NatterApi.Services.TokenStore
 {
-    public class SignedJwtService : ITokenService
+    public class SignedJwtService : IAuthenticatedTokenService
     {
         public Task ClearExpiredTokens()
         {
