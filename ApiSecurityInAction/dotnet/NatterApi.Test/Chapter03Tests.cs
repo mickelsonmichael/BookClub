@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -16,18 +17,20 @@ namespace NatterApi.Test
         [Fact]
         [Trait("Section", "3.2.1")]
         [Trait("Topic", "Rate limiting")]
-        public void LimitRequests()
+        public async Task LimitRequests()
         {
             const int requests = 15;
             HttpClient client = _factory.CreateClient();
+            List<HttpStatusCode> statusCodes = new();
 
-            Task<HttpResponseMessage>[] responses = Enumerable.Range(1, requests)
-                .Select(_ => RequestHelpers.GetAsync(client, "/spaces"))
-                .ToArray();
+            foreach (int n in Enumerable.Range(1, requests))
+            {
+                HttpResponseMessage response = await RequestHelpers.GetAsync(client, "/spaces");
 
-            Task.WaitAll(responses);
+                statusCodes.Add(response.StatusCode);
+            }
 
-            Assert.Contains(responses, x => x.Result.StatusCode == System.Net.HttpStatusCode.TooManyRequests);
+            Assert.Contains(statusCodes, code => code == HttpStatusCode.TooManyRequests);
         }
 
         [Fact]
