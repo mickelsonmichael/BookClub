@@ -1,4 +1,4 @@
-$token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJjTlY5SnlyQ1JBVC9SUWY0Q2lrVXRjclNUODQ9Iiwic3ViIjoiZGVtbyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjQ1NjciLCJleHAiOjE2Mzc2ODk3NDIuMH0.9WGjSg9-6TQ1tMROvrtu_JDeb_nb-A52DDjRty0pEUw"
+$token = "token"
 
 $Headers = @{
     Authorization = "Bearer $($token)"
