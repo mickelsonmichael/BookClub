@@ -13,22 +13,21 @@ namespace NatterApi.Middleware
     /// </summary>
     public class AuditMiddleware
     {
-        public AuditMiddleware(RequestDelegate next, IServiceProvider serviceProvider)
+        public AuditMiddleware(RequestDelegate next)
         {
             _next = next;
-            _services = serviceProvider;
         }
 
-        public async Task InvokeAsync(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, NatterDbContext dbContext)
         {
-            await LogRequestAsync(context).ConfigureAwait(false);
+            await LogRequestAsync(context, dbContext);
 
             await _next(context).ConfigureAwait(false);
 
-            await LogResponseAsync(context).ConfigureAwait(false);
+            await LogResponseAsync(context, dbContext);
         }
 
-        private async Task LogRequestAsync(HttpContext context)
+        private async Task LogRequestAsync(HttpContext context, NatterDbContext dbContext)
         {
             HttpRequest request = context.Request;
             string? username = context.GetNatterUsername();
@@ -39,14 +38,12 @@ namespace NatterApi.Middleware
                 username
             );
 
-            using IServiceScope scope = _services.CreateScope();
-            NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
-
             dbContext.AuditLog.Add(auditMessage);
-            await dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+            await dbContext.SaveChangesAsync();
         }
 
-        private async Task LogResponseAsync(HttpContext context)
+        private async Task LogResponseAsync(HttpContext context, NatterDbContext dbContext)
         {
             HttpRequest request = context.Request;
             HttpResponse response = context.Response;
@@ -59,14 +56,11 @@ namespace NatterApi.Middleware
                 response.StatusCode
             );
 
-            using IServiceScope scope = _services.CreateScope();
-            NatterDbContext dbContext = scope.ServiceProvider.GetRequiredService<NatterDbContext>();
-
             dbContext.AuditLog.Add(auditMessage);
+
             await dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
 
         private readonly RequestDelegate _next;
-        private readonly IServiceProvider _services;
     }
 }
