@@ -21,7 +21,9 @@ namespace NatterApi
                     /// Enable HTTPS
                     webBuilder.UseKestrel(kestrel =>
                     {
-                        kestrel.Listen(IPAddress.Loopback, 4567, listenOptions
+                        int port = args.Length > 0 ? int.Parse(args[0]) : 4567;
+
+                        kestrel.Listen(IPAddress.Loopback, port, listenOptions
                             => listenOptions.UseHttps("localhost.p12", "changeit"));
                     });
                 });

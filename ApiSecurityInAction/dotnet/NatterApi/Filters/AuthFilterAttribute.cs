@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
 using NatterApi.Models;
-using NatterApi.Services;
 
 namespace NatterApi.Filters
 {

@@ -15,4 +15,4 @@ jobs:
       - name: Test
         env:
           SLN_PATH: ${{ github.workspace }}/ApiSecurityInAction/dotnet/Natter.sln
-        run: dotnet test ${{ env.SLN_PATH }}
+        run: dotnet test ${{ env.SLN_PATH }} < /dev/null

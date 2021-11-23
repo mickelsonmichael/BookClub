@@ -5,9 +5,6 @@ using NatterApi.Extensions;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
 using NatterApi.Services;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace NatterApi.Controllers
 {

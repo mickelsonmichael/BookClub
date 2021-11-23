@@ -21,7 +21,7 @@ namespace NatterApi.Controllers
             _tokenService = tokenService;
         }
 
-        [HttpPost("/sessions"), ValidateTokenFilter]
+        [HttpPost("/sessions")]
         public IActionResult Login()
         {
             string? username = HttpContext.GetNatterUsername();
@@ -37,9 +37,24 @@ namespace NatterApi.Controllers
 
             string tokenId = _tokenService.CreateToken(HttpContext, token);
 
-            CSRFService.SetToken(HttpContext, tokenId);
-
             return Created("/sessions", tokenId);
+        }
+
+        [HttpGet("/sessions")]
+        public IActionResult Logout()
+        {
+            string? tokenId = Request.Headers["Authorization"].FirstOrDefault();
+
+            if (tokenId == null || !tokenId.StartsWith("Bearer"))
+            {
+                throw new ArgumentException("Missing token header");
+            }
+
+            tokenId = tokenId.Substring("Bearer ".Length);
+
+            _tokenService.DeleteToken(HttpContext, tokenId);
+
+            return Ok();
         }
 
         private readonly ITokenService _tokenService;

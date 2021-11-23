@@ -14,5 +14,10 @@ namespace NatterApi.Test.TestHelpers
 
             return new AuthenticationHeaderValue("Basic", base64Encoded);
         }
+
+        public static AuthenticationHeaderValue GetBearerCredentials(string token)
+        {
+            return new AuthenticationHeaderValue("Bearer", token);
+        }
     }
 }

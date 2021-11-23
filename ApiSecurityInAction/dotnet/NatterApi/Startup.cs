@@ -1,8 +1,6 @@
 using AspNetCoreRateLimit;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +30,7 @@ namespace NatterApi
             services.AddDbContext<NatterDbContext>(ServiceLifetime.Singleton);
 
             services.AddScoped<AuthService>();
-            services.AddScoped<ITokenService,CookieTokenService>();
+            services.AddScoped<ITokenService, HmacTokenService>();
             services.AddScoped<ValidateTokenFilterAttribute>();
 
             services.AddDistributedMemoryCache();
@@ -48,6 +46,7 @@ namespace NatterApi
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "NatterApi", Version = "v1" }));
 
+            services.AddHostedService<TokenJanitor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,9 +63,11 @@ namespace NatterApi
 
             app.UseHttpsRedirection();
 
-            app.UseStaticFiles();
+            app.UseMiddleware<NatterCorsMiddleware>();
 
             app.UseRouting();
+
+            app.UseStaticFiles();
 
             app.UseSession();
 
@@ -76,7 +77,7 @@ namespace NatterApi
 
             app.UseMiddleware<AuditMiddleware>();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+            app.UseEndpoints(endpoints => endpoints.MapControllers().RequireCors(CorsExtensions.CorsPolicyName));
         }
     }
 }

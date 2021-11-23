@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
 {
@@ -23,7 +24,7 @@ namespace NatterApi.Services.TokenStore
             context.Session.SetString("expiry", token.Expiration.ToString("G"));
             context.Session.SetString("attrs", JsonSerializer.Serialize(token.Attributes));
 
-            return context.Session.Id;
+            return CSRFService.CreateToken(context);
         }
 
         public Token? ReadToken(HttpContext context, string tokenId)
@@ -53,11 +54,17 @@ namespace NatterApi.Services.TokenStore
             return token;
         }
 
-        public void DeleteToken(HttpContext context)
+        public void DeleteToken(HttpContext context, string tokenId)
         {
             _logger.LogDebug("Deleting token.");
-            
+
             context.Session.Clear();
+        }
+
+        public Task ClearExpiredTokens()
+        {
+            // do nothing because you can't
+            return Task.CompletedTask;
         }
 
         private readonly ILogger<AuthService> _logger;

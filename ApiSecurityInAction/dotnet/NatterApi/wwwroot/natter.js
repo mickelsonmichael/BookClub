@@ -2,15 +2,14 @@ const apiUrl = 'https://localhost:4567';
 
 function createSpace(name, owner) {
     let data = {name: name, owner: owner};
-    let csrfToken = getCookie('csrfToken');
+    let token = localStorage.getItem('token');
 
     fetch(apiUrl + '/spaces', {
         method: 'POST',
-        credentials: 'include',
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-Token': csrfToken
+            'Authorization': `Bearer ${token}`
         }
     })
     .then(response => {
@@ -27,13 +26,21 @@ function createSpace(name, owner) {
 }
 
 function getCookie(cookieName) {
-    var cookieValue = document.cookie.split(';')
-        .map(item => item.split('=')
-            .map(x => decodeURIComponent(x.trim())))
-        .filter(item => item[0] === cookieName)[0]
+    const cookie = document.cookie.split(';')
+        .map(item => {
+            let splitterIndex = item.indexOf('=');
 
-    if (cookieValue) {
-        return cookieValue[1];
+            let result = {
+                key: item.substring(0, splitterIndex).trim(),
+                value: decodeURIComponent(item.substring(splitterIndex + 1).trim())
+            };
+
+            return result;
+        })
+        .filter(item => item.key === cookieName)[0];
+
+    if (cookie) {
+        return cookie.value;
     }
 }
 
