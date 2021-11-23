@@ -13,6 +13,11 @@ namespace NatterApi.Services.TokenStore
 {
     public class EncryptedJwtTokenService : ISecureTokenService
     {
+        public EncryptedJwtTokenService(DatabaseTokenService allowList)
+        {
+            _allowList = allowList;
+        }
+
         public Task ClearExpiredTokens()
         {
             // TODO
@@ -21,7 +26,12 @@ namespace NatterApi.Services.TokenStore
 
         public string CreateToken(HttpContext context, Token token)
         {
+            Token allowListToken = new(token.Expiration, token.Username);
+
+            string jwtId = _allowList.CreateToken(context, allowListToken);
+
             JwtBuilder jwtBuilder = JwtBuilder.Create()
+                .Id(jwtId)
                 .Subject(token.Username)
                 .Audience("https://localhost:4567")
                 .ExpirationTime(token.Expiration)
@@ -40,28 +50,29 @@ namespace NatterApi.Services.TokenStore
 
         public void DeleteToken(HttpContext context, string tokenId)
         {
-            throw new System.NotImplementedException();
+            IDictionary<string, object> jwt = DecodeJwt(tokenId);
+
+            string id = (string)jwt["jti"];
+
+            _allowList.DeleteToken(context, id);
         }
 
         public Token? ReadToken(HttpContext context, string tokenId)
         {
-            IJsonSerializer jsonSerializer = new JsonNetSerializer();
+            IDictionary<string, object> jwt = DecodeJwt(tokenId);
 
-            IJwtDecoder decoder = new JwtDecoder(
-                jsonSerializer,
-                new JwtValidator(jsonSerializer, new UtcDateTimeProvider()),
-                new JwtBase64UrlEncoder(),
-                new HMACSHA256Algorithm()
-            );
+            string id = (string)jwt["jti"];
 
-            var jwt = decoder.DecodeToObject<IDictionary<string, object>>(
-                tokenId,
-                key: "my_secret",
-                verify: true
-            );
+            if (_allowList.ReadToken(context, id) == null)
+            {
+                return null;
+            }
+
+            long ticks = (long)(double)jwt["exp"];
+            DateTime exp = DateTime.UnixEpoch.AddSeconds(ticks);
 
             Token token = new(
-                new DateTime((long)(double)jwt["exp"]).AddTicks(DateTime.UnixEpoch.Ticks),
+                exp,
                 (string)jwt["sub"]
             );
 
@@ -74,5 +85,25 @@ namespace NatterApi.Services.TokenStore
 
             return token;
         }
+
+        private IDictionary<string, object> DecodeJwt(string token)
+        {
+            IJsonSerializer jsonSerializer = new JsonNetSerializer();
+
+            IJwtDecoder decoder = new JwtDecoder(
+                jsonSerializer,
+                new JwtValidator(jsonSerializer, new UtcDateTimeProvider()),
+                new JwtBase64UrlEncoder(),
+                new HMACSHA256Algorithm()
+            );
+
+            return decoder.DecodeToObject<IDictionary<string, object>>(
+                token,
+                key: "my_secret",
+                verify: false
+            );
+        }
+
+        private readonly DatabaseTokenService _allowList;
     }
 }

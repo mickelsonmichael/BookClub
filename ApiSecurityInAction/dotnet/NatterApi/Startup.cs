@@ -35,6 +35,8 @@ namespace NatterApi
 
             services.AddScoped<ISecureTokenService, EncryptedJwtTokenService>();
 
+            services.AddScoped<DatabaseTokenService>();
+
             services.AddScoped<ValidateTokenFilterAttribute>();
 
             services.AddDistributedMemoryCache();

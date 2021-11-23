@@ -1,1 +1,3 @@
-Invoke-WebRequest -Method POST -Body '{"username":"demo", "password": "password"}' -ContentType "application/json" https://localhost:4567/users
+$resp = Invoke-WebRequest -Method POST -Body '{"username":"demo", "password": "password"}' -ContentType "application/json" https://localhost:4567/users
+
+Write-Host $($resp.StatusCode)
