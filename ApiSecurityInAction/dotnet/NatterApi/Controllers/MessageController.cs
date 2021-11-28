@@ -23,6 +23,8 @@ namespace NatterApi.Controllers
         }
 
         [HttpGet]
+        [RequireScope("list_messages")]
+        [AuthFilter(AccessLevel.Read)]
         public IActionResult GetMessages(
             int spaceId,
             [FromQuery] DateTime? since
@@ -40,6 +42,8 @@ namespace NatterApi.Controllers
         }
 
         [HttpPost]
+        [RequireScope("post_message")]
+        [AuthFilter(AccessLevel.Write)]
         public IActionResult AddMessage(
             [FromBody, Required] CreateMessageRequest request,
             int spaceId
@@ -64,7 +68,9 @@ namespace NatterApi.Controllers
             return Created($"/spaces/{spaceId}/messages/{message.MessageId}", message);
         }
 
-        [HttpGet("{messageId:int}"), AuthFilter(AccessLevel.Read)]
+        [HttpGet("{messageId:int}")]
+        [RequireScope("read_message")]
+        [AuthFilter(AccessLevel.Read)]
         public IActionResult GetMessage(int spaceId, int messageId)
         {
             _logger.LogInformation("Requested details for space {SpaceId} message {MessageId}.", spaceId, messageId);
@@ -82,6 +88,8 @@ namespace NatterApi.Controllers
         }
 
         [HttpDelete("{messageId:int}")]
+        [RequireScope("delete_message")]
+        [AuthFilter(AccessLevel.Delete)]
         public IActionResult DeleteMesage(int spaceId, int messageId)
         {
             _logger.LogInformation("Requested deletion of message {MessageId} from {SpaceId}.", messageId, spaceId);

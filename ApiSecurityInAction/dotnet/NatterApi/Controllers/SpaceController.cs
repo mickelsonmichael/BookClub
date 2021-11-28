@@ -19,7 +19,8 @@ namespace NatterApi.Controllers
             _context = context;
         }
 
-        [HttpGet, AuthFilter]
+        [HttpGet]
+        [AuthFilter]
         public IActionResult GetSpaces()
         {
             List<Space> spaces = _context.Spaces.ToList();
@@ -28,7 +29,9 @@ namespace NatterApi.Controllers
         }
 
         // Page 36
-        [HttpPost, AuthFilter]
+        [HttpPost]
+        [RequireScope("create_space")]
+        [AuthFilter]
         public IActionResult CreateSpace(
             [FromBody, Required] CreateSpaceRequest request
         )
@@ -58,7 +61,8 @@ namespace NatterApi.Controllers
             );
         }
 
-        [HttpGet("{spaceId:int}"), AuthFilter(AccessLevel.Read)]
+        [HttpGet("{spaceId:int}")]
+        [AuthFilter(AccessLevel.Read)]
         public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
@@ -71,7 +75,9 @@ namespace NatterApi.Controllers
             return Ok(space);
         }
 
-        [HttpPost("{spaceId:int}/members"), AuthFilter(AccessLevel.All)]
+        [HttpPost("{spaceId:int}/members")]
+        [RequireScope("add_member")]
+        [AuthFilter(AccessLevel.All)]
         public IActionResult AddMember(
             [FromBody, Required] AddMemberRequest request,
             int spaceId

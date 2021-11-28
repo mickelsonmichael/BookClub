@@ -62,7 +62,7 @@ Invoke-WebRequest -Uri "$url/admin/realms" `
     }' | Out-Null
 Write-Host "Created!"
 
-Write-Host "Adding Natter to list of realm's clients..." -NoNewline
+Write-Host "Adding Natter to list of realm's clients and creating json file..." -NoNewline
 $clientUrl = (Invoke-WebRequest -Uri "$url/admin/realms/api-security/clients" `
     -Method POST `
     -ContentType "application/json" `
