@@ -12,5 +12,7 @@ namespace NatterApi.Options
         public string Secret { get; set; }
         [Required(AllowEmptyStrings = false)]
         public string IntrospectionEndpoint { get; set; }
+        [Required(AllowEmptyStrings = false)]
+        public string RevokeEndpoint { get; set; }
     }
 }

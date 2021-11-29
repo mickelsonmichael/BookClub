@@ -25,6 +25,7 @@ namespace NatterApi.Services.TokenStore
         )
         {
             _introspectionEndpoint = options.Value.IntrospectionEndpoint;
+            _revokeEndpoint = options.Value.RevokeEndpoint;
             _httpClient = httpClient;
             _logger = logger;
 
@@ -48,7 +49,27 @@ namespace NatterApi.Services.TokenStore
 
         public void DeleteToken(HttpContext context, string tokenId)
         {
-            throw new System.NotImplementedException();
+            IEnumerable<KeyValuePair<string?, string?>> form = new KeyValuePair<string?, string?>[]
+            {
+                new ("token", tokenId),
+                new ("token_type_hint", "access_token")
+            };
+
+            HttpRequestMessage request = new(HttpMethod.Post, _revokeEndpoint)
+            {
+                Content = new FormUrlEncodedContent(form),
+            };
+
+            request.Headers.Add("Authorization", _authorization);
+
+            HttpResponseMessage response = _httpClient.SendAsync(request).GetAwaiter().GetResult();
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                string errorMessage = response.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+
+                _logger.LogCritical("Error attempting to revoke torkens via OAuth2. {ErrorMessage}", errorMessage);
+            }
         }
 
         public Token? ReadToken(HttpContext context, string tokenId)
@@ -105,6 +126,7 @@ namespace NatterApi.Services.TokenStore
 
         private DateTime GetExpirationDate(long ticks) => DateTime.UnixEpoch.AddSeconds(ticks);
 
+        private readonly string _revokeEndpoint;
         private readonly string _introspectionEndpoint;
         private readonly string _authorization;
         private readonly HttpClient _httpClient;

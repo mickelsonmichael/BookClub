@@ -32,7 +32,7 @@ namespace NatterApi
 
             services.AddScoped<AuthService>();
 
-            services.AddHttpClient<ITokenService, OAuth2TokenService>();
+            services.AddHttpClient<ISecureTokenService, OAuth2TokenService>();
 
             services.AddScoped<DatabaseTokenService>();
 

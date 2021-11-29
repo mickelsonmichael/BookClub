@@ -53,8 +53,6 @@ namespace NatterApi.Controllers
                 throw new ArgumentException("Missing token header");
             }
 
-
-
             tokenId = tokenId["Bearer ".Length..];
 
             _tokenService.DeleteToken(HttpContext, tokenId);
