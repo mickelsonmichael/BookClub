@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using NatterApi.Extensions;
 using NatterApi.Filters;
 using NatterApi.Middleware;
+using NatterApi.Options;
 using NatterApi.Services;
 using NatterApi.Services.TokenStore;
 using System;
@@ -31,9 +32,7 @@ namespace NatterApi
 
             services.AddScoped<AuthService>();
 
-            services.AddScoped<ITokenService, EncryptedJwtTokenService>();
-
-            services.AddScoped<ISecureTokenService, EncryptedJwtTokenService>();
+            services.AddHttpClient<ITokenService, OAuth2TokenService>();
 
             services.AddScoped<DatabaseTokenService>();
 
@@ -53,6 +52,10 @@ namespace NatterApi
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "NatterApi", Version = "v1" }));
 
             services.AddHostedService<TokenJanitor>();
+
+            services.AddOptions()
+                .AddOptions<KeycloakOptions>()
+                .BindConfiguration(KeycloakOptions.ConfigKey);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

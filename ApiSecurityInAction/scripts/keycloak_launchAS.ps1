@@ -2,6 +2,10 @@ $user = "admin"
 $pass = "admin"
 $container = "api-security-as"
 
+$keyCloakSettings = Get-Content -Path "../dotnet/NatterApi/appsettings.json" | ConvertFrom-Json | Select-Object -ExpandProperty Keycloak
+$clientId = $keyCloakSettings.ClientId
+$clientSecret = $keyCloakSettings.Secret
+
 Write-Host "Starting keycloak server with credentials $user`:$pass."
 
 try {
@@ -58,29 +62,70 @@ Invoke-WebRequest -Uri "$url/admin/realms" `
     -Headers $headers `
     -Body '
     {
-        "realm": "api-security"
+        "realm": "api-security",
+        "enabled": true
     }' | Out-Null
 Write-Host "Created!"
+
+$scopes = "full_access", "create_space", "post_message", "read_message", "list_message", "add_member", "delete_message"
+
+Write-Host "Adding scopes to realm..." -NoNewline
+
+foreach ($scope in $scopes)
+{
+    Invoke-WebRequest -Uri "$url/admin/realms/api-security/client-scopes" `
+        -Method POST `
+        -ContentType "application/json" `
+        -Headers $headers `
+        -Body "
+        {
+            `"name`": `"$scope`",
+            `"protocol`": `"openid-connect`"
+        }
+        " | Out-Null
+}
+Write-Host "All $($scopes.Length) scopes added!"
 
 Write-Host "Adding Natter to list of realm's clients and creating json file..." -NoNewline
 $clientUrl = (Invoke-WebRequest -Uri "$url/admin/realms/api-security/clients" `
     -Method POST `
     -ContentType "application/json" `
     -Headers $headers `
-    -Body '
+    -Body "
     {
-        "rootUrl": "https://localhost:4567",
-        "protocol": "openid-connect",
-        "clientId": "natter"
+        `"rootUrl`": `"https://localhost:4567`",
+        `"protocol`": `"openid-connect`",
+        `"clientId`": `"$clientId`",
+        `"secret`": `"$clientSecret`",
+        `"publicClient`": false,
+        `"optionalClientScopes`": [$($scopes | Join-String -Separator "," -DoubleQuote)]
     }
-    ').Headers["Location"]
+    ").Headers["Location"]
 
 (Invoke-WebRequest -Uri "$clientUrl/installation/providers/keycloak-oidc-keycloak-json" `
     -Headers $headers `
     ).Content | Out-File -FilePath "..\dotnet\NatterApi\keycloak-oidc.json"
 Write-Host "Added!"
 
+Write-Host "!!! Access the client endpoints using `"$clientId`:$clientSecret`"."
+
+Write-Host "Creating user `"demo`" with password `"changeit`"..." -NoNewline
+Invoke-WebRequest -Method POST `
+    -ContentType "application/json" `
+    -Headers $headers `
+    -Uri "$url/admin/realms/api-security/users" `
+    -Body '
+        {
+            "enabled": true,
+            "username": "demo",
+            "credentials": [{
+                "type": "password",
+                "value": "changeit",
+                "temporary": false
+            }]
+        }
+    ' | Out-Null
+Write-Host "It's alive!"
 
 
-
-# Start-Process "$url/admin"
+Start-Process "$url/admin"
