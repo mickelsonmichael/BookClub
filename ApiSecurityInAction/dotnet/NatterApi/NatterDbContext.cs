@@ -26,7 +26,7 @@ namespace NatterApi
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Permission>()
-                .HasKey(p => new { p.SpaceId, p.Username });
+                .HasKey(p => new { p.SpaceId, p.UsernameOrGroupname });
 
             modelBuilder.Entity<Token>(tokenBuilder =>
             {
