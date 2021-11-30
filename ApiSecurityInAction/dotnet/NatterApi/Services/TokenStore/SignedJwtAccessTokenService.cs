@@ -1,32 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
+using JWT.Algorithms;
+using JWT.Builder;
+using JWT.Exceptions;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using NatterApi.Models.Token;
 using NatterApi.Options;
-using JWT;
-using JWT.Algorithms;
-using System.Security.Cryptography;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using JWT.Serializers;
-using JWT.Builder;
-using Org.BouncyCastle.Crypto.Generators;
-using Org.BouncyCastle.Security;
-using System.Numerics;
-using Microsoft.IdentityModel.Tokens;
-using JWT.Exceptions;
+using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
 
 namespace NatterApi.Services.TokenStore
 {
+    /// <summary>
+    ///  http://localhost:8080/auth/realms/api-security/.well-known/openid-configuration
+    ///  http://localhost:8080/auth/realms/api-security/protocol/openid-connect/certs
+    ///  http://localhost:8080/auth/realms/api-security
+    /// </summary>
     public class SignedJwtAccessTokenService : ISecureTokenService
     {
         public SignedJwtAccessTokenService(
