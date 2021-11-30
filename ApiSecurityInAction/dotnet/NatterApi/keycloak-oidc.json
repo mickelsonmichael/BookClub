@@ -1,0 +1,10 @@
+{
+  "realm" : "api-security",
+  "auth-server-url" : "http://localhost:8080/auth/",
+  "ssl-required" : "external",
+  "resource" : "natter",
+  "credentials" : {
+    "secret" : "getmestuff"
+  },
+  "confidential-port" : 0
+}

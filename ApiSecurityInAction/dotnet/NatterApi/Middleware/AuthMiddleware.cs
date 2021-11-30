@@ -22,7 +22,7 @@ namespace NatterApi.Middleware
             _logger = logger;
         }
 
-        public async Task InvokeAsync(HttpContext context, AuthService authService, ITokenService tokenService)
+        public async Task InvokeAsync(HttpContext context, AuthService authService, ISecureTokenService tokenService)
         {
             if (!HasAuthenticationHeader(context))
             {

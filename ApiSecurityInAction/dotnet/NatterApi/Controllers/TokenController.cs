@@ -5,6 +5,7 @@ using NatterApi.Services.TokenStore;
 using NatterApi.Extensions;
 using System;
 using System.Linq;
+using NatterApi.Filters;
 
 namespace NatterApi.Controllers
 {
@@ -17,7 +18,10 @@ namespace NatterApi.Controllers
         }
 
         [HttpPost("/sessions")]
-        public IActionResult Login()
+        [RequireScope("full_access")]
+        public IActionResult Login(
+            [FromQuery] string? scope
+        )
         {
             string? username = HttpContext.GetNatterUsername();
 
@@ -28,14 +32,18 @@ namespace NatterApi.Controllers
 
             DateTime expiry = DateTime.Now.AddMinutes(10);
 
+            scope = string.IsNullOrWhiteSpace(scope) ? DefaultScope : scope;
+
             Token token = new(expiry, username);
+
+            token.Attributes.Add(("scope", scope));
 
             string tokenId = _tokenService.CreateToken(HttpContext, token);
 
             return Created("/sessions", tokenId);
         }
 
-        [HttpGet("/sessions")]
+        [HttpDelete("/sessions")]
         public IActionResult Logout()
         {
             string? tokenId = Request.Headers["Authorization"].FirstOrDefault();
@@ -53,5 +61,14 @@ namespace NatterApi.Controllers
         }
 
         private readonly ISecureTokenService _tokenService;
+        private string DefaultScope => string.Join(" ", new[]
+        {
+            "create_space",
+            "post_message",
+            "read_message",
+            "list_messages",
+            "delete_message",
+            "add_member"
+        });
     }
 }
