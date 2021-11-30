@@ -12,7 +12,7 @@ namespace NatterApi.Test
         private readonly WebApplicationFactory<Startup> _factory = new();
         private HttpClient HttpClient() => _factory.CreateClient();
 
-        [Fact]
+        [Fact(Skip = "Cannot run without the keycloak server")]
         public async Task LoginWithToken()
         {
             SessionHelper session = new(HttpClient());

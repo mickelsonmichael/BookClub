@@ -42,7 +42,6 @@ namespace NatterApi.Services.TokenStore
 
         public string CreateToken(HttpContext context, Token token)
         {
-            // todo
             return string.Empty;
         }
 
