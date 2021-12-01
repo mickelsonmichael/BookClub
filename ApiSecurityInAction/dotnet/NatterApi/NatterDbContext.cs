@@ -16,6 +16,8 @@ namespace NatterApi
         public DbSet<AuditMessage> AuditLog { get; private set; }
         public DbSet<Token> Tokens { get; private set; }
         public DbSet<RolePermission> RolePermissions { get; private set; }
+        // 8.2.2 Static Roles
+        public DbSet<UserRole> UserRoles { get; private set; }
 #nullable enable
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -46,6 +48,10 @@ namespace NatterApi
                     new RolePermission("observer", "r")
                 );
             });
+
+            // 8.2.2
+            modelBuilder.Entity<UserRole>()
+                .HasKey(nameof(UserRole.SpaceId), nameof(UserRole.Username));
         }
 
         private readonly JsonSerializerOptions _jsonOptions = new();

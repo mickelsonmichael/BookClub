@@ -7,6 +7,7 @@
 > Code by **Michael**
 
 Contents:
+
 - [Raghda's Notes](#raghda)
 - [Michael's Notes](#michael)
 
@@ -19,7 +20,7 @@ This chapter talks about alternative ways of organizing permissions in the ident
 3. The advantage of groups is that you can assign permissions to groups and be sure that all members of that group have consistent permissions.
 4. In UNIX groups, the owner of the file can assign permissions to only a single pre-existing group, dramatically reducing the amount of data that must be stored for each file. The downside of this compression is that if a group doesn't exist with the required members, then the owner may have to grant access to a larger group than they would otherwise like to.
 5. Implementation is straight forward: there is a `Users` table and a `Permissions` table that act as an ACL linking users to permissions within a space. To add groups, you could first add a new table to indicate which users are members of which groups.
-6. When the user authenticates, you can then look up the groups that user is a member of and add them as an additional request attribute that can be viewed by other processes. *Listing 8.1* shows how groups could be looked up in the `authenticate()` method in the `UserController` after the user has successfully authenticated.
+6. When the user authenticates, you can then look up the groups that user is a member of and add them as an additional request attribute that can be viewed by other processes. _Listing 8.1_ shows how groups could be looked up in the `authenticate()` method in the `UserController` after the user has successfully authenticated.
 7. When building dynamic SQL queries, be sure to use only placeholders and never include user input directly in the query being built to avoid SQL injection attacks, which are discussed in chapter 2. Some databases support temporary tables, which allow you to insert dynamic values into the temporary table and then perform an SQL `JOIN` against the temporary table in your query. Each transaction sees its own copy of the temporary table, avoiding the need to generate dynamic queries.
 8. Drawback: consider what would happen if you changed your API to use an external user store such as LDAP or an OpenID Connect identity provider. In these cases, the groups that a user is a member of are likely to be returned as additional attributes during authentication (such as in the ID token JWT) rather than exists in the API's own database.
 
@@ -32,31 +33,34 @@ This chapter talks about alternative ways of organizing permissions in the ident
 11. Some of the directory servers also support virtual static groups, which look like static groups but query a dynamic group to determine the membership.
 12. To find which static groups a user is a member of in LDAP, you must perform a search against the directory for all groups that have that user's distinguished name as a value of their `member` attribute.
 13. You need to connect to the LDAP server using the Java Naming and Directory Interface (JNDI) or another LDAP client library. Normal LDAP users typically are not permitted to run searches, so you should use a separate JNDI `InitialDirContext` for looking up a user's groups
-14. *Common types of LDAP groups*
+14. _Common types of LDAP groups_
     - Static groups, dynamic groups, virtual static group. Static and dynamic groups are standard, and virtual static groups are nonstandard but widely implemented.
-    - *Given the following LDAP filter*: `(&(objectClass=#A)(member=uid=alice,dc=example,dc=com))` which one of the following object classes would be inserted into the position marked `#A` to search for static groups Alice belongs to **`groupOfNames` (or `groupOfUniqueNames`)**.
+    - _Given the following LDAP filter_: `(&(objectClass=#A)(member=uid=alice,dc=example,dc=com))` which one of the following object classes would be inserted into the position marked `#A` to search for static groups Alice belongs to **`groupOfNames` (or `groupOfUniqueNames`)**.
 
 ### 8.2 Role-based access control as in DB
 
 15. Group permissions disadvantage:
-  1. to work out who has access to what, you still often need to examine the permissions for all users as well as the groups they belong to
-  2. No matter how you organize users into groups you would want another group
+1. to work out who has access to what, you still often need to examine the permissions for all users as well as the groups they belong to
+1. No matter how you organize users into groups you would want another group
+
+
     - example: the LDAP directory might just have a group for all software engineers, but your API needs to distinguished between back-end and front-end engineers, QA, and scrum masters.
-  3. Finally, even when groups are a good fit for an API there may be large numbers of fine-grained permissions assigned to each group, making it difficult to review the permissions.
-16. Role-based access control (RBAC) introduces the notion of role as an intermediary between users and permissions; permissions are **assign to roles, not to invdividuals**.
-17. Differences between RBAC and groups
-  1. Groups are used primarily to organize users, while roles are mainly used as a way to organize permissions.
-  2. Groups tend to be assigned centrally, whereas roles tend to be specific to a particular application or API. As an example, every API may have an admin role, but the set of users that are administrators may differ from API to API
-  3. Group-based systems often allow permission to be assigned to individual users, but RBAC systems typically don't allow that. This restriction can dramatically simplify the process of reviewing who has access to what.
-  4. RBAC systems split the definition and assigning of permissions to roles from the assignment of users to those roles. It is much less error-prone to assign a user to a role than to work out which permissions each role should have
-18. To map role permissions, Java EE uses the `@` notation or retain an explicit notion of lower-level permissions
+
+3. Finally, even when groups are a good fit for an API there may be large numbers of fine-grained permissions assigned to each group, making it difficult to review the permissions.
+4. Role-based access control (RBAC) introduces the notion of role as an intermediary between users and permissions; permissions are **assign to roles, not to invdividuals**.
+5. Differences between RBAC and groups
+6. Groups are used primarily to organize users, while roles are mainly used as a way to organize permissions.
+7. Groups tend to be assigned centrally, whereas roles tend to be specific to a particular application or API. As an example, every API may have an admin role, but the set of users that are administrators may differ from API to API
+8. Group-based systems often allow permission to be assigned to individual users, but RBAC systems typically don't allow that. This restriction can dramatically simplify the process of reviewing who has access to what.
+9. RBAC systems split the definition and assigning of permissions to roles from the assignment of users to those roles. It is much less error-prone to assign a user to a role than to work out which permissions each role should have
+10. To map role permissions, Java EE uses the `@` notation or retain an explicit notion of lower-level permissions
     - **We have that in C# in the `msconfig`'s `authorization` section**
-19. To map users to the roles from DB a table
-20. Security domain (realm): roles/groups specific to area in the app
-21. Determine which role a user has when they make a request to the API and the permissions that each role allows (see 8.2.3), that is a static assignment.   
-22. Dynamic assignment (see 8.2.4) allows more dynamic queries to determine which roles a user should have (they add more constraints to reduce risks of misuse).
+11. To map users to the roles from DB a table
+12. Security domain (realm): roles/groups specific to area in the app
+13. Determine which role a user has when they make a request to the API and the permissions that each role allows (see 8.2.3), that is a static assignment.
+14. Dynamic assignment (see 8.2.4) allows more dynamic queries to determine which roles a user should have (they add more constraints to reduce risks of misuse).
     - example: deny the role when out of shift
-23. Pre-defined roles that carry a specific set of privileges associated with them and to which subjects they are assigned
+15. Pre-defined roles that carry a specific set of privileges associated with them and to which subjects they are assigned
 
 ### 8.3 Attribute-based access control
 
@@ -76,18 +80,18 @@ This chapter talks about alternative ways of organizing permissions in the ident
 31. Rather than combining all the logic of enforcing policies into the agent itself, another approach is to centralize the definition of policies in a separate server, which provides a REST API for policy agents to connect to and evaluate policy decisions
 32. **XACML** is the "eXtensible Access-Control Markup Language", a standard produced by the OASIS standards body. XACML defines a rich, XML-based policy language and a reference architecture for distributed policy enforcement (can be installed).
 33. **Best practices for ABAC (attribute-based access control)**
-  1. Layer ABAC over a simpler access control technology such as RBAC. This provides a defense-in-depth strategy so that a mistake in the ABAC rules doesn't result in a total loss of security.
-  2. Implement automated testing of your API endpoints so that you are alerted quickly if a policy change results in access being granted to unintended parties.
-  3. Ensure access control policies are maintained in a version control system so that they can be easily rolled back if necessary. Ensure proper review of all policy changes.
-  4. Consider which aspects of policy should be centralized and which should be left up to individual APIs or local policy agents. Though it can be tempting to centralize everything, this can introduce a layer of bureaucracy that can make it harder to make changes. In the worst case, this can violate the principle of least privilege because overly broad policies are left in place due to overhead of changing them.
-  5. Measure the performance overhead of ABAC policy evaluation early and often
-34. ABAC decisions can be centralized using a policy engine. The XACML standard defines a common model for ABAC architecture, with separate components for policy decisions (PDP), policy information (PIP), policy administration (PAP), and policy enforcement (PEP).
+34. Layer ABAC over a simpler access control technology such as RBAC. This provides a defense-in-depth strategy so that a mistake in the ABAC rules doesn't result in a total loss of security.
+35. Implement automated testing of your API endpoints so that you are alerted quickly if a policy change results in access being granted to unintended parties.
+36. Ensure access control policies are maintained in a version control system so that they can be easily rolled back if necessary. Ensure proper review of all policy changes.
+37. Consider which aspects of policy should be centralized and which should be left up to individual APIs or local policy agents. Though it can be tempting to centralize everything, this can introduce a layer of bureaucracy that can make it harder to make changes. In the worst case, this can violate the principle of least privilege because overly broad policies are left in place due to overhead of changing them.
+38. Measure the performance overhead of ABAC policy evaluation early and often
+39. ABAC decisions can be centralized using a policy engine. The XACML standard defines a common model for ABAC architecture, with separate components for policy decisions (PDP), policy information (PIP), policy administration (PAP), and policy enforcement (PEP).
 
 ## Michael
 
 In [chapter 03](/chapter03.md) we implemented a simple Access Control List (ACL), with a table of `Permissions` granting a particular user (by username) access to a particular space (by space ID). The allowed access was implemented using a three character string, with `r` giving read privileges, `w` giving write privileges, and `d` giving delete privileges. This is fine initially, but if you were to track each user's access to each space, this number would grow exponentially; in the worst case, every user would need a permission for every space, and every space would need a permission for every user. Given 100 users and 100 spaces, this is 10,000 permissions. Given 1,000,000 users and 1,000,000 spaces, that ramps up to 1,000,000,000,000 permissions, or rows in the database.
 
-Not only is that costly to store and access, if permissions aren't regularly removed as they are no longer needed, users continue to accumulate permissions they don't use and violate the *principle of least privilege*.
+Not only is that costly to store and access, if permissions aren't regularly removed as they are no longer needed, users continue to accumulate permissions they don't use and violate the _principle of least privilege_.
 
 To prevent these issues, this chapter covers non-identity-based access control models including Role-based Access Control (RBAC), Groups, and Attribute-based Access Control (ABAC).
 
@@ -106,7 +110,7 @@ public class Group
 {
   [Key]
   public string GroupId { get; private set; }
-  
+
   public ICollection<User> Users { get; private set; } = new List<User>();
 
   public Group(string groupId)
@@ -207,16 +211,16 @@ Groups are great for managing users, but they have three flaws
 2. If a group is used by the organization, the groupings may not be adequate for the API's purposes; they may require different groups than the organization may provide, leading back to individual user permissions
 3. Groups may have a multitude of permissions, which can make it difficult to review them
 
-In *Role-based access control (RBAC)*, a "role" is used to bridge the gap between a user and a set of permissions. Permissions are assigned to a role, and then a role, or multiple roles, are assigned to a user. The nature of roles allows for very intuitive naming schemes (e.g. moderator, admin, etc.) and instead of editing multiple groups when permissions need to change, you can simply edit the role which affects the entire group.
+In _Role-based access control (RBAC)_, a "role" is used to bridge the gap between a user and a set of permissions. Permissions are assigned to a role, and then a role, or multiple roles, are assigned to a user. The nature of roles allows for very intuitive naming schemes (e.g. moderator, admin, etc.) and instead of editing multiple groups when permissions need to change, you can simply edit the role which affects the entire group.
 
 Groups and roles sound very similar, but there are some important differences
 
-| Groups | Roles |
-| ------ | ----- |
-| organize users | organize permissions |
-| assigned centrally | assigned by the API |
-| individual user permissions | *no* individual user permissions |
-| static in nature | can have a dynamic nature |
+| Groups                      | Roles                            |
+| --------------------------- | -------------------------------- |
+| organize users              | organize permissions             |
+| assigned centrally          | assigned by the API              |
+| individual user permissions | _no_ individual user permissions |
+| static in nature            | can have a dynamic nature        |
 
 The last point is useful when a set of permissions should be temporary, for instance giving a person access to a system while they are working on the project, then removing them afterwards. This process can easily be automated by many systems.
 
@@ -248,3 +252,26 @@ public IActionResult EditPost([FromBody] Post post)
 
 The latter approach is the approach Natter will take, and has the advantage that roles can be managed without directly editing the source code, and it is much easier to see which roles have access to a particular action without having to search for references to the role within the code.
 
+#### Static roles (Section 8.2.2)
+
+A security "domain" or "realm" is when users, groups, or roles are confined to a subset of an application.
+
+For our Natter implementation, we will statically define the roles by inserting them into the database. In .NET with Entity Framework Core, we will accomplish this by seeding the in-memory database on application startup. Because the database is in-memory and is deleted each time the application is stopped, it should be safe to do so.
+
+```c#
+// NatterDbContext.cs
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+  modelBuilder.Entity<RolePermission>(roleBuilder =>
+  {
+      roleBuilder.HasData(
+          new RolePermission("owner", "rwd"),
+          new RolePermission("moderator", "rd"),
+          new RolePermission("member", "rw"),
+          new RolePermission("observer", "r")
+      );
+  });
+}
+```
+
+We will then update the `SpaceController.cs` class to assign the appropriate roles during the `CreateSpace` and `AddMember` methods.
