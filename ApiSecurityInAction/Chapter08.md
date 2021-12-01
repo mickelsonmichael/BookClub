@@ -196,3 +196,55 @@ LDAP, or [Lightweight Directory Access Protocol](https://ldap.com/basic-ldap-con
 1. Static groups - explicitly list group members
 2. Dynamic groups - provide a set of search queries where any matching users are considered part of the group
 3. Virtual static groups - look like static groups but behave more like dynamic groups
+
+Similar to SQL, LDAP is vulnerable to injection attacks, so you should utilize a library and parameters to prevent user-input from being inserted directly into filters.
+
+### Role-based access control (RBAC, Section 8.2)
+
+Groups are great for managing users, but they have three flaws
+
+1. Users can (generally) still be assigned permissions individually, which means you still have to inspect the individual users to find out their permissions
+2. If a group is used by the organization, the groupings may not be adequate for the API's purposes; they may require different groups than the organization may provide, leading back to individual user permissions
+3. Groups may have a multitude of permissions, which can make it difficult to review them
+
+In *Role-based access control (RBAC)*, a "role" is used to bridge the gap between a user and a set of permissions. Permissions are assigned to a role, and then a role, or multiple roles, are assigned to a user. The nature of roles allows for very intuitive naming schemes (e.g. moderator, admin, etc.) and instead of editing multiple groups when permissions need to change, you can simply edit the role which affects the entire group.
+
+Groups and roles sound very similar, but there are some important differences
+
+| Groups | Roles |
+| ------ | ----- |
+| organize users | organize permissions |
+| assigned centrally | assigned by the API |
+| individual user permissions | *no* individual user permissions |
+| static in nature | can have a dynamic nature |
+
+The last point is useful when a set of permissions should be temporary, for instance giving a person access to a system while they are working on the project, then removing them afterwards. This process can easily be automated by many systems.
+
+In general, RBAC is a mandatory access control pattern, with users infrequently assigning roles to other users.
+
+RBAC also contains the concept of "sessions" in which a user selects active roles when they log in; by limiting the number of roles they are using for that session, they limit the damage that can be done if that session is compromised. For example, when logging into AWS at Nasdaq, we are given a series of roles to choose from. The role selected will vary depending on what application we need to work on, and if we want access to another application we should log out and select a different role. This means if our session somehow gets compromised, the attacker will only have access to a handful of applications, rather than the entire set of applications we're responsible for.
+
+> For more information on RBAC and sessions, checkout the [NIST official documentation on Role-based access control](https://csrc.nist.gov/projects/role-based-access-control).
+
+> For more information on RBAC in ASP.NET Core, checkout [the official Microsoft Docs](https://docs.microsoft.com/en-us/aspnet/core/security/authorization/roles)
+
+#### Mapping roles to permissions (Section 8.2.1)
+
+There are two methods for leveraging roles within an application:
+
+1. Annotation based, where endpoints are given a set of roles that can access them
+2. Role to permission mappings, where roles are defined and given permissions similar to users and groups would be
+
+The former is accomplished in .NET using the `Authorize` attribute and providing a comma-separated list of roles or providing multiple `Authorize` attributes, each defining a role.
+
+```c#
+[Authorize(Roles = "moderator")]
+[HttpPatch]
+public IActionResult EditPost([FromBody] Post post)
+{
+  // perform restricted action
+}
+```
+
+The latter approach is the approach Natter will take, and has the advantage that roles can be managed without directly editing the source code, and it is much easier to see which roles have access to a particular action without having to search for references to the role within the code.
+

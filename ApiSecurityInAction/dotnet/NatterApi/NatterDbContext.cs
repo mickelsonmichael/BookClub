@@ -14,8 +14,8 @@ namespace NatterApi
         public DbSet<Space> Spaces { get; private set; }
         public DbSet<User> Users { get; private set; }
         public DbSet<AuditMessage> AuditLog { get; private set; }
-        public DbSet<Permission> Permissions { get; private set; }
         public DbSet<Token> Tokens { get; private set; }
+        public DbSet<RolePermission> RolePermissions { get; private set; }
 #nullable enable
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -25,9 +25,6 @@ namespace NatterApi
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Permission>()
-                .HasKey(p => new { p.SpaceId, p.UsernameOrGroupname });
-
             modelBuilder.Entity<Token>(tokenBuilder =>
             {
                 // 5.2.1 - Token attributes should be serialized into the database as JSON instead of rows
@@ -39,6 +36,16 @@ namespace NatterApi
                     );
             });
 
+            // 8.2.1
+            modelBuilder.Entity<RolePermission>(roleBuilder =>
+            {
+                roleBuilder.HasData(
+                    new RolePermission("owner", "rwd"),
+                    new RolePermission("moderator", "rd"),
+                    new RolePermission("member", "rw"),
+                    new RolePermission("observer", "r")
+                );
+            });
         }
 
         private readonly JsonSerializerOptions _jsonOptions = new();
