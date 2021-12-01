@@ -309,3 +309,14 @@ In my opinion, this step is undesirable. Adding more attributes and filters just
 As mentioned before, roles can have a more dynamic use than groups. A particular role can be assigned temporarily during a certain period, then removed once that period has elapsed. This can be handled automatically using dynamic queries much like those available in LDAP.
 
 Unfortunately, this dynamic role system isn't standardized, different providers handle it in different ways. Therefore, it is generally better to opt for attribute-based access control instead.
+
+### Attribute-based access control (ABAC, Section 8.3)
+
+While RBAC can be dynamic in nature, attribute-based access control (ABAC) takes it to the next level. The allowed permissions can change on a per-request basis based on four potential sources of information
+
+1. Attributes about the requester
+2. Attributes about the requested data
+3. Attributes about the requested action
+4. Attributes about the environment or context
+
+During normal application flow, you will want to collect a set of attributes in some manner of filter, then pass those attributes into a decision making implementation. Madden has chosen to make that implementation abstract for now but will continue to flesh it out in future sections.
