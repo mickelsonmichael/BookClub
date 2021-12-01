@@ -320,3 +320,26 @@ While RBAC can be dynamic in nature, attribute-based access control (ABAC) takes
 4. Attributes about the environment or context
 
 During normal application flow, you will want to collect a set of attributes in some manner of filter, then pass those attributes into a decision making implementation. Madden has chosen to make that implementation abstract for now but will continue to flesh it out in future sections.
+
+#### Combining decisions (Section 8.3.1)
+
+Attribute-based access control is predicated on a set of roles that inform decisions about whether permissions should be granted or not, and those rules can often overlap (or not overlap), so it is important to consider:
+
+- What to do if no rules match the request
+- What to do if multiple rules match the request
+
+In the former case, it is best to deny any request that does not map to a rule. For the latter, it is safer to err on the side of caution and deny a request if any of the rules say to deny.
+
+However, when building on top of an existing system, it is usually easier to still allow any request that does not match a rule to continue. You may not have all the rules fully implemented, and not every endpoint will match a rule. That is why we will use this implementation in Natter.
+
+For the .NET implementation of a decision, I've opted to use a record type, since a decision is a unique entity, and if any part of the `Decision` is changed, it represents an entirely new decision. I've also added some helper functions to more verbosely generate a decision, rather than relying on a boolean constructor.
+
+```c#
+public record Decision(
+    bool IsPermitted
+)
+{
+    public static Decision Permitted() => new(IsPermitted: true);
+    public static Decision Denied() => new(IsPermitted: false);
+};
+```

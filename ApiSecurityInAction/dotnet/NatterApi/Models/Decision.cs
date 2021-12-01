@@ -8,6 +8,11 @@
     /// `false` otherwise.
     /// </param>
     public record Decision(
-        bool IsPermitted    
-    );
+        bool IsPermitted
+    )
+    {
+        // 8.3.1 Combining decisions
+        public static Decision Permitted() => new(IsPermitted: true);
+        public static Decision Denied() => new(IsPermitted: false);
+    };
 }
