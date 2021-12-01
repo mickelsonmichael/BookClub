@@ -302,4 +302,10 @@ public class LookupPermissionsAttribute : ActionFilterAttribute
 }
 ```
 
-In my opinion, this step is undesirable. Adding more attributes and filters just seems messy, and the odds of an auth filter being run twice currently are zero. That doesn't mean that it won't every happen, but in the application's current state there are no instances where it will. In fact, there are several instances where we have to explicitly call the attribute just before an `AuthFilter` attribute like `[LookupPermissions, AuthFilter(AccessLevel.Write)]`. A superior pattern would be to have the first `AuthFilter` lookup the permissions and assign them, allowing future `AuthFilter` iterations to check if the attribute already exists on the context and skip it if it does.
+In my opinion, this step is undesirable. Adding more attributes and filters just seems messy, and the odds of an auth filter being run twice currently are zero. That doesn't mean that it won't ever happen, but in the application's current state there are no instances where it will. In fact, there are several instances where we have to explicitly call the new attribute just before an `AuthFilter` attribute like `[LookupPermissions, AuthFilter(AccessLevel.Write)]` in order for the permissions check to be performed successfully. A superior pattern would be to have the first `AuthFilter` lookup the permissions and assign them, allowing future `AuthFilter` iterations to check if the attribute already exists on the context and skip it if it does.
+
+#### Dynamic roles (Section 8.2.4)
+
+As mentioned before, roles can have a more dynamic use than groups. A particular role can be assigned temporarily during a certain period, then removed once that period has elapsed. This can be handled automatically using dynamic queries much like those available in LDAP.
+
+Unfortunately, this dynamic role system isn't standardized, different providers handle it in different ways. Therefore, it is generally better to opt for attribute-based access control instead.
