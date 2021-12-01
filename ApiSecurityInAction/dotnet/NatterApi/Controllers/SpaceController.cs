@@ -63,7 +63,7 @@ namespace NatterApi.Controllers
         }
 
         [HttpGet("{spaceId:int}")]
-        [AuthFilter(AccessLevel.Read)]
+        [LookupPermissions, AuthFilter(AccessLevel.Read)]
         public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
@@ -78,7 +78,7 @@ namespace NatterApi.Controllers
 
         [HttpPost("{spaceId:int}/members")]
         [RequireScope("add_member")]
-        [AuthFilter(AccessLevel.All)]
+        [LookupPermissions, AuthFilter(AccessLevel.All)]
         public IActionResult AddMember(
             [FromBody, Required] AddMemberRequest request,
             int spaceId

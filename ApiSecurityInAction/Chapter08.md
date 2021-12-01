@@ -275,3 +275,31 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 ```
 
 We will then update the `SpaceController.cs` class to assign the appropriate roles during the `CreateSpace` and `AddMember` methods.
+
+#### Determining user roles (Section 8.2.3)
+
+To get our application back into working order after the changes from the previous two sections, the last change we need to make is how a user's roles are checked within the `AuthFilterAttribute.cs` class.
+
+However, adding the database query directly to the `AuthFilter` attribute could result in multiple queries if the filter is called multiple times. For instance, if the filter is present on both the controller and a specific action. To prevent this, we create a new action filter that will retrieve the permissions and add them to the `HttpContext` before the auth filter runs.
+
+```c#
+// LookupPermissionsAttribute.cs
+public class LookupPermissionsAttribute : ActionFilterAttribute
+{
+  public override void OnActionExecuting(ActionExecutingContext context)
+  {
+    string? username = context.HttpContext.GetNatterUsername();
+
+    if (context.ModelState["spaceId"]?.RawValue is string spaceId && username != null)
+    {
+      NatterDbContext dbContext = context.HttpContext.RequestServices.GetRequiredService<NatterDbContext>();
+
+      string? permissions = dbContext.UserRoles.Find(spaceId, username)?.Role?.Permissions;
+
+      context.HttpContext.Items["perms"] = permissions ?? string.Empty;
+    }
+  }
+}
+```
+
+In my opinion, this step is undesirable. Adding more attributes and filters just seems messy, and the odds of an auth filter being run twice currently are zero. That doesn't mean that it won't every happen, but in the application's current state there are no instances where it will. In fact, there are several instances where we have to explicitly call the attribute just before an `AuthFilter` attribute like `[LookupPermissions, AuthFilter(AccessLevel.Write)]`. A superior pattern would be to have the first `AuthFilter` lookup the permissions and assign them, allowing future `AuthFilter` iterations to check if the attribute already exists on the context and skip it if it does.
