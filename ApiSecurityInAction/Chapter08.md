@@ -356,7 +356,7 @@ These libraries are essentially well-tested ways to define and check rules using
 
 #### Policy agents and API Gateways (Section 8.3.3)
 
-Manning pauses for a brief section on separating out the policies from the code. There are a multitude of ways to specify policies before they even reach your API, including things like <https://www.openpolicyagent.org>. Open Policy Agent (OPA) [provides the ability to create an HTTP endpoint for evaluating rules](https://www.openpolicyagent.org/docs/latest/http-api-authorization/) allowing you to even utilize JWTs to send the current attributes to evaluate. Unfortunately, it is written in Go, so some minimal Go knowledge may be necessary, which isn't a deal breaker by any means.
+Madden pauses for a brief section on separating out the policies from the code. There are a multitude of ways to specify policies before they even reach your API, including things like <https://www.openpolicyagent.org>. Open Policy Agent (OPA) [provides the ability to create an HTTP endpoint for evaluating rules](https://www.openpolicyagent.org/docs/latest/http-api-authorization/) allowing you to even utilize JWTs to send the current attributes to evaluate. Unfortunately, it is written in Go, so some minimal Go knowledge may be necessary, which isn't a deal breaker by any means.
 
 Unfortunately, that's about as much detail as this section provides. It is essentially alerting the reader that such capabilities exist as an alternative, you just have to seek them out yourself.
 
@@ -377,3 +377,13 @@ The XACML architecture introduces several new concepts
 - Policy Administration Point (PAP) - an interface for managing policies
 
 Worth noting, especially for Nasdaq folks, that [Kubernetes has a built-in ABAC policy evaluator](https://kubernetes.io/docs/reference/access-authn-authz/abac/) which is configured using a series of JSON objects, rather than XACML.
+
+#### Best practices for ABAC (Section 8.3.5)
+
+It's important to approach ABAC with a healthy degree of caution. It is quite possible for policies to get out of hand and too numerous to be managed, so Madden provides several tips.
+
+> - Layer ABAC over a simpler access control technology such as RBAC. This provides a defense-in-depth strategy so that a mistake in the ABAC rules doesn’t result in a total loss of security.
+> - Implement automated testing of your API endpoints so that you are alerted quickly if a policy change results in access being granted to unintended parties.
+> - Ensure access control policies are maintained in a version control system so that they can be easily rolled back if necessary. Ensure proper review of all policy changes.
+> - Consider which aspects of policy should be centralized and which should be left up to individual APIs or local policy agents. Though it can be tempting to centralize everything, this can introduce a layer of bureaucracy that can make it harder to make changes. In the worst case, this can violate the principle of least privilege because overly broad policies are left in place due to the overhead of changing them.
+> - Measure the performance overhead of ABAC policy evaluation early and often. 
