@@ -323,14 +323,14 @@ During normal application flow, you will want to collect a set of attributes in 
 
 #### Combining decisions (Section 8.3.1)
 
-Attribute-based access control is predicated on a set of roles that inform decisions about whether permissions should be granted or not, and those rules can often overlap (or not overlap), so it is important to consider:
+Attribute-based access control is predicated on a set of rules that inform decisions about whether permissions should be granted or not, and those rules can often overlap (or not overlap), so it is important to consider:
 
 - What to do if no rules match the request
 - What to do if multiple rules match the request
 
 In the former case, it is best to deny any request that does not map to a rule. For the latter, it is safer to err on the side of caution and deny a request if any of the rules say to deny.
 
-However, when building on top of an existing system, it is usually easier to still allow any request that does not match a rule to continue. You may not have all the rules fully implemented, and not every endpoint will match a rule. That is why we will use this implementation in Natter.
+However, when building on top of an existing system, it is usually easier to still allow any request that does not match a rule to continue. You may not have all the rules fully implemented, and not every endpoint will match a rule. Therefore this is the method we will use in Natter.
 
 For the .NET implementation of a decision, I've opted to use a record type, since a decision is a unique entity, and if any part of the `Decision` is changed, it represents an entirely new decision. I've also added some helper functions to more verbosely generate a decision, rather than relying on a boolean constructor.
 
@@ -343,6 +343,8 @@ public record Decision(
     public static Decision Denied() => new(IsPermitted: false);
 };
 ```
+
+> NOTE: After practicing with the NRules library (see the next section), I've realized that the `record` type isn't ideal for this use-case because the NRules library needs to be able to modify the objects based on references; if it cannot do that then it cannot function properly. In the later sections I have updated `Decision` to be a `class` instead.
 
 #### Implementing ABAC decisions (Section 8.3.2)
 
