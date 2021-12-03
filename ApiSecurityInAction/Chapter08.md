@@ -353,3 +353,27 @@ public record Decision(
 In NRules, you work using models (classes/entities) and rules (which inherit from `NRules.Fluent.Dsl.Rule`). Each rule should override a `Define` method, which uses a fluid syntax to match entities using a `When` style statement, then perform actions on those matching entities using the `Then()` method (and more fluent syntax). The documentation for NRules is unfortunately sparse and takes a bit to grok.
 
 These libraries are essentially well-tested ways to define and check rules using a consistent syntax. You could certainly implement the base functionality with a reasonably small class. What's important is that they're well tested and relatively bug-free.
+
+#### Policy agents and API Gateways (Section 8.3.3)
+
+Manning pauses for a brief section on separating out the policies from the code. There are a multitude of ways to specify policies before they even reach your API, including things like <https://www.openpolicyagent.org>. Open Policy Agent (OPA) [provides the ability to create an HTTP endpoint for evaluating rules](https://www.openpolicyagent.org/docs/latest/http-api-authorization/) allowing you to even utilize JWTs to send the current attributes to evaluate. Unfortunately, it is written in Go, so some minimal Go knowledge may be necessary, which isn't a deal breaker by any means.
+
+Unfortunately, that's about as much detail as this section provides. It is essentially alerting the reader that such capabilities exist as an alternative, you just have to seek them out yourself.
+
+#### Distributed policy enforcement and XACML (Section 8.3.4)
+
+Some HTTP-based policy servers can utilize a offshoot of XML called "eXtensible Access-Control Markup Language" or [XACML](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html), which provides a consistent and readable way to define and evaluate policies without writing code to process it.
+
+Manning links to the [NIST PDF defining ABAC for Federal agencies](https://nvlpubs.nist.gov/nistpubs/specialpublications/NIST.SP.800-162.pdf) and it's actually not a terrible read. I may continue reading it for "fun" at some point.
+
+The XACML architecture introduces several new concepts
+
+- Policy Enforcement Point (PEP) - intercepts requests to an API and rejects any not approved by policies
+- Policy Decision Point (PDP) - determines whether a policy is allowed or denied; PEP communicates with this
+  - Drool and NRules are examples of PDPs
+  - Could also be a separate API like the [OPA example above](#policy-agents-and-api-gateways-section-833)
+- Policy Information Point (PIP) - retrieves and stores the attributes used to check policies
+  - The filter we created earlier in the chapter would be considered a PIP
+- Policy Administration Point (PAP) - an interface for managing policies
+
+Worth noting, especially for Nasdaq folks, that [Kubernetes has a built-in ABAC policy evaluator](https://kubernetes.io/docs/reference/access-authn-authz/abac/) which is configured using a series of JSON objects, rather than XACML.
