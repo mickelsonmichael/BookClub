@@ -7,7 +7,7 @@ namespace NatterApi.Models
     {
         [Key]
         public string GroupId { get; private set; }
-        public ICollection<User> Users { get; private set; } = new List<User>();
+        public ICollection<Group> Groups { get; private set; } = new List<Group>();
 
         public Group(string groupId)
         {

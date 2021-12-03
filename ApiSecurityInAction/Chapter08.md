@@ -343,3 +343,11 @@ public record Decision(
     public static Decision Denied() => new(IsPermitted: false);
 };
 ```
+
+#### Implementing ABAC decisions (Section 8.3.2)
+
+[Drools](https://drools.org/) is "a Business Rules Management System (BRMS) solution. It provides a core Business Rules Engine (BRE), a web authoring and rules management application (Drools Workbench), full time support for Decision Model and Notation (DMN) models at Conformance level 3 and an IDE plugin for core development." In the book, Madden utilizes the Drools engine to craft some rules in Java. However, Drools support in .NET is nearly non-existent and is certainly out of date. Instead, we'll attempt to utilize the [NRules](https://github.com/NRules/NRules) library.
+
+In NRules, you work using models (classes/entities) and rules (which inherit from `NRules.Fluent.Dsl.Rule`). Each rule should override a `Define` method, which uses a fluid syntax to match entities using a `When` style statement, then perform actions on those matching entities using the `Then()` method (and more fluent syntax). The documentation for NRules is unfortunately sparse and takes a bit to grok.
+
+These libraries are essentially well-tested ways to define and check rules using a consistent syntax. You could certainly implement the base functionality with a reasonably small class. What's important is that they're well tested and relatively bug-free.

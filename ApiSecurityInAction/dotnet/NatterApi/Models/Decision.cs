@@ -7,12 +7,11 @@
     /// `true` if the decision is to allow the request,
     /// `false` otherwise.
     /// </param>
-    public record Decision(
-        bool IsPermitted
-    )
+    public class Decision
     {
         // 8.3.1 Combining decisions
-        public static Decision Permitted() => new(IsPermitted: true);
-        public static Decision Denied() => new(IsPermitted: false);
+        public bool IsPermitted { get; private set; } = true; // permitted by default
+
+        public void Deny() => IsPermitted = false;
     };
 }

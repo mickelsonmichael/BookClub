@@ -15,6 +15,7 @@ namespace NatterApi
         public DbSet<User> Users { get; private set; }
         public DbSet<AuditMessage> AuditLog { get; private set; }
         public DbSet<Token> Tokens { get; private set; }
+        public DbSet<GroupMember> GroupMembers { get; private set; }
         public DbSet<RolePermission> RolePermissions { get; private set; }
         // 8.2.2 Static Roles
         public DbSet<UserRole> UserRoles { get; private set; }
@@ -41,6 +42,8 @@ namespace NatterApi
             // 8.2.1
             modelBuilder.Entity<RolePermission>(roleBuilder =>
             {
+                roleBuilder.HasKey(role => role.RoleId);
+
                 roleBuilder.HasData(
                     new RolePermission("owner", "rwd"),
                     new RolePermission("moderator", "rd"),
@@ -49,9 +52,18 @@ namespace NatterApi
                 );
             });
 
+            modelBuilder.Entity<GroupMember>()
+                .HasKey(nameof(GroupMember.GroupId), nameof(GroupMember.Username));
+
             // 8.2.2
-            modelBuilder.Entity<UserRole>()
-                .HasKey(nameof(UserRole.SpaceId), nameof(UserRole.Username));
+            modelBuilder.Entity<UserRole>(ur =>
+            {
+                ur.HasKey(nameof(UserRole.SpaceId), nameof(UserRole.Username));
+
+                ur.HasOne<RolePermission>()
+                    .WithMany()
+                    .HasForeignKey(r => r.RoleId);
+            });
         }
 
         private readonly JsonSerializerOptions _jsonOptions = new();

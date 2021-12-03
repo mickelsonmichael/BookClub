@@ -10,12 +10,10 @@ namespace NatterApi.Models
         // Key (see FluentAPI)
         public int SpaceId { get; }
         // Key (see FluentAPI)
-        [ForeignKey(nameof(User))]
         public string Username { get; }
-        [ForeignKey(nameof(Role))]
         public string RoleId { get; }
 
-        public User? User { get; private set; }
+        [ForeignKey(nameof(RoleId))]
         public RolePermission? Role { get; private set; }
 
         public UserRole(int spaceId, string roleId, string username)

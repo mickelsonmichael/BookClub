@@ -4,9 +4,8 @@ namespace NatterApi.Models
 {
     public class RolePermission
     {
-        [Key]
-        public string RoleId { get; }
-        public string Permissions { get; }
+        public string RoleId { get; private set; }
+        public string Permissions { get; private set; }
 
         public RolePermission(string roleId, string permissions)
         {

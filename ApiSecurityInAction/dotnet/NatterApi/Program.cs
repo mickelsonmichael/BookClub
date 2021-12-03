@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace NatterApi
@@ -8,7 +9,10 @@ namespace NatterApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateHostBuilder(args)
+                .Build()
+                .InitializeDb()
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -27,5 +31,17 @@ namespace NatterApi
                             => listenOptions.UseHttps("localhost.p12", "changeit"));
                     });
                 });
+
+        private static IHost InitializeDb(this IHost host)
+        {
+            using var scope = host.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+            var context = services.GetRequiredService<NatterDbContext>();
+
+            context.Database.EnsureCreated();
+            
+            return host;
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
+using NatterApi.Models;
 
 namespace NatterApi.Filters
 {
@@ -10,13 +11,17 @@ namespace NatterApi.Filters
         {
             string? username = context.HttpContext.GetNatterUsername();
 
-            if (context.ModelState["spaceId"]?.RawValue is string spaceId && username != null)
+            if (context.ModelState["spaceId"]?.RawValue is string s
+                && int.TryParse(s, out int spaceId) 
+                && username != null)
             {
                 NatterDbContext dbContext = context.HttpContext.RequestServices.GetRequiredService<NatterDbContext>();
 
-                string? permissions = dbContext.UserRoles.Find(spaceId, username)?.Role?.Permissions;
+                UserRole userRole = dbContext.UserRoles.Find(spaceId, username);
 
-                context.HttpContext.Items["perms"] = permissions ?? string.Empty;
+                RolePermission role = dbContext.RolePermissions.Find(userRole.RoleId);
+
+                context.HttpContext.Items["perms"] = role.Permissions;
             }
         }
     }

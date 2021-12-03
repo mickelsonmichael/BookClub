@@ -114,7 +114,7 @@ namespace NatterApi.Middleware
         }
 
         private static ICollection<string> GetGroups(string username, NatterDbContext dbContext)
-            => dbContext.Users.Find(username).Groups.Select(g => g.GroupId).ToList();
+            => dbContext.GroupMembers.Where(g => g.Username == "username").Select(g => g.GroupId).ToList();
 
         private static bool HasAuthenticationHeader(HttpContext context)
             => context.Request.Headers["Authorization"].Count == 1;

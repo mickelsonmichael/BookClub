@@ -47,7 +47,10 @@ namespace NatterApi
                 options.Cookie.IsEssential = false;
             });
 
-            services.AddControllers();
+            services.AddControllers(c =>
+            {
+                c.Filters.Add<EnforcePolicyAttribute>();
+            });
 
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApiInfo { Title = "NatterApi", Version = "v1" }));
 
@@ -56,6 +59,8 @@ namespace NatterApi
             services.AddOptions()
                 .AddOptions<KeycloakOptions>()
                 .BindConfiguration(KeycloakOptions.ConfigKey);
+
+            services.AddRules();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -86,7 +91,7 @@ namespace NatterApi
 
             app.UseMiddleware<AuditMiddleware>();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllers().RequireCors(CorsExtensions.CorsPolicyName));
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
