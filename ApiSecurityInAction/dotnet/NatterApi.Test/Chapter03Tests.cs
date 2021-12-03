@@ -75,7 +75,7 @@ namespace NatterApi.Test
             HttpAssert.HasHeader("WWW-Authenticate", badResponse, "Basic realm=\"/\", charset=\"UTF-8\"");
         }
 
-        [Fact]
+        [Fact(Skip = "Skipping in favor of later chapter updates")]
         [Trait("Section", "3.6.5")]
         [Trait("Topic", "Avoiding privilege escalation attacks")]
         public async Task PreventsPrivilegeEscalationAttack()

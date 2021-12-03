@@ -48,9 +48,10 @@ namespace NatterApi.Controllers
             _context.Add(space);
             _context.SaveChanges();
 
-            Permission permission = new(space.Id, username, "rwd");
-
-            _context.Add(permission);
+            // 3.2.2 Static Roles
+            UserRole role = new(space.Id, "owner", username);
+            _context.Add(role);
+            
             _context.SaveChanges();
 
             string url = $"/spaces/{space.Id}";
@@ -62,7 +63,7 @@ namespace NatterApi.Controllers
         }
 
         [HttpGet("{spaceId:int}")]
-        [AuthFilter(AccessLevel.Read)]
+        [LookupPermissions, AuthFilter(AccessLevel.Read)]
         public IActionResult GetSpace(int spaceId)
         {
             Space? space = _context.Spaces.Find(spaceId);
@@ -77,15 +78,17 @@ namespace NatterApi.Controllers
 
         [HttpPost("{spaceId:int}/members")]
         [RequireScope("add_member")]
-        [AuthFilter(AccessLevel.All)]
+        [LookupPermissions, AuthFilter(AccessLevel.All)]
         public IActionResult AddMember(
             [FromBody, Required] AddMemberRequest request,
             int spaceId
         )
         {
-            if (!Regex.IsMatch(request.Permissions, "r?w?d?"))
+            RolePermission? role = _context.RolePermissions.Find(request.Role);
+
+            if (role == null)
             {
-                return BadRequest($"Invalid permissions \"{request.Permissions}\"");
+                return BadRequest($"Invalid role \"{request.Role}\"");
             }
 
             User? user = _context.Users.Find(request.Username);
@@ -102,15 +105,16 @@ namespace NatterApi.Controllers
                 return NotFound($"Could not find space with ID {spaceId}");
             }
 
-            Permission? currentPermission = _context.Permissions.Find(spaceId, request.Username);
+            UserRole? currentRole = _context.UserRoles.Find(spaceId, request.Username);
 
-            if (currentPermission != null)
+            if (currentRole != null)
             {
-                _context.Remove(currentPermission);
+                _context.Remove(currentRole);
             }
 
-            Permission permission = new(spaceId, request.Username, request.Permissions);
-            _context.Add(permission);
+            UserRole newRole = new(spaceId, role.RoleId, request.Username);
+
+            _context.UserRoles.Add(newRole);
 
             _context.SaveChanges();
 

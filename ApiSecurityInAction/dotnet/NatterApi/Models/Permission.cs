@@ -2,7 +2,7 @@ namespace NatterApi.Models
 {
     public record Permission(
         int SpaceId,
-        string Username,
+        string UsernameOrGroupname,
         string Permissions
     );
 }

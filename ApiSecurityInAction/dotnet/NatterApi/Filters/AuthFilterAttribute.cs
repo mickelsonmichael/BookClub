@@ -4,17 +4,23 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
 using NatterApi.Extensions;
 using NatterApi.Models;
 
 namespace NatterApi.Filters
 {
     /// <summary>
-    /// Section 3.6.1 - Enforcing authentication
-    /// An ActionFilterAttribute will allow us to decorate any
-    /// action or controller to require the method or class be restricted
-    /// to only authenticated users.
+    /// <para>
+    /// Section 3.6.1 - Enforcing authentication | An ActionFilterAttribute will allow us to decorate any
+    /// action or controller to require the method or class be restricted to only authenticated users.
+    /// </para>
+    /// <para>
+    /// Section 8.1 - Additionally, users can be granted access to a space by their associated groups
+    /// </para>
+    /// <para>
+    /// Section 8.2.3 - Permissions are now assigned from roles and are provided to the HttpContext via
+    /// the <see cref="LookupPermissionsAttribute"/>.
+    /// </para>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
     public class AuthFilterAttribute : ActionFilterAttribute
@@ -36,6 +42,7 @@ namespace NatterApi.Filters
                 return;
             }
 
+            ICollection<string> groups = httpContext.Items["groups"] as ICollection<string> ?? new List<string>();
             int? spaceId = httpContext.GetSpaceId();
 
             if (_accessLevels.Count == 0 || spaceId == null)
@@ -43,7 +50,7 @@ namespace NatterApi.Filters
                 return; // no permissions needed, proceed
             }
 
-            string? perms = GetPermissionString(httpContext, spaceId.Value, username);
+            string perms = GetPermissions(httpContext);
 
             if (perms == null || !HasPermissions(perms))
             {
@@ -58,28 +65,29 @@ namespace NatterApi.Filters
             context.HttpContext.Response.Headers.Add("WWW-Authenticate", "Basic realm=\"/\", charset=\"UTF-8\"");
         }
 
-        private string? GetPermissionString(HttpContext context, int spaceId, string username)
+        private static string GetPermissions(HttpContext context)
         {
-            IServiceProvider services = context.RequestServices;
-
-            NatterDbContext dbContext = services.GetRequiredService<NatterDbContext>();
-
-            Permission? permission = dbContext.Permissions.Find(spaceId, username);
-
-            return permission?.Permissions;
+            return context.Items["perms"] as string ?? string.Empty;
         }
 
-        private bool HasPermissions(string permission)
+        private bool HasPermissions(string permissions)
         {
             return HasAllPermissions() || CanDelete() || CanRead() || CanWrite();
 
-            bool HasAllPermissions() => _accessLevels.Contains(AccessLevel.All) && permission.Contains("d") && permission.Contains("r") && permission.Contains("w");
-            bool CanDelete() => _accessLevels.Contains(AccessLevel.Delete) && permission.Contains("d");
-            bool CanRead() => _accessLevels.Contains(AccessLevel.Read) && permission.Contains("r");
-            bool CanWrite() => _accessLevels.Contains(AccessLevel.Write) && permission.Contains("w");
+            bool HasAllPermissions() => _accessLevels.Contains(AccessLevel.All)
+                    && permissions.Contains('d')
+                    && permissions.Contains('r')
+                    && permissions.Contains('w');
+
+            bool CanDelete() => _accessLevels.Contains(AccessLevel.Delete) 
+                && permissions.Contains('d');
+
+            bool CanRead() => _accessLevels.Contains(AccessLevel.Read)
+                && permissions.Contains('r');
+
+            bool CanWrite() => _accessLevels.Contains(AccessLevel.Write)
+                && permissions.Contains('w');
         }
-
-
 
         private readonly ISet<string> _accessLevels;
     }
