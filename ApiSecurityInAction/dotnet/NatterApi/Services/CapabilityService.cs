@@ -1,6 +1,8 @@
 using System;
+using System.Text;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using NatterApi.Extensions;
 using NatterApi.Models.Token;
 using NatterApi.Services.TokenStore;
 
@@ -25,15 +27,13 @@ namespace NatterApi.Services
         {
             Token token = new(
                 Expiration: DateTime.Now.Add(expiryDuration),
-                Username: string.Empty
+                Username: context.GetNatterUsername() ?? string.Empty
             );
 
             token.AddAttribute("path", path);
             token.AddAttribute("perms", permissions);
 
             string tokenId = _tokenService.CreateToken(context, token);
-
-            Uri result = new(context.Request.GetDisplayUrl());
 
             UriBuilder ub = new(context.Request.GetDisplayUrl());
 

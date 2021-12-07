@@ -26,7 +26,7 @@ namespace NatterApi.Filters
 
             Token? token = tokenService.ReadToken(context.HttpContext, tokenId);
 
-            if (token == null)
+            if (token == null || token.Username != context.HttpContext.GetNatterUsername())
             {
                 return;
             }

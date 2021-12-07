@@ -159,3 +159,11 @@ While capability-based controls are great, they can be further enhanced by combi
 - Use a session to identify the user for logging/audit purposes. Because capabilities now handle permissions and access, the session can be much longer-lived, decreasing the time between user logins.
 
 In our .NET implementation, we can switch our `ISecureTokenService` registration back to the `CookieService` since we will be following the latter school of thought from above.
+
+#### Hardening capability URIs (Section 9.2.6)
+
+Because capability URIs are invulnerable to CSRF attacks, you should be able to remove the anti-CSRF token created in earlier chapters. However, capabilities are vulnerable to theft; anyone with a capability URI can impersonate the user without additional securities.
+
+That's why it's better to associate capabilities to an authenticated user, to prevent them being used by anyone else. This makes capability URIs less shareable, but improves security. 
+
+With this change in place, the CSRF token can be removed, since the capability itself is acting as a de-facto CSRF token.
