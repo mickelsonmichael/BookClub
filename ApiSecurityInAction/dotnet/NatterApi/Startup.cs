@@ -34,7 +34,8 @@ namespace NatterApi
 
             services.AddHttpClient<ISecureTokenService, SignedJwtAccessTokenService>();
 
-            services.AddScoped<DatabaseTokenService>();
+            services.AddScoped<DatabaseTokenService>()
+                .AddScoped<CapabilityService>();
 
             services.AddScoped<ValidateTokenFilterAttribute>();
 

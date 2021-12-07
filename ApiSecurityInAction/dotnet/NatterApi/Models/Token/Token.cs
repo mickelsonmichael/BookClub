@@ -10,11 +10,21 @@ namespace NatterApi.Models.Token
     )
     {
         public string Id { get; set; } = string.Empty;
-        public List<(string, string)> Attributes = new();
+        public List<(string key, string value)> Attributes = new();
 
         public void AddAttribute(string key, string? value)
         {
             Attributes.Add((key, value ?? string.Empty));
+        }
+
+        public string? GetAttribute(string key)
+        {
+            var attr = Attributes.FirstOrDefault(
+                a => a.key == key,
+                defaultValue: (key, string.Empty)
+            );
+
+            return attr.Item2 == string.Empty ? null : attr.Item2;
         }
 
         public static Token FromClaims(IDictionary<string, object> claims)

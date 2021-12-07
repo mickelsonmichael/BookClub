@@ -59,3 +59,37 @@ Luckily, the capabilities listed here apply when navigating a website; an API do
 - The `Referrer` header and `window.referrer` variable in JavaScript are populated by browsers
 - Users don't navigate directly to API URLs, and therefore will not show the requests in their history
 - API urls aren't likely to be saved or bookmarked for very long.
+
+#### Using capability URIs in the Natter API
+
+In order to create a capability URI, the code is simple enough to translate from Java
+
+```c#
+public Uri CreateUri(
+    HttpContext context,
+    string path,
+    string permissions,
+    TimeSpan expiryDuration
+)
+{
+    Token token = new(
+        Expiration: DateTime.Now.Add(expiryDuration),
+        Username: string.Empty
+    );
+
+    token.AddAttribute("path", path);
+    token.AddAttribute("perms", permissions);
+
+    string tokenId = _tokenService.CreateToken(context, token);
+
+    Uri result = new(context.Request.GetDisplayUrl());
+
+    UriBuilder ub = new(context.Request.GetDisplayUrl());
+
+    ub.Query = $"?access_token={tokenId}";
+
+    return ub.Uri;
+}
+```
+
+Instead of allowing the `Token.Username` property to be null as Madden suggests, I'm going to simply set the username field to `string.Empty`, since this will cause far fewer warnings from the nullability checking in older parts of the code.

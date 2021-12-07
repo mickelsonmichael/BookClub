@@ -1,22 +1,27 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using NatterApi.Exceptions;
 using NatterApi.Extensions;
 using NatterApi.Filters;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
+using NatterApi.Services;
 
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/spaces")]
     public class SpaceController : ControllerBase
     {
-        public SpaceController(NatterDbContext context)
+        public SpaceController(
+            NatterDbContext context,
+            CapabilityService capabilityService
+        )
         {
             _context = context;
+            _capabilityService = capabilityService;
         }
 
         [HttpGet]
@@ -48,17 +53,16 @@ namespace NatterApi.Controllers
             _context.Add(space);
             _context.SaveChanges();
 
-            // 3.2.2 Static Roles
-            UserRole role = new(space.Id, "owner", username);
-            _context.Add(role);
-            
-            _context.SaveChanges();
-
-            string url = $"/spaces/{space.Id}";
+            Uri uri = _capabilityService.CreateUri(
+                HttpContext,
+                $"/spaces/{space.Id}",
+                "rwd",
+                TimeSpan.FromDays(1_000_000)
+            );
 
             return Created(
-                url,
-                new { name = space.Name, uri = url }
+                uri,
+                new { name = space.Name, uri = uri }
             );
         }
 
@@ -122,5 +126,6 @@ namespace NatterApi.Controllers
         }
 
         private readonly NatterDbContext _context;
+        private readonly CapabilityService _capabilityService;
     }
 }
