@@ -181,3 +181,11 @@ This feature of macaroons makes it important to **only use macaroons to restrict
 Steps to verify the HMAC chain for a macaroon can be found in the book, including a Java example. I won't implement a .NET example at this point, since in Natter we will utilize an existing macaroon library to perform this verification.
 
 There are two classes of caveats, first-party and third-party, which are discussed in later sections.
+
+#### Contextual caveats (Section 9.3.1)
+
+One feature of caveats, *contextual caveats*, allows clients to append a caveat just before use in order to restrict a token's use just before sending to an insecure or untrusted API. For instance, you could add a caveat stating that the token is valid for only the next five seconds. If the token is intercepted, the damage done is minified.
+
+And because the original macaroon, before the contextual caveat was added, is intact, the client can continue sending requests without requiring a new macaroon.
+
+There is no formal specification of macaroons and it isn't very widely implemented, so your mileage may vary. At this point in time, it doesn't appear that Keycloak supports macaroons [nor does it have any plans to implement support](https://issues.redhat.com/browse/KEYCLOAK-12530?jql=project%20%3D%20KEYCLOAK%20AND%20text%20~%20%22caveats%22%20OR%20text%20~%20%22macaroon%22).
