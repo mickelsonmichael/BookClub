@@ -93,3 +93,46 @@ public Uri CreateUri(
 ```
 
 Instead of allowing the `Token.Username` property to be null as Madden suggests, I'm going to simply set the username field to `string.Empty`, since this will cause far fewer warnings from the nullability checking in older parts of the code.
+
+#### HATEOAS (Section 9.2.2)
+
+Hypertext as the Engine of Application State (HATEOAS) is a [crucial principle of REST API design](https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven) which asserts that client interactions should be driven by links, and no prior knowledge should be required to utilize a REST API and construct URIs. All the information a client needs to utilize an API should be provided as links and form templates in the responses. All they should require is a single entrypoint-URI (a bookmark). The goal of HATEOAS is to help remove assumptions from the clients' code and allow for the API to evolve over time.
+
+We will accomplish this by returning additional URIs in the response body after a space has been created. This is easily accomplished using an anonymous object in .NET.
+
+```c#
+return Created(
+    uri,
+    new 
+    { 
+        name = space.Name,
+        uri = uri,
+        messages = messagesUri
+    }
+);
+```
+
+However, that only provides a link to expose full permissions, which isn't ideal. So instead we should provide several links that expose a range of permissions. We can utilize anonymous functions in C# to make this a little less repetitive.
+
+```c#
+Func<string, Uri> getMessagesUri = (string permissions) => _capabilityService.CreateUri(
+    HttpContext,
+    path: $"spaces/{space.Id}/messages",
+    permissions,
+    expiry
+);
+
+return Created(
+    uri,
+    new 
+    { 
+        name = space.Name,
+        uri = uri,
+        messages_rwd = getMessagesUri("rwd"),
+        messages_rw = getMessagesUri("rw"),
+        messages_r = getMessagesUri("r")
+    }
+);
+```
+
+A general rule when generating a capability URL is that an action should not generate a set of permissions greater than the set required to create it (e.g. if it only took read/write permissions to perform, it should not also allow delete). You can more safely perform this task by working backwards, taking the currently allowed permissions and removing any that are not necessary (e.g. `string perms = context.Items["perms"].replace("w", "")` to remove write). I've neglected to do this in our .NET implementation because I'm a little lazy.

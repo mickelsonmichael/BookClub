@@ -53,16 +53,33 @@ namespace NatterApi.Controllers
             _context.Add(space);
             _context.SaveChanges();
 
+            var expiry = TimeSpan.FromDays(1_000_000);
+
             Uri uri = _capabilityService.CreateUri(
                 HttpContext,
-                $"/spaces/{space.Id}",
-                "rwd",
-                TimeSpan.FromDays(1_000_000)
+                path: $"/spaces/{space.Id}",
+                permissions: "rwd",
+                expiry
+            );
+
+            // 9.2.3 HATEOAS
+            Func<string, Uri> getMessagesUri = (string permissions) => _capabilityService.CreateUri(
+                HttpContext,
+                path: $"spaces/{space.Id}/messages",
+                permissions,
+                expiry
             );
 
             return Created(
                 uri,
-                new { name = space.Name, uri = uri }
+                new 
+                { 
+                    name = space.Name,
+                    uri = uri,
+                    messages_rwd = getMessagesUri("rwd"),
+                    messages_rw = getMessagesUri("rw"),
+                    messages_r = getMessagesUri("r")
+                }
             );
         }
 
