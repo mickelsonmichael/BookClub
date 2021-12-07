@@ -32,7 +32,11 @@ namespace NatterApi
 
             services.AddScoped<AuthService>();
 
-            services.AddHttpClient<ISecureTokenService, SignedJwtAccessTokenService>();
+            // 9.2.5 - Combining capabilities with identity
+            // Because we are relying on capabilities for permissions,
+            // we now only need a session for auditing and minor access checks
+            // like when defining the owner of a space.
+            services.AddHttpClient<ISecureTokenService, CookieTokenService>();
 
             services.AddScoped<DatabaseTokenService>()
                 .AddScoped<CapabilityService>();

@@ -1,6 +1,6 @@
 # Capability-based Security and Macaroons
 
-- (Michael's Notes)[#michael]
+- [Michael's Notes](#michael)
 
 ## Michael
 
@@ -150,3 +150,12 @@ The basic flow is:
 3. The template then makes a new request to the API (avoiding the web server) by removing the fragment and attaching it to the query where the API expects it to be
 
 On a personal note, this seems convoluted, and also requires that the client have direct CORS access to the API. It wouldn't really work if you were expecting your API to be extended by third parties.
+
+#### Combining capabilities with identity (Section 9.2.5)
+
+While capability-based controls are great, they can be further enhanced by combining them with identity-based access control.
+
+- Add user information and claims to the token to record who is performing the action. This is ideal for short-lived links like password resets, longer duration tokens would suffer from someone being able to impersonate the user.
+- Use a session to identify the user for logging/audit purposes. Because capabilities now handle permissions and access, the session can be much longer-lived, decreasing the time between user logins.
+
+In our .NET implementation, we can switch our `ISecureTokenService` registration back to the `CookieService` since we will be following the latter school of thought from above.
