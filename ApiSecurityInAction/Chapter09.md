@@ -167,3 +167,17 @@ Because capability URIs are invulnerable to CSRF attacks, you should be able to 
 That's why it's better to associate capabilities to an authenticated user, to prevent them being used by anyone else. This makes capability URIs less shareable, but improves security. 
 
 With this change in place, the CSRF token can be removed, since the capability itself is acting as a de-facto CSRF token.
+
+### Macaroons: Tokens with caveats (Section 9.3)
+
+A *macaroon* is more or less an extension of a capability token, with additional "caveats" appended to restrict the capability further than normally possible. For example, you could allow a user access to read messages from a particular time frame, or from a particular user.
+
+Caveats can be general expressions like `method = GET` or `since >= 2019-10-12T12:00:00Z` and anyone can append a caveat to an existing macaroon without calling an API endpoint.
+
+Once a caveat has been added it cannot be removed. This is possible because macaroons use HMAC-SHA256 tags, and each time a new capability is added, the previous authentication tag is used to sign the new tag, meaning there is a chain of caveats that cannot be rewound. You cannot reverse an HMAC to recover an old tag and thus cannot revert the state of the caveats, only move forwards.
+
+This feature of macaroons makes it important to **only use macaroons to restrict access** and never to allow access. Otherwise you would be vulnerable to users appending new permissions to their tokens.
+
+Steps to verify the HMAC chain for a macaroon can be found in the book, including a Java example. I won't implement a .NET example at this point, since in Natter we will utilize an existing macaroon library to perform this verification.
+
+There are two classes of caveats, first-party and third-party, which are discussed in later sections.
