@@ -136,3 +136,17 @@ return Created(
 ```
 
 A general rule when generating a capability URL is that an action should not generate a set of permissions greater than the set required to create it (e.g. if it only took read/write permissions to perform, it should not also allow delete). You can more safely perform this task by working backwards, taking the currently allowed permissions and removing any that are not necessary (e.g. `string perms = context.Items["perms"].replace("w", "")` to remove write). I've neglected to do this in our .NET implementation because I'm a little lazy.
+
+#### Capability URIs for browser-based clients (Section 9.2.4)
+
+Madden's recommended way to pass the access tokens in a browser is to utilize the fragment portion of the URL to engage the [web-key](http://waterken.sourceforge.net/web-key/) pattern.
+
+As mentioned in [Section 9.2.1](#capabilities-as-uris-Section-921), putting the token in the path or query can lead to that token being logged by browser history, web servers, or proxies. When working with a potentially unknown web server, it is therefore better to ensure that the client is the one making the API calls directly and utilizing the web server for "template" files.
+
+The basic flow is:
+
+1. Client requests a resource "https://example.com/resource#my_token"
+2. Server returns the template found at `/resource`
+3. The template then makes a new request to the API (avoiding the web server) by removing the fragment and attaching it to the query where the API expects it to be
+
+On a personal note, this seems convoluted, and also requires that the client have direct CORS access to the API. It wouldn't really work if you were expecting your API to be extended by third parties.
