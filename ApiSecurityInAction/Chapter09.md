@@ -189,3 +189,7 @@ One feature of caveats, *contextual caveats*, allows clients to append a caveat 
 And because the original macaroon, before the contextual caveat was added, is intact, the client can continue sending requests without requiring a new macaroon.
 
 There is no formal specification of macaroons and it isn't very widely implemented, so your mileage may vary. At this point in time, it doesn't appear that Keycloak supports macaroons [nor does it have any plans to implement support](https://issues.redhat.com/browse/KEYCLOAK-12530?jql=project%20%3D%20KEYCLOAK%20AND%20text%20~%20%22caveats%22%20OR%20text%20~%20%22macaroon%22).
+
+#### A macaroon token store (Section 9.3.2)
+
+In the Java-based Natter API, Madden utilizes [JMacaroons](https://github.com/nitram509/jmacaroons). For the .NET implementation we will attempt to use [Macaroons.NET](https://github.com/JornWildt/Macaroons.Net) which is a .NET port of the C [libmacaroons](https://github.com/rescrv/libmacaroons) library. It only has 23 stars on GitHub, but considering the Java port only has 100, I suppose that's not too bad.
