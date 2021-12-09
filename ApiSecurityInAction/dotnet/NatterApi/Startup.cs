@@ -36,10 +36,11 @@ namespace NatterApi
             // Because we are relying on capabilities for permissions,
             // we now only need a session for auditing and minor access checks
             // like when defining the owner of a space.
-            services.AddHttpClient<ISecureTokenService, CookieTokenService>();
+            services.AddScoped<ISecureTokenService, CookieTokenService>();
 
             services.AddScoped<DatabaseTokenService>()
-                .AddScoped<CapabilityService>();
+                .AddScoped<CapabilityService>()
+                .AddScoped<MacaroonTokenService>();
 
             services.AddScoped<ValidateTokenFilterAttribute>();
 
@@ -66,6 +67,8 @@ namespace NatterApi
                 .BindConfiguration(KeycloakOptions.ConfigKey);
 
             services.AddRules();
+
+            services.AddLogging();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,8 +79,6 @@ namespace NatterApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NatterApi v1"));
             }
 
             app.UseHttpsRedirection();
@@ -87,8 +88,6 @@ namespace NatterApi
             app.UseRouting();
 
             app.UseStaticFiles();
-
-            app.UseSession();
 
             app.UseMiddleware<SecureHeadersMiddleware>();
 

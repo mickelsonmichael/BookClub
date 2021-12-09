@@ -64,6 +64,9 @@ namespace NatterApi
                     .WithMany()
                     .HasForeignKey(r => r.RoleId);
             });
+
+            modelBuilder.Entity<AuditMessage>()
+                .HasKey(a => a.Id);
         }
 
         private readonly JsonSerializerOptions _jsonOptions = new();

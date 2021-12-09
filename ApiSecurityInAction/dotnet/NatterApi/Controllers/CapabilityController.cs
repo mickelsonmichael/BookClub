@@ -15,7 +15,7 @@ namespace NatterApi.Controllers
         [HttpPost]
         public IActionResult Share(
             [FromBody] CapabilityRequest capReq,
-            [FromServices] DatabaseTokenService tokenService
+            [FromServices] MacaroonTokenService tokenService
         )
         {
             Uri capUri = new(capReq.Uri);

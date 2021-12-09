@@ -13,7 +13,7 @@ namespace NatterApi.Services
     /// </summary>
     public class CapabilityService
     {
-        public CapabilityService(DatabaseTokenService tokenService)
+        public CapabilityService(MacaroonTokenService tokenService)
         {
             _tokenService = tokenService;
         }

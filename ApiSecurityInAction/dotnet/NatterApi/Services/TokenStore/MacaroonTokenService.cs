@@ -4,20 +4,35 @@ using Microsoft.AspNetCore.Http;
 using NatterApi.Models.Token;
 using Macaroons;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace NatterApi.Services.TokenStore
 {
     public class MacaroonTokenService : ISecureTokenService
     {
-        public MacaroonTokenService(DatabaseTokenService del)
+        public static HMACSHA256 HmacKey
+        {
+            get
+            {
+                if (_hmacKey == null)
+                {
+                    byte[] rngBytes = new byte[256];
+                    RandomNumberGenerator.Create().GetBytes(rngBytes);
+
+                    _hmacKey = new HMACSHA256(rngBytes);
+                }
+
+                return _hmacKey;
+            }
+        }
+
+        public MacaroonTokenService(DatabaseTokenService del, ILogger<MacaroonTokenService> logger)
         {
             _delegate = del;
+            _logger = logger;
 
-            byte[] rngBytes = new byte[256];
-            RandomNumberGenerator.Create().GetBytes(rngBytes);
-
-            _hmacKey = new HMACSHA256(rngBytes);
-    }
+            _logger.LogInformation("Utilizing the macaroon token service.");
+        }
 
         public Task ClearExpiredTokens()
         {
@@ -26,15 +41,17 @@ namespace NatterApi.Services.TokenStore
 
         public string CreateToken(HttpContext context, Token token)
         {
+            _logger.LogInformation("Creating a new macaroon");
+
             string id = _delegate.CreateToken(context, token);
 
             Macaroon macaroon = new(
                 location: "",
-                Encoding.UTF8.GetString(_hmacKey.Key),
+                _key,
                 identifier: id
             );
 
-            return macaroon.Serialize();l
+            return macaroon.Serialize();
         }
 
         public void DeleteToken(HttpContext context, string tokenId)
@@ -44,9 +61,27 @@ namespace NatterApi.Services.TokenStore
 
         public Token? ReadToken(HttpContext context, string tokenId)
         {
-            throw new System.NotImplementedException();
+            _logger.LogInformation("Reading a macaroon");
+
+            Macaroon macaroon = Macaroon.Deserialize(tokenId);
+
+            Verifier verifier = new();
+
+            VerificationResult result = macaroon.Verify(verifier, _key);
+
+            if (result.Success)
+            {
+                return _delegate.ReadToken(context, macaroon.Identifier.ToString());
+            }
+            else
+            {
+                return null;
+            }
         }
-        private readonly HMACSHA256 _hmacKey;
+
+        private string _key => Encoding.UTF8.GetString(HmacKey.Key);
+        private static HMACSHA256? _hmacKey;
         private readonly ITokenService _delegate;
+        private readonly ILogger<MacaroonTokenService> _logger;
     }
 }
