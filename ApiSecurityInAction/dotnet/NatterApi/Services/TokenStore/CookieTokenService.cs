@@ -11,7 +11,7 @@ namespace NatterApi.Services.TokenStore
 {
     public class CookieTokenService : ISecureTokenService
     {
-        public CookieTokenService(ILogger<AuthService> logger)
+        public CookieTokenService(ILogger<CookieTokenService> logger)
         {
             _logger = logger;
         }
@@ -38,9 +38,9 @@ namespace NatterApi.Services.TokenStore
                 return null;
             }
 
-            string username = session.GetString("username");
-            DateTime expiry = DateTime.Parse(session.GetString("expiry"));
-            string attributesJson = session.GetString("attrs");
+            string username = session.GetString("username") ?? string.Empty;
+            DateTime expiry = DateTime.Parse(session.GetString("expiry") ?? string.Empty);
+            string attributesJson = session.GetString("attrs") ?? string.Empty;
 
             Token token = new(expiry, username);
 
@@ -67,6 +67,6 @@ namespace NatterApi.Services.TokenStore
             return Task.CompletedTask;
         }
 
-        private readonly ILogger<AuthService> _logger;
+        private readonly ILogger<CookieTokenService> _logger;
     }
 }

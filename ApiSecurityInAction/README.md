@@ -1,5 +1,13 @@
 # API Security in Action
 
+## Contents
+
+Not all chapters have notes currently, but those that do will be linked here for ease of access, or available by browsing through the files.
+
+- [Chapter 04](https://github.com/mickelsonmichael/BookClub/tree/main/ApiSecurityInAction/chapter04.md)
+- [Chapter 08](https://github.com/mickelsonmichael/BookClub/tree/main/ApiSecurityInAction/chapter08.md)
+- [Chapter 09](https://github.com/mickelsonmichael/BookClub/tree/main/ApiSecurityInAction/chapter09.md)
+
 ## Using the Docker Image
 
 If you want to avoid installing Java and Maven, you can utilize this helpful docker image.

@@ -10,17 +10,22 @@ using NatterApi.Extensions;
 using NatterApi.Filters;
 using NatterApi.Models;
 using NatterApi.Models.Requests;
+using NatterApi.Services;
 
 namespace NatterApi.Controllers
 {
     [ApiController, Route("/spaces/{spaceId:int}/messages")]
-    [LookupPermissions]
+    [LookupCapability]
     public class MessageController : ControllerBase
     {
-        public MessageController(NatterDbContext dbContext, ILogger<MessageController> logger)
+        public MessageController(
+            NatterDbContext dbContext,
+            ILogger<MessageController> logger,
+            CapabilityService capabilityService)
         {
             _dbContext = dbContext;
             _logger = logger;
+            _capabilityService = capabilityService;
         }
 
         [HttpGet]
@@ -39,7 +44,15 @@ namespace NatterApi.Controllers
                 ?.Where(m => m.MessageTime >= since).ToList()
                 ?? new List<Message>();
 
-            return Ok(messages);
+            var response = messages.Select(message => new
+            {
+                message,
+                editUri = GetMessageUri(spaceId, "rw", TimeSpan.FromDays(1)),
+                deleteUri = GetMessageUri(spaceId, "d", TimeSpan.FromHours(1)),
+                readUri = GetMessageUri(spaceId, "r", TimeSpan.FromDays(1_000_000))
+            });
+
+            return Ok(response);
         }
 
         [HttpPost]
@@ -66,7 +79,17 @@ namespace NatterApi.Controllers
             _dbContext.Update(space);
             _dbContext.SaveChanges();
 
-            return Created($"/spaces/{spaceId}/messages/{message.MessageId}", message);
+            Uri viewUri = GetMessageUri(spaceId, "r", TimeSpan.FromDays(1_000_000));
+
+            return Created($"/spaces/{spaceId}/messages/{message.MessageId}",
+                new
+                {
+                    message,
+                    editUri = GetMessageUri(spaceId, "rw", TimeSpan.FromDays(1)),
+                    deleteUri = GetMessageUri(spaceId, "d", TimeSpan.FromHours(1)),
+                    readUri = viewUri
+                }
+            );
         }
 
         [HttpGet("{messageId:int}")]
@@ -85,7 +108,13 @@ namespace NatterApi.Controllers
                 throw new MessageNotFoundException(messageId);
             }
 
-            return Ok(message);
+            return Ok(
+                new {
+                    message,
+                    editUri = GetMessageUri(spaceId, "rw", TimeSpan.FromDays(1)),
+                    deleteUri = GetMessageUri(spaceId, "d", TimeSpan.FromHours(1)),
+                    readUri = GetMessageUri(spaceId, "r", TimeSpan.FromDays(1_000_000))
+                });
         }
 
         [HttpDelete("{messageId:int}")]
@@ -125,7 +154,22 @@ namespace NatterApi.Controllers
             return space;
         }
 
+        private Uri GetMessageUri(
+            int spaceId,
+            string permissions,
+            TimeSpan expiry
+        )
+        {
+            return _capabilityService.CreateUri(
+                HttpContext,
+                $"space/{spaceId}/messages",
+                permissions,
+                expiry
+            );
+        }
+
         private readonly NatterDbContext _dbContext;
         private readonly ILogger<MessageController> _logger;
+        private readonly CapabilityService _capabilityService;
     }
 }
