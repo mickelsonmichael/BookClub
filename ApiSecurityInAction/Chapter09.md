@@ -193,3 +193,12 @@ There is no formal specification of macaroons and it isn't very widely implement
 #### A macaroon token store (Section 9.3.2)
 
 In the Java-based Natter API, Madden utilizes [JMacaroons](https://github.com/nitram509/jmacaroons). For the .NET implementation we will attempt to use [Macaroons.NET](https://github.com/JornWildt/Macaroons.Net) which is a .NET port of the C [libmacaroons](https://github.com/rescrv/libmacaroons) library. It only has 23 stars on GitHub, but considering the Java port only has 100, I suppose that's not too bad.
+
+#### First-party caveats (Section 9.3.3)
+
+The primary type of caveats are first-party caveats, which can be verified using information the application has readily available like the current time, attributes of the request, and additional environmental features.
+
+The most common, and seemingly only widely-used, use case for first-party caveats is to set an expiration for a macaroon, much like a JWT has, which allow users to reduce the time a token is available to shorter than the original expiration time.
+
+First-party caveats are fast and cheap to add to a macaroon, and are therefore an effective and manageable option.
+

@@ -5,6 +5,7 @@ using NatterApi.Models.Token;
 using Macaroons;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using NatterApi.Verifiers;
 
 namespace NatterApi.Services.TokenStore
 {
@@ -66,6 +67,15 @@ namespace NatterApi.Services.TokenStore
             Macaroon macaroon = Macaroon.Deserialize(tokenId);
 
             Verifier verifier = new();
+
+            verifier.SatisfyGeneral(StandardCaveatVerifiers.ExpiresVerifier);
+
+            verifier.SatisfyExact($"method = {context.Request.Method}");
+
+            // 9.3.3
+            // verify the since time on requests
+            // this is a custom verifier in Natter.Verifiers
+            verifier.AddSinceVerifier(context);
 
             VerificationResult result = macaroon.Verify(verifier, _key);
 
