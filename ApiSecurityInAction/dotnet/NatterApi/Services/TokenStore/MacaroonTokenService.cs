@@ -52,6 +52,9 @@ namespace NatterApi.Services.TokenStore
                 identifier: id
             );
 
+            // 9.3.4 Third-party caveats
+            // macaroon.AddThirdPartyCaveat("https://service.example.com", "secret", "caveatid");
+
             return macaroon.Serialize();
         }
 

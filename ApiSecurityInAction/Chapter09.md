@@ -202,3 +202,16 @@ The most common, and seemingly only widely-used, use case for first-party caveat
 
 First-party caveats are fast and cheap to add to a macaroon, and are therefore an effective and manageable option.
 
+#### Third-party caveats (Section 9.3.4)
+
+Unlike first-party caveats, a third-party caveat is verified using an external server or application. The application needing a macaroon verified would send the macaroon in to the third-party service and receive back a *discharge token* in response. These discharge tokens are bound to the original macaroon, so the application server never has to directly communicate with the third-party server, the request can be made by anyone/server at any time.
+
+Additionally, since the discharge macaroon is still a macaroon, it can be added on to by the third-party to provide additional checks.
+
+Third-party caveats have three components as opposed to a single string
+
+1. Location - where to locate the third-party service
+2. Secret - a unique string used to derive a new HMAC key for the signing of the discharge macaroon
+3. Caveat ID - a **public** identifier for the macaroon
+
+In order for the third-party to verify the caveat, it needs to have access to the secret and the query. There is no standard (currently) for how to perform this action, but there are a number of viable options listed in the chapter itself if you are interested in learning more. This lack of standardization means most third-party candidates are kept in-house for closed systems to communicate with one another.
