@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*API Security in Action*](https://www.manning.com/books/api-security-in-action) by Neil Madden
+### TBD, see [future prospects](#future-prospects)
 
 ## Previous Conquests
 
@@ -17,8 +17,11 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 7. [*React in Action*](https://www.manning.com/books/react-in-action?query=react%20in%20action) by Mark Tielens Thomas
 8. [*Learn Windows PowerShell in a month of Lunches*](https://www.manning.com/books/learn-windows-powershell-in-a-month-of-lunches-third-edition?query=learn%20windows%20powershell) by Don Jones, Jeffery D. Hicks
 9. [*The Design of Web APIs*](https://www.manning.com/books/the-design-of-web-apis?query=design) by Arnaud Lauret
+10. [*API Security in Action*](https://www.manning.com/books/api-security-in-action) by Neil Madden
 
 ## Future Prospects
+
+### General Programming
 
 - [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
 - [*Dependency Injection: Principles, Practices, and Patterns*](https://www.manning.com/books/dependency-injection-principles-practices-patterns?query=dependency%20injection) by Steven van Deursen, Mark Seeman
@@ -26,10 +29,21 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*Clean Architecture: A Craftsman's Guide to Software Structure and Design*](https://smile.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) by Robert C. Martin
 - [*Code Complete: A Practical Handbook of Software Construction*](https://smile.amazon.com/Code-Complete-Practical-Handbook-Construction/dp/0735619670) by Steve McConnel
 - [*Working Effectively with Legacy Code*](https://smile.amazon.com/Working-Effectively-Legacy-Michael-Feathers/dp/0131177052) by Michael Feathers
+- [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action) by Justin Richer, Antonio Sanso
+- [*Design Patterns: Elements of Reusable Object-Oriented Software (Gang of Four)*](https://smile.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=martinfowlerc-20) by Erich Gamme, Richard Helm, Ralph Johnson, John Vlissides
+- [*Introduction to Algorithms, 3rd Edition*](https://smile.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844/ref=sr_1_5?crid=2NXQ68BGSXTOY&keywords=algorithms&qid=1640878057&s=books&sprefix=algorithms%2Cstripbooks%2C133&sr=1-5) by Thomas M. Cormen, Charles E. Levisseron, Ronald L. Rivest, Clifford Stein
+
+### Language Specific
+
 - [*React Hooks in Action*](https://www.manning.com/books/react-hooks-in-action) by John Larsen
 - [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp) by Erico Buonanno
 - [*Real-World Functional Programming: With examples in F# and C#*](https://www.manning.com/books/real-world-functional-programming?query=functional) by Tomas Petricek, Jon Skeet
-- [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action) by Justin Richer, Antonio Sanso
+- [*Eloquent Javascript (Free)*](https://eloquentjavascript.net/) by Marijn Haverbeke
+- [*Automate the Boring Stuff with Python (Free)*](https://automatetheboringstuff.com/) by Al Sweigart
+
+### Non-technical
+
+- [*Algorithms to Live By*](https://algorithmstoliveby.com/) by Brian Christian, Tom Griffiths
 
 ### Topics of Interest
 
