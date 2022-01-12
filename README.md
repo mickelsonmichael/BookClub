@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### TBD, see [future prospects](#future-prospects)
+### [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp-second-edition) by Erico Buonanno
 
 ## Previous Conquests
 
@@ -36,7 +36,6 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 ### Language Specific
 
 - [*React Hooks in Action*](https://www.manning.com/books/react-hooks-in-action) by John Larsen
-- [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp) by Erico Buonanno
 - [*Real-World Functional Programming: With examples in F# and C#*](https://www.manning.com/books/real-world-functional-programming?query=functional) by Tomas Petricek, Jon Skeet
 - [*Eloquent Javascript (Free)*](https://eloquentjavascript.net/) by Marijn Haverbeke
 - [*Automate the Boring Stuff with Python (Free)*](https://automatetheboringstuff.com/) by Al Sweigart
