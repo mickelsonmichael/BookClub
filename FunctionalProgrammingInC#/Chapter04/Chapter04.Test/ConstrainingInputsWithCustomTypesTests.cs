@@ -62,19 +62,19 @@ public class ConstrainingInputsWithCustomTypesTests
         Assert.True(smaller < bigger);
     }
 
-    [Fact]
-    public void PhoneNumber_Invalid()
-    {
-        PhoneNumber invalid = new(545_222_444);
+    // [Fact]
+    // public void PhoneNumber_Invalid()
+    // {
+    //     PhoneNumber invalid = new(545_222_444);
 
-        Assert.Equal(PhoneNumber.Invalid(), invalid);
-    }
+    //     Assert.Equal(PhoneNumber.Invalid(), invalid);
+    // }
 
-    [Fact]
-    public void PhoneNumber_Valid()
-    {
-        PhoneNumber valid = new(555_123_4567L);
+    // [Fact]
+    // public void PhoneNumber_Valid()
+    // {
+    //     PhoneNumber valid = new(555_123_4567L);
 
-        Assert.NotEqual(PhoneNumber.Invalid(), valid);
-    }
+    //     Assert.NotEqual(PhoneNumber.Invalid(), valid);
+    // }
 }
