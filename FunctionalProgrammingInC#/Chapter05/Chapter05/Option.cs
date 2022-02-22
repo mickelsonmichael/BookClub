@@ -15,14 +15,14 @@ namespace Chapter05;
 /// </para>
 public abstract record Option<T>
 {
-    public static readonly NoneType None = default;
+    public static readonly NoneType None;
 
     public static Option<T> Some(T val) => new Some<T>(val);
 
     public static implicit operator Option<T>(NoneType _)
         => new None<T>();
 
-    public static implicit operator Option<T>(T value)
+    public static implicit operator Option<T>(T? value)
         => value is null ? None : Some(value);
 }
 
