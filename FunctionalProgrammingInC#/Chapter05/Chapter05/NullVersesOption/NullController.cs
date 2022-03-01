@@ -4,6 +4,9 @@ namespace Chapter05.NullVersesOption;
 
 public class NullPersonService
 {
+    /// <returns>
+    /// Null if person not found
+    /// </returns>
     public Person? GetPerson(string name)
         => _people.FirstOrDefault(p => p.FirstName == name || p.LastName == name);
 
@@ -22,8 +25,10 @@ public class NullController : Controller
 
         Person? person = service.GetPerson(name);
 
-        return person == null
-            ? NotFound()
-            : Ok();
+        if (person == null) return NotFound();
+
+        string _ = person.FirstName; // do stuff with person
+
+        return Ok(person);
     }
 }
