@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 using static System.Text.RegularExpressions.Regex;
 
 namespace Chapter04.Section02.SubSection02;
@@ -49,43 +51,57 @@ public record AccountNumber
     }
 }
 
-public record Birthday
+public record Birthday : IValidatableObject
 {
+    [Required]
     public DateTime Date { get; }
-    public IReadOnlyList<string> ValidationErrors { get; }
-    public bool Valid => ValidationErrors.Count == 0;
 
     // This is an honest implementation that also returns a collection of validation errors
     public Birthday(DateTime value)
     {
-        var errors = new List<string>();
+        // var errors = new List<string>();
 
-        if (value > DateTime.Now)
-            errors.Add("Birthdays cannot be in the future!");
+        // if (value > DateTime.Now)
+        //  errors.Add("Birthdays cannot be in the future!");
 
-        if (value == DateTime.MinValue)
-            errors.Add("Birthdays cannot occur before history.");
+        // if (value == DateTime.MinValue)
+        //  errors.Add("Birthdays cannot occur before history.");
 
         Date = value;
-        ValidationErrors = errors;
+        // ValidationErrors = errors;
+    }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var errors = new List<ValidationResult>();
+
+        Validator.TryValidateProperty(this.Date, new ValidationContext(this, null, null)
+        {
+            MemberName = nameof(Date)
+        }, errors);
+
+        return errors;
     }
 }
 
 public record PhoneNumber
 {
-    private const long InvalidSpecifier = -1;
-
     public long Value { get; }
 
     // This is an honest implementation that utilizes a "null" object
     // https://refactoring.com/catalog/introduceSpecialCase.html
-    public PhoneNumber(long value)
+    protected PhoneNumber(long value)
     {
-        if (!IsMatch(value.ToString(), "^[0-9]{10}$"))
-            value = InvalidSpecifier;
-
         Value = value;
     }
 
-    public static PhoneNumber Invalid() => new(InvalidSpecifier);
+    public static PhoneNumber Parse(long n) => IsValid(n) ? new PhoneNumber(n) : new InvalidPhoneNumber();
+    public static bool IsValid(long n) => IsMatch(n.ToString(), "^[0-9]{10}$");
+}
+
+public record InvalidPhoneNumber : PhoneNumber
+{
+    public InvalidPhoneNumber() : base(-1)
+    {
+    }
 }
