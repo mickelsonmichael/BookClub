@@ -1,8 +1,7 @@
 using System;
 using Xunit;
-using FunctionalProgramming.Console.Chapter04;
 
-namespace FunctionalProgramming.Console.Test.Chapter04;
+namespace FunctionalProgramming.Notes.Chapter04.Test;
 
 public class ConstrainingInputsWithCustomTypesTests
 {

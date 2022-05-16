@@ -9,12 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="LanguageExt.Core" Version="4.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.15.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\FunctionalProgramming.Core\FunctionalProgramming.Core.csproj" />
-  </ItemGroup>
-
 </Project>

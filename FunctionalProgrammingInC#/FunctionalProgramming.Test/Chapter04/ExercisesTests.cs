@@ -1,4 +1,4 @@
-using FunctionalProgramming.Console.Chapter04;
+using FunctionalProgramming.Notes.Chapter04;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

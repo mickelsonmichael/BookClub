@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-using FunctionalProgramming.Console.Chapter04;
+using FunctionalProgramming.Notes.Chapter04;
 
 namespace FunctionalProgramming.Console.Test.Chapter04;
 

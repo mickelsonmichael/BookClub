@@ -1,0 +1,19 @@
+---
+version: '3'
+
+services:
+  mongodb:
+    image: mongo
+    volumes:
+      - data:/data/db
+    networks:
+      - net
+  web:
+    build: FunctionalProgramming.Web/
+    networks:
+      - net
+    ports: [ "5080:80" ]
+volumes:
+  data:
+networks:
+  net:

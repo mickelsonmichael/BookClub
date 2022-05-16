@@ -1,25 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
+using FunctionalProgramming.Web.Domain;
+using FunctionalProgramming.Web.Events;
+using FunctionalProgramming.Web.Services;
+using Microsoft.AspNetCore.Mvc;
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<IBookRepository, MongoDbBookRepository>();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+WebApplication app = builder.Build();
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+app.MapPost("/books", async ([FromServices] IBookRepository repo, CreateBook createBookEvent) =>
+{
+    Book created = await repo.AddAsync(createBookEvent);
 
-app.MapControllers();
+    return Results.Created($"/books/{created.BookId}", created);
+});
 
-app.Run();
+await app.RunAsync();

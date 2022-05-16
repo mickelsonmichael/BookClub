@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FunctionalProgramming.Core\FunctionalProgramming.Core.csproj" />
-    <ProjectReference Include="..\FunctionalProgramming.Console\FunctionalProgramming.Console.csproj" />
+    <ProjectReference Include="..\FunctionalProgramming.Notes\FunctionalProgramming.Notes.csproj" />
     <ProjectReference Include="..\FunctionalProgramming.Web\FunctionalProgramming.Web.csproj" />
   </ItemGroup>
 
