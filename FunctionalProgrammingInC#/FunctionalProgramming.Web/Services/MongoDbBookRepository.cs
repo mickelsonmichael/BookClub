@@ -1,4 +1,3 @@
-using FunctionalProgramming.Web.Domain;
 using FunctionalProgramming.Web.Events;
 using MongoDB.Driver;
 
@@ -18,16 +17,18 @@ public class MongoDbBookRepository : IBookRepository
 
         MongoClient client = new(settings);
 
-        _db = client.GetDatabase("books");
+        IMongoDatabase database = client.GetDatabase("BookClub");
+
+        _bookEvents = database.GetCollection<Event>("BookEvents");
     }
 
-    public Task<Book> AddAsync(CreateBook createBookEvent)
+    public async Task AddAsync(CreatedBook createBookEvent)
     {
-        _logger.LogInformation("Adding book.\n{CreateBookEvent}", createBookEvent);
+        _logger.LogInformation("Adding book creation event.\n{CreateBookEvent}", createBookEvent);
 
-        return Task.FromResult(new Book("bookid", "title", "author"));
+        await _bookEvents.InsertOneAsync(createBookEvent);
     }
 
     private readonly ILogger<MongoDbBookRepository> _logger;
-    private readonly IMongoDatabase _db;
+    private readonly IMongoCollection<Event> _bookEvents;
 }

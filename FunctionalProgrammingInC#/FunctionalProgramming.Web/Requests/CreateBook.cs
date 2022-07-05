@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FunctionalProgramming.Web.Events;
+namespace FunctionalProgramming.Web.Requests;
 
 public readonly record struct CreateBook(
     [Required, MinLength(3)]
