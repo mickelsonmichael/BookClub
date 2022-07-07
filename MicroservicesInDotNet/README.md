@@ -60,3 +60,8 @@ This is a referenced article by Robert C. Martin (aka Uncle Bob). It can be acce
 ### Monolith First
 
 This is a referenced article by Martin Fowler. It can be accessed for free on [MartinFowler.com](https://martinfowler.com/bliki/MonolithFirst.html)
+
+### Discussion
+
+- [Lerna: Monorepo Deployment](https://lerna.js.org/)
+- [Open API Generator](https://openapi-generator.tech/)
