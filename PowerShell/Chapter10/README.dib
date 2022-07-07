@@ -1,0 +1,228 @@
+#!csharp
+
+# Chapter 10 | Formatting - and why it's done on the right
+
+Powershell uses a system of Formatting steps to determine how to output information. You can find this information by inspecting the `.format.ps1xml` files inside the `$pshome` directory.
+
+In the book, the authors use `Get-Process` as an example. Using the `Get-Member` command, we can determine that `Get-Process` returns a collection of `System.Diagnostics.Process` objects.
+
+#!pwsh
+
+# TypeName: System.Diagnostics.Process
+Get-Process | Get-Member
+
+#!csharp
+
+We can then search inside the `DotNetTypes.format.ps1xml` file (since it is a .NET Type) to find the section that defines the output for our type. See below for the snippet of that output.
+
+```xml
+<View>
+    <Name>process</Name>
+    <ViewSelectedBy>
+        <TypeName>System.Diagnostics.Process</TypeName>
+    </ViewSelectedBy>
+    <TableControl>
+        <TableHeaders>
+            <TableColumnHeader>
+                <Label>Handles</Label>
+                <Width>7</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Label>NPM(K)</Label>
+                <Width>7</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Label>PM(K)</Label>
+                <Width>8</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Label>WS(K)</Label>
+                <Width>10</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Label>VM(M)</Label>
+                <Width>5</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Label>CPU(s)</Label>
+                <Width>8</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Width>6</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader>
+                <Width>3</Width>
+                <Alignment>right</Alignment>
+            </TableColumnHeader>
+            <TableColumnHeader />
+        </TableHeaders>
+        <TableRowEntries>
+            <TableRowEntry>
+                <TableColumnItems>
+                    <TableColumnItem>
+                        <PropertyName>HandleCount</PropertyName>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <ScriptBlock>[long]($_.NPM / 1024)</ScriptBlock>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <ScriptBlock>[long]($_.PM / 1024)</ScriptBlock>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <ScriptBlock>[long]($_.WS / 1024)</ScriptBlock>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <ScriptBlock>[long]($_.VM / 1048576)</ScriptBlock>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <ScriptBlock>
+    if ($_.CPU -ne $())
+    {
+    $_.CPU.ToString("N")
+    }
+        </ScriptBlock>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <PropertyName>Id</PropertyName>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <PropertyName>SI</PropertyName>
+                    </TableColumnItem>
+                    <TableColumnItem>
+                        <PropertyName>ProcessName</PropertyName>
+                    </TableColumnItem>
+                </TableColumnItems>
+            </TableRowEntry>
+        </TableRowEntries>
+    </TableControl>
+</View>
+```
+
+In this case, the output is going to be a table, with several pre-defined columns, including a scripted column.
+
+## What if there's no pre-defined view?
+
+In the case of the processes, there was a pre-defined view, but that may not always be the case. For some types, they may instead have a pre-defined list of default output properties; the properties that are selected when the information is formatted. You can locate the properties inside the `Types.ps1xml` file inside the `$pshome` directory. 
+
+For example, here is the definition for the `Win32_OperatingSystem` type:
+
+```xml
+<Type>
+<Name>System.Management.ManagementObject#root\cimv2\Win32_OperatingSystem</Name>
+<Members>
+    <PropertySet>
+    <Name>PSStatus</Name>
+    <ReferencedProperties>
+        <Name>Status</Name>
+        <Name>Name</Name>
+    </ReferencedProperties>
+    </PropertySet>
+    <PropertySet>
+    <Name>FREE</Name>
+    <ReferencedProperties>
+        <Name>FreePhysicalMemory</Name>
+        <Name>FreeSpaceInPagingFiles</Name>
+        <Name>FreeVirtualMemory</Name>
+        <Name>Name</Name>
+    </ReferencedProperties>
+    </PropertySet>
+    <MemberSet>
+    <Name>PSStandardMembers</Name>
+    <Members>
+        <PropertySet>
+        <Name>DefaultDisplayPropertySet</Name>
+        <ReferencedProperties>
+            <Name>SystemDirectory</Name>
+            <Name>Organization</Name>
+            <Name>BuildNumber</Name>
+            <Name>RegisteredUser</Name>
+            <Name>SerialNumber</Name>
+            <Name>Version</Name>
+        </ReferencedProperties>
+        </PropertySet>
+    </Members>
+    </MemberSet>
+</Members>
+</Type>
+```
+
+Pay special attention to the `DefaultDisplayPropertySet` which will define which properties are sent to the formatter(s) by default.
+
+## Table or List
+
+Once the formatting system has a set of properties, it then has to decide whether to format those properties as a list or a table. A list is used when there are **five or more** properties, while a table is used when there are **four or fewer** properties. In the case of the `Win32_OperatingSystem` type, it will display a list because there are six properties by default.
+
+There are also three (and a half) commands for formatting the data in a more specific manner.
+
+#!csharp
+
+## Formatting Tables
+
+Using the `Format-Table` (alias `Ft`) command, you can format the output into a table with customizable properties, column widths, and more
+
+#!pwsh
+
+Get-Help Format-Table
+
+#!pwsh
+
+# specifying the properties and using the -AutoSize parameter
+Import-Csv ./cats.csv | Ft -Property Name,Fur -AutoSize
+
+#!pwsh
+
+# using the groupby parameter
+Get-Process | Sort-Object ProcessName | Ft -GroupBy ProcessName
+
+#!csharp
+
+### Custom Properties
+
+You can also add additional properties using the same HashTable syntax from the previous chapter. The syntax also allows you to define things like the Width and Alignment for the resulting column.
+
+#!pwsh
+
+Import-Csv ./cats.csv | Format-Table -Property @{name='Kitty Cat';expression={$_.Name};Width=150;Alignment='Right'}
+
+#!csharp
+
+## Formatting Lists
+
+There are two commands for formatting objects as a list, `Format-List` (alias `Fl`) and `Format-Wide` (alias `Fw`). Format list is the default when working with five or more properties, allowing for multiple properties to be displayed at once. A wide list on the other hand only allows for **one** property to be selected, but does allow for customization like the number of columns displayed.
+
+#!pwsh
+
+Import-Csv ./cats.csv | Format-List -Property Name,Fur
+
+#!pwsh
+
+# Convert to a Wide list (Format-Wide) and use the default property (Name) with 3 columns
+Import-Csv ./cats.csv | Format-Wide -Column 3
+
+#!csharp
+
+## GridView Formatting
+
+Windows has access to a special GUI application that will output the data into an interactive table. This is a unique case in terms of the formatters.
+
+#!pwsh
+
+# only works on Windows
+Import-Csv ./cats.csv | Out-GridView
+
+#!csharp
+
+## Always to the Right
+
+The formatting should "always" be the last thing on a command; otherwise, formatting information is sent to the next cmndlet, which only `Out-` cmndlets know how to understand
+
+#!pwsh
+
+Import-Csv ./cats.csv | Format-Table | ConvertTo-Csv
