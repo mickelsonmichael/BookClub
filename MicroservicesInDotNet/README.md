@@ -2,6 +2,14 @@
 
 _by Christian Horsdal Gammelgaard_
 
+- [Microservices in .NET, Second Edition](#microservices-in-net-second-edition)
+  - [1: Microservices at a Glance](#1-microservices-at-a-glance)
+    - [Microservices: a definition of this new architectural term](#microservices-a-definition-of-this-new-architectural-term)
+    - [Single Responsibility Principle](#single-responsibility-principle)
+    - [Monolith First](#monolith-first)
+    - [Discussion](#discussion)
+  - [2: A basic shopping cart microservice](#2-a-basic-shopping-cart-microservice)
+
 ## 1: Microservices at a Glance
 
 - "A _microservice_ is a service with one, and only one, very narrowly focused capability that a remote API exposes to the rest of the system."
@@ -65,3 +73,7 @@ This is a referenced article by Martin Fowler. It can be accessed for free on [M
 
 - [Lerna: Monorepo Deployment](https://lerna.js.org/)
 - [Open API Generator](https://openapi-generator.tech/)
+
+## 2: A basic shopping cart microservice
+
+- Rather than grouping the code by function (e.g. `/Models`, `/Controllers`, `/Services`), the author groups them by domain (e.g. `/ShoppingCart`, `/Users`)
