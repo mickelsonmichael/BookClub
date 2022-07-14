@@ -10,9 +10,7 @@ public static class ShoppingCartHandler
     public static Task<IResult> GetCart(
         [FromServices] IShoppingCartStore shoppingCartStore,
         int userId
-    ) => shoppingCartStore.Get(userId)
-                        .Map(c => Results.Ok(c))
-                        .AsTask();
+    ) => shoppingCartStore.Get(userId).Map(c => Results.Ok(c));
 
     public static Task<IResult> PostItems(
         [FromServices] IShoppingCartStore shoppingCartStore,

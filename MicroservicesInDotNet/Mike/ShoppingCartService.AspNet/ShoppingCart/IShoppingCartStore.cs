@@ -4,7 +4,7 @@ namespace ShoppingCartService.ShoppingCart;
 
 public interface IShoppingCartStore
 {
-    public OptionAsync<ShoppingCart> Get(int userId);
+    public Task<ShoppingCart> Get(int userId);
 
-    public TryAsync<ShoppingCart> Save(ShoppingCart shoppingCart);
+    public Task<Try<Unit>> Save(ShoppingCart shoppingCart);
 }

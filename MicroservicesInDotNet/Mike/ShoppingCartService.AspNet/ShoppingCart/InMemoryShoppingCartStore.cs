@@ -12,8 +12,12 @@ public class InMemoryShoppingCartStore : IShoppingCartStore
                 None: new ShoppingCart(userId)
             ).AsTask();
 
-    public Try<ShoppingCart> Save(ShoppingCart shoppingCart)
-        => Try(_db[shoppingCart.UserId] = shoppingCart);
+    public Task<Try<Unit>> Save(ShoppingCart shoppingCart)
+    {
+        _db[shoppingCart.UserId] = shoppingCart;
+
+        return Task.FromResult(Try(Unit.Default));
+    }
 
     private readonly IDictionary<int, ShoppingCart> _db = new Dictionary<int, ShoppingCart>();
 }

@@ -4,5 +4,5 @@ namespace ShoppingCartService.ProductCatalog;
 
 public interface IProductCatalogStore
 {
-    public Task<Either<Error, IEnumerable<ProductCatalogItem>>> Get(IEnumerable<int> productIds);
+    public Task<Validation<Error, IEnumerable<ProductCatalogItem>>> Get(IEnumerable<int> productIds);
 }
