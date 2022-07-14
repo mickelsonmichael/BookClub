@@ -21,17 +21,20 @@ public static class ShoppingCartHandler
         [FromBody] int[] productIds
     ) =>
     productCatalogStore.Get(productIds)
-        .Bind(valid => valid.Match(
-            Succ: products =>
-                shoppingCartStore.Get(userId)
-                    .Map(c => c.AddItems(products))
-                    .Bind(c =>
-                        shoppingCartStore.Save(c)
-                            .Map(t => t.Match(
-                                Succ: _ => Results.Ok(c),
-                                Fail: Results.StatusCode(500)
-                            ))
-                    ),
-            Fail: err => Results.NotFound(err).AsTask()
-        ));
+        .Bind(validation =>
+            validation.Bind<Task<Try<Unit>>>(
+                products =>
+                    shoppingCartStore.Get(userId)
+                        .Map(c => c.AddItems(products))
+                        .Bind(c => shoppingCartStore.Save(c))
+            ).Traverse(f => f)
+        ).Map(
+            validation => validation.Match(
+                Succ: t => t.Match(
+                    Succ: _ => Results.Ok(),
+                    Fail: Results.StatusCode(500)
+                ),
+                Fail: errs => Results.NotFound(errs)
+            )
+        );
 }
