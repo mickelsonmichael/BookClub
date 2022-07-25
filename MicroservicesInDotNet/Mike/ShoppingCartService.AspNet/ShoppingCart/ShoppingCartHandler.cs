@@ -1,5 +1,6 @@
 using LanguageExt;
 using Microsoft.AspNetCore.Mvc;
+using ShoppingCartService.EventFeed;
 using ShoppingCartService.ProductCatalog;
 
 namespace ShoppingCartService.ShoppingCart;
@@ -14,6 +15,7 @@ public static class ShoppingCartHandler
     public static Task<IResult> PostItems(
         [FromServices] IShoppingCartStore shoppingCartStore,
         [FromServices] IProductCatalogStore productCatalogStore,
+        [FromServices] IEventStore eventStore,
         int userId,
         [FromBody] int[] productIds
     ) =>
@@ -22,7 +24,7 @@ public static class ShoppingCartHandler
             validation.Bind<Task<Try<Unit>>>(
                 products =>
                     shoppingCartStore.Get(userId)
-                        .Map(c => c.AddItems(products))
+                        .Map(c => c.AddItems(products, eventStore))
                         .Bind(c => shoppingCartStore.Save(c))
             ).Traverse(f => f)
         ).Map(
@@ -37,11 +39,12 @@ public static class ShoppingCartHandler
 
     public static Task<IResult> DeleteItems(
         [FromServices] IShoppingCartStore shoppingCartStore,
+        [FromServices] IEventStore eventStore,
         int userId,
         [FromBody] int[] productIds
     ) =>
         shoppingCartStore.Get(userId)
-            .Map(cart => cart.RemoveItems(productIds))
+            .Map(cart => cart.RemoveItems(productIds, eventStore))
             .Bind(cart => shoppingCartStore.Save(cart))
             .Match(
                 Succ: (_) => Results.NoContent(),
