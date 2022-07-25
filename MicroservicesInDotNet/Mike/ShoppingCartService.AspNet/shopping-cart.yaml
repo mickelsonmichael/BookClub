@@ -1,0 +1,33 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: shopping-cart
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shopping-cart
+  template:
+    metadata:
+      labels:
+        app: shopping-cart
+    spec:
+      containers:
+        - name: shopping-cart
+          image: shopping-cart
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: shopping-cart
+spec:
+  type: LoadBalancer
+  ports:
+    - name: shopping-cart
+      port: 5000
+      targetPort: 80
+  selector:
+    app: shopping-cart
