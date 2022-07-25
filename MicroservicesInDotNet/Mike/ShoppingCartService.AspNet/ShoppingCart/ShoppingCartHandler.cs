@@ -2,7 +2,6 @@ using LanguageExt;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCartService.ProductCatalog;
 
-
 namespace ShoppingCartService.ShoppingCart;
 
 public static class ShoppingCartHandler
@@ -35,4 +34,17 @@ public static class ShoppingCartHandler
                 Fail: errs => Results.NotFound(errs)
             )
         );
+
+    public static Task<IResult> DeleteItems(
+        [FromServices] IShoppingCartStore shoppingCartStore,
+        int userId,
+        [FromBody] int[] productIds
+    ) =>
+        shoppingCartStore.Get(userId)
+            .Map(cart => cart.RemoveItems(productIds))
+            .Bind(cart => shoppingCartStore.Save(cart))
+            .Match(
+                Succ: (_) => Results.NoContent(),
+                Fail: (_) => Results.StatusCode(500)
+            );
 }

@@ -1,4 +1,4 @@
-namespace ShoppingCartService.ProductCatalog;
+namespace ShoppingCartService.ShoppingCart;
 
 public readonly record struct Money(
     string Currency,
