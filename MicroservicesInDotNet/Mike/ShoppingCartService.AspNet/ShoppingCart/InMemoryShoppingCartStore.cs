@@ -24,14 +24,11 @@ public class InMemoryShoppingCartStore : IShoppingCartStore
                 }
             ).AsTask();
 
-    public Task<Try<Unit>> Save(ShoppingCart shoppingCart)
-    {
-        _logger.LogDebug("Saving cart\n{Cart}", shoppingCart);
-
-        _db[shoppingCart.UserId] = shoppingCart;
-
-        return Task.FromResult(Try(Unit.Default));
-    }
+    public Task<Try<Unit>> Save(ShoppingCart shoppingCart) =>
+        (from _ in Try(() => _logger.LogDebug("Saving cart\n{Cart}", shoppingCart))
+         from c in Try(_db[shoppingCart.UserId] = shoppingCart)
+         select Unit.Default
+        ).AsTask();
 
     private readonly ILogger<InMemoryShoppingCartStore> _logger;
     private readonly IDictionary<int, ShoppingCart> _db = new Dictionary<int, ShoppingCart>();
