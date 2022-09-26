@@ -9,6 +9,8 @@ _by Christian Horsdal Gammelgaard_
     - [Monolith First](#monolith-first)
     - [Discussion](#discussion)
   - [2: A basic shopping cart microservice](#2-a-basic-shopping-cart-microservice)
+  - [3: Deploying a microservice to Kubernetes](#3-deploying-a-microservice-to-kubernetes)
+  - [4: Identifying and scoping microservices](#4-identifying-and-scoping-microservices)
 
 ## 1: Microservices at a Glance
 
@@ -77,3 +79,18 @@ This is a referenced article by Martin Fowler. It can be accessed for free on [M
 ## 2: A basic shopping cart microservice
 
 - Rather than grouping the code by function (e.g. `/Models`, `/Controllers`, `/Services`), the author groups them by domain (e.g. `/ShoppingCart`, `/Users`)
+
+## 3: Deploying a microservice to Kubernetes
+
+This chapter is mostly a review for the Nasdaq group. If the LMCU folks would like to add any notes here, please feel free.
+
+## 4: Identifying and scoping microservices
+
+- Three drives for identifying and scoping microservices
+  1. Business capabilities
+  2. Technical capabilities
+  3. Efficiency of work
+- Business capabilities contribute towards business goals
+- Conway's Law: *Any organization that designs a system (defined broadly) will produce a design whose structure is a copy of the organization's communication structure.*
+- Sometimes microservices won't correctly match the domain of the organization, and you can either modify the microservices to match the organization or modify the organization to match the microservices
+- Discussion: When the business unit isn't sure about the domain language
