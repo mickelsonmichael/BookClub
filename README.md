@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*Miroservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
+### [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
 
 ## Previous Conquests
 
@@ -24,6 +24,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ### General Programming
 
+- [*Microservice Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 - [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
 - [*Dependency Injection: Principles, Practices, and Patterns*](https://www.manning.com/books/dependency-injection-principles-practices-patterns) by Steven van Deursen, Mark Seeman
 - [*Clean Code: An Handbook of Agile Software Craftsmanship*](https://smile.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) by Robert C. Martin
@@ -48,11 +49,15 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ### Topics of Interest
 
-- C#
-- .NET
-- React/JavaScript
+- .NET Ecosystem
+  - C#
+  - Entity Framework
+  - ASP.NET
+- React & JavaScript
 - Web API Design
-- General programming
+- Microservices
+- Functional Programming
+- Domain-Driven Design
 
 ## Other Resources
 
