@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
+### [*Microservice Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 
 ## Previous Conquests
 
@@ -19,12 +19,12 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 9. [*The Design of Web APIs*](https://www.manning.com/books/the-design-of-web-apis) by Arnaud Lauret
 10. [*API Security in Action*](https://www.manning.com/books/api-security-in-action) by Neil Madden
 11. [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp-second-edition) by Erico Buonanno
+12. [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
 
 ## Future Prospects
 
 ### General Programming
 
-- [*Microservice Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 - [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
 - [*Dependency Injection: Principles, Practices, and Patterns*](https://www.manning.com/books/dependency-injection-principles-practices-patterns) by Steven van Deursen, Mark Seeman
 - [*Clean Code: An Handbook of Agile Software Craftsmanship*](https://smile.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) by Robert C. Martin
