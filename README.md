@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*Microservice Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
+### [*Microservices Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 
 ## Previous Conquests
 
