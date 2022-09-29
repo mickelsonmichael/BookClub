@@ -56,7 +56,7 @@
 - [_Suck/Rock Dichotomy_ by Neal Ford](http://nealford.com/memeagora/2009/08/05/suck-rock-dichotomy.html)
 - [_Gartner hype cycle_](https://en.wikipedia.org/wiki/Hype_cycle)
 - [_Conway's law_](https://en.wikipedia.org/wiki/Conway%27s_law)
-- [_Inverse Conway manuever_]([http](https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver))
+- [_Inverse Conway manuever_](https://www.thoughtworks.com/radar/techniques/inverse-conway-maneuver)
 - [_Continuous Delivery_](https://continuousdelivery.com)
 - [_Puppet: State of DevOps Report_](https://puppet.com/resources/whitepaper/state-of-develops-report) ([2021 Report](https://puppet.com/resources/report/2021-state-of-devops-report))
 - [_Velocity 2011: Jon Jenkins, "Velocity Culture"_](https://www.youtube.com/watch?v=dxk8b9rSKOo)
