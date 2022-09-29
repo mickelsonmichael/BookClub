@@ -52,7 +52,7 @@
 
 ### Articles and Resources
 
-- [_The Ebay Architecutre: Striking a Balance Between Site stability, Feature Velocity, Performance, and Cost_](https://www.slideshare.net/RandyShoup/the-ebay-architecture-striking-a-balance-between-site-stability-feature-velocity-performance-and-cost)
+- [_The Ebay Architecture: Striking a Balance Between Site stability, Feature Velocity, Performance, and Cost_](https://www.slideshare.net/RandyShoup/the-ebay-architecture-striking-a-balance-between-site-stability-feature-velocity-performance-and-cost)
 - [_Suck/Rock Dichotomy_ by Neal Ford](http://nealford.com/memeagora/2009/08/05/suck-rock-dichotomy.html)
 - [_Gartner hype cycle_](https://en.wikipedia.org/wiki/Hype_cycle)
 - [_Conway's law_](https://en.wikipedia.org/wiki/Conway%27s_law)
@@ -68,5 +68,5 @@
 - _The Mythical Man-Month_ by Fred Brooks
 - _The Righteous Mind: Why Good People are Divided by Politics and Religion_ by Johnathan Haidt
 - _A Pattern Language: Towns, Buildings, Construction_ by Christopher Alexander
-- _Design Patterns: Elements of Reusable Object-Oriented Software_ by Erich Gammea, Richard Helm, Ralph Johnson, and John Vlissides
+- _Design Patterns: Elements of Reusable Object-Oriented Software_ by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides
 - [_Managing Transitions_ by William Bridges, Susan Bridges](https://wmbridges.com/books)
