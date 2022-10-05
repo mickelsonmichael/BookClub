@@ -70,3 +70,56 @@
 - _A Pattern Language: Towns, Buildings, Construction_ by Christopher Alexander
 - _Design Patterns: Elements of Reusable Object-Oriented Software_ by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides
 - [_Managing Transitions_ by William Bridges, Susan Bridges](https://wmbridges.com/books)
+
+## Chapter 2
+
+> The **software architecture** of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both.
+
+- Functional requirements: what the application must do (user stories)
+  - Can be met with any architecture without a noticeable difference
+- Quality of service requirements: runtime qualities, the "-ilities"
+  - Scalability, testability, maintainability, deployability, etc.
+  - Heavily impacted by the selected architecture
+
+> An architectural style, then, defines a family of such systems in terms of a pattern of structural organization. More specifically, an architectural style determines the vocabulary of components and connectors that can be used in instances of that style, together with a set of constraints on how they can be combined.
+
+- Architectural styles
+  - Layered: three layers with different responsibilities
+    1. Presentation layer: User interfaces and external APIs
+    2. Business logic layer
+    3. Persistence layer: databases and interacting code
+  - Hexagonal: business logic at the center with multiple inbound adapters and outbound adapters
+    - External consumers invoke the inbound adapters to perform tasks
+    - Business layer invokes outbound adapters to communicate with repositories or other APIs
+    - Business layer has one or more _ports_ which can be inbound or outbound and interface with adapters
+  - Monolithic: application is a single executable/component
+  - Microservice: application is composed of multiple executables/components that communicate through protocols
+- Hexagonal and microservice styles are not mutually exclusive, and often microservices and implement the hexagonal architecture internally
+
+> A **service** is a standalone, independently deployable software component that implements some useful functionality
+
+- Two types of operations
+  - Commands: actions and updates
+  - Queries: retrieve data
+- Services can also publish events
+
+> A service’s API encapsulates its internal implementation. Unlike in a monolith, a developer can’t write code that bypasses its API. As a result, the microservice architecture enforces the application’s modularity.
+
+- A typical service in a microservice architecture follows the hexagonal structure
+- A service has two requirements:
+  1. Have an API
+  2. Be independently deployable
+
+### Articles and Resources
+
+- [O’Reilly Software Architecture Conference](https://conferences.oreilly.com/software-architecture)
+- [SATURN conference](https://resources.sei.cmu.edu/news-events/events/saturn/)
+- [WikiQuote, _Software Architecture_](https://en.wikiquote.org/wiki/Software_architecture)
+- [Software Engineering Institute](http://www.sei.cmu.edu/)
+- [_Architectural Blueprints: The ‘4+1’ View Model of Software Architecture_](www.cs.ubc.ca/~gregor/teaching/papers/4+1view-architecture.pdf)
+- [_An Introduction to Software Architecture_](https://www.cs.cmu.edu/afs/cs/project/able/ftp/intro_softarch/intro_softarch.pdf)
+- [_Pattern: Monolithic Architecture_](https://microservices.io/patterns/monolithic.html)
+- [_Pattern: Microservice Architecture_](https://microservices.io/patterns/microservices.html)
+- [Wikipedia, _Loose Coupling_](https://en.wikipedia.org/wiki/Loose_coupling)
+
+### Books
