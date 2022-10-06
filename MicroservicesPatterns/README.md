@@ -110,6 +110,27 @@
   1. Have an API
   2. Be independently deployable
 
+> You must treat a service’s persistent data like the fields of a class and keep them private.
+
+- Not sharing databases has benefits but also drawbacks
+  - Not sharing means locks are easier and data is simpler
+  - Not sharing also means that keeping data in sync between services is more difficult
+- Shared libraries should be reserved for functionality that isn't likely to change
+
+> For example, in a typical application it makes no sense for every service to implement a generic `Money` class
+
+- Microservice is a bit of a misnomer, in that the actual size of the service isn't important
+  - The service should be manageable by one team and be independent
+- Beware the _distributed monolith_
+
+> Like much of software development, defining an architecture is more art than science.
+
+- When designing the API of a service, use generic _system operations_ rather than specific protocols like REST to help keep the design flexible
+  - List them all out for the entire system, then divide them between services
+- Decompose services by _business concepts_ rather than technical
+  - Seems to be contradictory to the previous book the club read on microservices, in a way. Need more information
+
+
 ### Articles and Resources
 
 - [O’Reilly Software Architecture Conference](https://conferences.oreilly.com/software-architecture)
@@ -123,3 +144,5 @@
 - [Wikipedia, _Loose Coupling_](https://en.wikipedia.org/wiki/Loose_coupling)
 
 ### Books
+
+- [_Applying UML and Patterns_, Craig Larman](https://www.craiglarman.com/wiki/index.php?title=Book_Applying_UML_and_Patterns)
