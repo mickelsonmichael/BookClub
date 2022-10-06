@@ -1,6 +1,11 @@
 # Microservices Patterns - Discussions
 
-## Chapter 1
+## Table of Contents
+
+- [Chapter 1](#chapter-1---escaping-monolithic-hell)
+- [Chapter 2](#chapter-2---decomposition-strategies)
+
+## Chapter 1 - Escaping monolithic hell
 
 - "[Monoliths are] too large for any developer to understand [after a certain point]" (page 4)
 
@@ -71,7 +76,7 @@
 - _Design Patterns: Elements of Reusable Object-Oriented Software_ by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides
 - [_Managing Transitions_ by William Bridges, Susan Bridges](https://wmbridges.com/books)
 
-## Chapter 2
+## Chapter 2 - Decomposition Strategies
 
 > The **software architecture** of a computing system is the set of structures needed to reason about the system, which comprise software elements, relations among them, and properties of both.
 
