@@ -129,7 +129,58 @@
   - List them all out for the entire system, then divide them between services
 - Decompose services by _business concepts_ rather than technical
   - Seems to be contradictory to the previous book the club read on microservices, in a way. Need more information
+- Obstacles to decomposition:
+  1. Network latency
+  2. Reduced availability
+  3. Data consistency across services
+  4. God classes
+- Two steps to defining system operations:
+  1. Create a high-level domain model
+  2. Identify system operations in terms of domain model
 
+> The domain model is derived primarily from the nouns of the user stories, and the system operations are derived mostly from the verbs
+
+- Each service will have its own domain model, but there still remains a high level model
+- Commands should have several characteristics:
+  - Parameters
+  - Return value
+  - Preconditions
+  - Post-conditions
+- Decompose by business capability:
+  - Business capability: something the business does to generate value and define what an organization does
+  - Business capabilities are stable and don't really change, while the methods they are accomplished by do change
+  - Often focused on a particular object of the domain
+  - Results in a stable architecture because the underlying drivers don't change
+- Decompose by sub-domain pattern:
+  - Domain-Driven Design has subdomains and bounded contexts which are useful when modeling microservice architectures
+  - Multiple domain models, each with a specific scope specific to the area of concern
+  - A bounded context is the scope of a subdomain model, and each one corresponds with a service or set of services
+
+> A class should have only one reason to change - Robert C. Martin
+
+> The classes in a package should be closed together against the same kinds of changes. A change that affects a package affects all the classes in that package. - Robert C. Martin
+
+- Obstacles to decomposition:
+  - Network latency: too many round trips
+    - Can be mitigated by batch processing or combining services
+  - Reduced availability
+    - Services rely on one another and if one goes down it affects the others
+    - Asynchronous messaging can reduce coupling
+  - Data consistency across services
+    - Operations may need to update multiple services at once
+    - Sagas can deal with this using messaging
+  - Consistent view of the data
+    - Operations aren't atomic so states between services may not be up to date
+    - Prevented by consolidating services into a single service
+  - God classes
+    - Performs much of the activity of a service
+    - Each service has a candidate class that is the primary object of concern for the service
+    - To mitigate, each service should have it's own version of each model with only information relevant to the service context
+    - Translation of models between services can often happen in the API Gateway
+
+> If you need to update some data atomically, then it must reside within a single service, which can be an obstacle to decomposition.
+
+- When writing the API for your system, start by assigning each system operation to a service
 
 ### Articles and Resources
 
@@ -142,7 +193,13 @@
 - [_Pattern: Monolithic Architecture_](https://microservices.io/patterns/monolithic.html)
 - [_Pattern: Microservice Architecture_](https://microservices.io/patterns/microservices.html)
 - [Wikipedia, _Loose Coupling_](https://en.wikipedia.org/wiki/Loose_coupling)
+- [_Pattern: Decompose by Business Capability_](http://microservices.io/patterns/decomposition/decompose-by-business-capability.html)
+- [_Pattern: Decompose by Subdomain_](http://microservices.io/patterns/decomposition/decompose-by-subdomain.html)
+- [_PrinciplesOfOod_](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod)
+- [Cunningham & Cunningham Consultancy Wiki, _God Class_](http://wiki.c2.com/?GodClass)
 
 ### Books
 
 - [_Applying UML and Patterns_, Craig Larman](https://www.craiglarman.com/wiki/index.php?title=Book_Applying_UML_and_Patterns)
+- _Domain-Driven Design_, Eric Evans
+- _Designing Object Oriented C++ Applications Using the Booch Method_, Robert C. Martin
