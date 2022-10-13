@@ -1,9 +1,17 @@
-# Microservices Patterns - Discussions
+# Microservices Patterns
 
-## Table of Contents
-
-- [Chapter 1](#chapter-1---escaping-monolithic-hell)
-- [Chapter 2](#chapter-2---decomposition-strategies)
+- [Microservices Patterns](#microservices-patterns)
+  - [Chapter 1 - Escaping monolithic hell](#chapter-1---escaping-monolithic-hell)
+    - [Articles and Resources](#articles-and-resources)
+    - [Books](#books)
+  - [Chapter 2 - Decomposition Strategies](#chapter-2---decomposition-strategies)
+    - [Articles and Resources](#articles-and-resources-1)
+    - [Books](#books-1)
+  - [Chapter 3 - Interprocess communication in a microservice architecture](#chapter-3---interprocess-communication-in-a-microservice-architecture)
+      - [Synchronous messaging](#synchronous-messaging)
+      - [Asynchronous messaging](#asynchronous-messaging)
+    - [Articles and Resources](#articles-and-resources-2)
+    - [Books](#books-2)
 
 ## Chapter 1 - Escaping monolithic hell
 
@@ -14,15 +22,15 @@
 - Patterns have three major components
   1. **Forces**: issues that must be addressed, and may be conflicting
   2. **Resulting context**: the consequences of applying the patterns (also has three parts)
-      1. _Benefits_: benefits to the pattern and _forces_ that have been resolved
-      2. _Drawbacks_: drawbacks of the pattern and _forces_ that have not been resolved
-      3. _Issues_: new problems or _forces_ that have been introduced
+     1. _Benefits_: benefits to the pattern and _forces_ that have been resolved
+     2. _Drawbacks_: drawbacks of the pattern and _forces_ that have not been resolved
+     3. _Issues_: new problems or _forces_ that have been introduced
   3. **Related patterns**: relationships between patterns
-      1. _Predecessor_: the _pattern_ that motivated the need for the current _pattern_
-      2. _Successor_: a _pattern_ that solves an _issue_ in this pattern's _resulting context_
-      3. _Alternative_: a _pattern_ that can be chosen instead of the current _pattern_
-      4. _Generalization_: a _pattern_ that is a general solution to problems
-      5. _Specialization_: a _pattern_ that is a specialized form of another _pattern_
+     1. _Predecessor_: the _pattern_ that motivated the need for the current _pattern_
+     2. _Successor_: a _pattern_ that solves an _issue_ in this pattern's _resulting context_
+     3. _Alternative_: a _pattern_ that can be chosen instead of the current _pattern_
+     4. _Generalization_: a _pattern_ that is a general solution to problems
+     5. _Specialization_: a _pattern_ that is a specialized form of another _pattern_
 
 > What is the difference between a _successor_ and a _generalization_? They seem very similar. Point (4) seems to describe the qualities of a pattern rather than relationships
 
@@ -208,3 +216,142 @@
 - [_Applying UML and Patterns_, Craig Larman](https://www.craiglarman.com/wiki/index.php?title=Book_Applying_UML_and_Patterns)
 - _Domain-Driven Design_, Eric Evans
 - _Designing Object Oriented C++ Applications Using the Booch Method_, Robert C. Martin
+
+## Chapter 3 - Interprocess communication in a microservice architecture
+
+- Several interaction styles, each with two dimensions
+  - First dimension:
+    - _One-to-one_
+    - _One-to-many_
+  - Second dimension:
+    - _Synchronous_
+    - \_Asynchronous
+- Some _one-to-one_ interactions:
+  - _Request/response_ - client sends a message and waits for a response and expects a quick response
+  - _Async request/response_ - client sends a message and waits for a response but does not block
+  - _One-way notifications_ - client sends a message and doesn't wait for a response
+- Some _one-to-many_ interactions:
+  - _Pub/sub_ - client sends a message and does not wait for responses
+  - _Pub/async response_ - client sends a message and waits for an amount of responses (one or more)
+
+> A service's API is a contract between the service and its clients.
+
+- _Interface definition language_ (IDL)
+  - Important way to explicitly state the contract between services
+  - Helps prevent runtime errors
+- Some suggest an API-first design, where the API contract is negotiated before the code is written
+- In microservice architectures, it's difficult to update contracts, but there are ways to mitigate the difficulty
+- Semantic versioning
+  - `MAJOR.MINOR.PATCH`
+    - `MAJOR` = breaking change
+    - `MINOR` = non-breaking enhancement
+    - `PATCH` = non-breaking bug fix
+  - Strive to only make backwards-compatible changes, `MINOR` and `PATCH`
+  - Robustness principle: "Be conservative in what you do, be liberal in what you accept from others"
+    - Clients should ignore extra properties and attributes
+    - Services should add sensible defaults when a property or attribute is not present
+  - When making breaking `MAJOR` updates:
+    - Continue to support the previous version for a time
+    - If using REST, you can embed the version in the URL `example.com/v1/path` and `example.com/v2/path` or set the version number in the MIME type like `application/vnd.example.resource+json; version=1`
+- Use a cross-language message format
+- Text-based message formats
+  - JSON, XML, YAML
+  - Human-readable and self-describing
+  - Easy to make backwards compatible changes
+  - Often have well-defined specifications like the XML and JSON schemas
+  - Verbose (positive and a negative)
+  - Less efficient than alternative formats
+- Binary message formats
+  - Protocol Buffers, Avro, Thrift, MessagePack
+  - Compiler generates code for serializing and deserializing messages
+  - Requires an API-first design
+  - Can have varying degrees of flexibility for change
+- Remove Procedure Invocation (RPI) pattern
+  1. Client invokes a _proxy interface_
+  2. _RPI proxy_ implements the _proxy interface_ and makes a request to the service
+  3. _RPI server_ accepts the requests and uses the _service interface_ to handle it
+  4. _RPI server_ sends back a reply to the _RPI proxy_
+
+#### Synchronous messaging
+
+> REST provides a set of architectural constraints that, when applied as a whole, emphasizes scalability of component interactions, generality of interfaces, independent deployment of components, and intermediary components to reduce interaction latency, enforce security, and encapsulate legacy systems.
+
+- REST
+  - Richardson maturity model for REST
+    - _Level 0_: A single `POST` endpoint which handles multiple actions
+    - _Level 1_: Multiple `POST` endpoints, one for each resource, that handle multiple actions
+    - _Level 2_: Uses HTTP verbs like `POST`, `GET`, and `PUT`
+    - _Level 3_: Same as _level 2_, but `GET` responses include links to actions
+      - Based on Hypertext As the Engine of Application State (HATEOAS) principle
+  - Open API Specification is the IDL for REST (evolved from Swagger)
+  - REST can make it difficult to be efficient by demanding that multiple resources be retrieved via multiple requests
+    - GraphQL and Falcor are an alternative method that allows for these batch requests
+    - There are mitigation strategies like `?expand=resource`
+  - REST also makes it difficult to associate verbs with operations at times
+    - Example from Nasdaq: Need to `GET` the odds for the selection, which necessitates putting the selection in the query, rather than a body, due to the limitations of `GET`
+  - REST requires usage of a _service discovery mechanism_ or to know about URLs ahead of time
+- gRPC (Google Remote Procedure Call)
+  - binary message-based
+  - Uses Protocol Buffers, which are tagged and allow for backwards-compatibility
+  - Is more difficult to consume from a JavaScript client than REST APIs
+  - Requires support of HTTP/2
+- Request failures should not bring the system down
+  - Use a series of mitigation methods:
+    - Use _network timeouts_ to ensure requests always end
+    - Limit concurrent requests to a service
+      - When the limit is reached, new requests should fail instead of attempting to connect
+    - If the number of failures is too great, trip a _circuit breaker_ and fail all future requests
+- Service discovery can be handled through a number of ways, including self registration and client-side discovery
+  - Services register themselves with a centralized registration service
+  - Clients request a list of current services from the registration service
+  - Eureka is a service registry and Spring Cloud is an example of a client that handles the service discovery and selection
+  - Handles mixed environments, like Kubernetes mixed with traditional deployments
+  - Requires a service discovery library in every language used, or for you to write your own
+  - Must maintain a registry service
+- Service discovery can also be handled by platforms like Kubernetes
+  - Combines two patterns, _3rd party registration pattern_ and _Server-side discovery pattern_
+  - Only supports discovery of services deployed to the platform
+  - **Recommended by the author whenever possible**
+
+#### Asynchronous messaging
+
+- Services can use a _message broker_ to communicate
+  - Some architectures omit the broker in a _brokerless_ architecture
+- Clients do not wait for a response from the server
+
+### Articles and Resources
+
+- [_How to Design Great APIs with API-First Design_, ProgrammableWeb.com](http://www.programmableweb.com/news/how-to-design-great-apis-api-first-design-and-raml/how-to/2015/07/10)
+- [Semantic Versioning (semver) specification](http://semver.org/)
+- [_Robustness principle_, Wikipedia.org](https://en.wikipedia.org/wiki/Robustness_principle)
+- [_XML Schema_, W3.org](http://www.w3.org/XML/Schema)
+- [JSON Schema standard](http://json-schema.org/)
+- [Protocol Buffers, Google](https://developers.google.com/protocol-buffers/docs/overview)
+- [Avro, Apache](https://avro.apache.org/)
+- [_Schema evolution in Avro, Protocol Buffers and Thrift_, Martin Kleppmann](https://martin.kleppmann.com/2012/12/05/schema-evolution-in-avro-protocol-buffers-thrift.html)
+- [_Pattern: Remove Procedure Invocation_, Microservices.io](http://microservices.io/patterns/communication-style/messaging.html)
+- [_Representational state transfer_, Wikipedia.org](https://en.wikipedia.org/wiki/Representational_state_transfer)
+- [_Architectural Styles and the Design of Network-based Software Architectures_, University of California, Irvine](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)
+- [_REST APIs must be hypertext-driven_, Roy Fielding](https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven)
+- [_Richardson Maturity Model_, Martin Fowler](https://martinfowler.com/articles/richardsonMaturityModel.html)
+- [_Advantages of (Also) Using HATEOAS in RESTFul APIs_, InfoQ.com](https://www.infoq.com/news/2009/04/hateoas-restful-api-advantages/)
+- [Open API Specification](http://www.openapis.org/)
+- <http://graphql.org/>
+- [Netflix Falcor](http://netflix.github.io/falcor/)
+- <http://www.grpc.io/>
+- [_Remote procedure call_, Wikipedia.org](https://en.wikipedia.org/wiki/Remote_procedure_call)
+- [_Pattern: Circuit Breaker_, Microservices.io](http://microservices.io/patterns/reliability/circuit-breaker.html)
+- [_Fault Tolerance in a High Volume, Distributed System_, Netflix](http://techblog.netflix.com/2012/02/fault-tolerance-in-high-volume.html)
+- [Netflix Hystrix](https://github.com/Netflix/Hystrix)
+- [Polly .NET Library](https://github.com/App-vNext/Polly)
+- [_Pattern: Self registration_, Microservices.io](http://microservices.io/patterns/self-registration.html)
+- [_Pattern: Client-side discovery_, Microservices.io](http://microservices.io/patterns/client-side-discovery.html)
+- [_Pattern: 3rd party registration_, Microservices.io](http://microservices.io/patterns/3rd-party-registration.html)
+- [_Pattern: Server-side discovery_, Microservices.io](http://microservices.io/patterns/server-side-discovery.html)
+- [_Pattern: Messaging_, Microservices.io](http://microservices.io/patterns/communication-style/messaging.html)
+- [_Message_, EnterpriseIntegrationPatterns.com](https://www.enterpriseintegrationpatterns.com/Message.html)
+- [_MessageChannel_, EnterpriseIntegrationPatterns.com](http://www.enterpriseintegrationpatterns.com/MessageChannel.html)
+- [_PointToPointChannel_, EnterpriseIntegrationPatterns.com](http://www.enterpriseintegrationpatterns.com/PointToPointChannel.html)
+- [_PublishSubscribeChannel_, EnterpriseIntegrationPatterns.com](http://www.enterpriseintegrationpatterns.com/PublishSubscribeChannel.html)
+
+### Books
