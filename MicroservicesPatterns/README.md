@@ -12,6 +12,15 @@
       - [Asynchronous messaging](#asynchronous-messaging)
     - [Articles and Resources](#articles-and-resources-2)
     - [Books](#books-2)
+  - [Chapter 4 - Managing transactions with sagas](#chapter-4---managing-transactions-with-sagas)
+    - [Types of Countermeasures](#types-of-countermeasures)
+      - [Semantic lock](#semantic-lock)
+      - [Commutative updates](#commutative-updates)
+      - [Pessimistic view](#pessimistic-view)
+      - [Reread value](#reread-value)
+      - [Version file](#version-file)
+      - [By value](#by-value)
+    - [Articles and Resources](#articles-and-resources-3)
 
 ## Chapter 1 - Escaping monolithic hell
 
@@ -355,3 +364,79 @@
 - [_PublishSubscribeChannel_, EnterpriseIntegrationPatterns.com](http://www.enterpriseintegrationpatterns.com/PublishSubscribeChannel.html)
 
 ### Books
+
+## Chapter 4 - Managing transactions with sagas
+
+- Microservice transactions can be managed with sagas
+- Sagas are `ACD` (missing `Isolation`)
+  - Countermeasures can be used to mitigate this loss
+  - A saga is defined per system operation
+  - Sequence of microservice-level transactions
+- Traditionally, distributed transactions have been used
+  - Like Open XA with a two-phase commit (2PC)
+  - NoSQL databases often don't support them
+    - [MongoDb added distributed transactions in 2019](https://www.mongodb.com/press/mongodb-42-adds-distributed-transactions-field-level-encryption-updated-kubernetes-operator-and-more-to-the-leading-modern-general-purpose-database)
+  - Modern message brokers don't support them
+  - Form of synchronous IPC
+- Sagas are rolled back using _compensating transactions_
+  - Seems to be easier with event sourcing
+  - Read-only transactions do not need these compensations
+  - Transactions that always succeed do not need these compensations
+- Types of saga transactions
+  - _Compensatable_: can fail
+  - _Pivot_: followed by steps that cannot fail
+  - _Retriable_: always succeed
+- Two types of saga coordination:
+  - _Choreography_: distributed decision making
+  - _Orchestration_: centralized decision authority
+- _Correlation ids_ can be used to coordinate transactions between microservices in a choreography-based saga
+- Because sagas are not _isolated_, they can result in anomalies:
+  1. _Lost updates_: one saga overwrites something written by another
+  2. _Dirty reads_: one saga reads an incomplete update
+  3. _Fuzzy/nonrepeatable reads_: two sagas read data but get different results
+- One countermeasure is pending states like `CANCELLATION_PENDING` or `CREATION_PENDING`
+- The two types of saga transactions listed above are not the only two, there's also
+  - _Pivot transaction_: A "point of no return" for a saga that cannot be compensated or rolled back
+- Eventuate Tram is a saga management framework written by the author
+
+### Types of Countermeasures
+
+#### Semantic lock
+
+Setting a "flag" on any record touched by the saga specifying that it is not yet done (or "committed")
+
+- The `*_PENDING` states
+- Can be cleared by successful completion of the saga or a compensating transaction
+- Must add logic to prevent and mitigate deadlocks
+- Requires participating services to know about the states
+
+#### Commutative updates
+
+A commutative transaction is a transaction that can be executed in any order
+
+#### Pessimistic view
+
+Order the transactions to minimize risk from a dirty read
+
+#### Reread value
+
+Reread a record before updating it once business logic has been executed on it. See the [Optimistic Offline Lock pattern](https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html)
+
+#### Version file
+
+Records the operations performed on a record, which allows them to be reordered and makes commutative operations out of all transactions.
+
+#### By value
+
+Utilize sagas or distributed transactions base on business risk. Higher-risk scenarios should use distributed transactions and lower-risk can instead utilize sagas.
+
+### Articles and Resources
+
+- [_Starbucks Does Not Use Two-Phase Commit_, Gregor's Ramblings](https://www.enterpriseintegrationpatterns.com/ramblings/18_starbucks.html)
+- [_Open XA_, Wikipedia](https://en.wikipedia.org/wiki/X/Open_XA)
+- [_CAP Theorem_, Wikipedia](https://en.wikipedia.org/wiki/CAP_theorem)
+- [_Pattern: Saga_, Microservices.io](http://microservices.io/patterns/data/saga.html)
+- [_Transaction Isolation Levels_, MySQL](https://dev.mysql.com/doc/refman/5.7/en/innodb-transaction-isolation-levels.html)
+- [_Semantic ACID properties in multidatabases using remote procedure calls and update propagations_, ACM Digital Library](https://dl.acm.org/citation.cfm?id=284472.284478)
+- [_Optimistic Offline Lock_, MartinFowler.com](https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html)
+- [_About Eventuate Tram_, eventuate.io](https://eventuate.io/abouteventuatetram.html)
