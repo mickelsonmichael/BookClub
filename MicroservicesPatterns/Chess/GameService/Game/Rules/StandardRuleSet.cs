@@ -32,14 +32,16 @@ public class StandardRuleSet : IRuleSet
         yield return new Pawn(White, new Position('f', 2));
         yield return new Pawn(White, new Position('g', 2));
         yield return new Pawn(White, new Position('h', 2));
+        yield return new King(White, new Position('d', 1));
 
-        yield return new Pawn(Black, new Position('a', 2));
-        yield return new Pawn(Black, new Position('b', 2));
-        yield return new Pawn(Black, new Position('c', 2));
-        yield return new Pawn(Black, new Position('d', 2));
-        yield return new Pawn(Black, new Position('e', 2));
-        yield return new Pawn(Black, new Position('f', 2));
-        yield return new Pawn(Black, new Position('g', 2));
-        yield return new Pawn(Black, new Position('h', 2));
+        yield return new Pawn(Black, new Position('a', 7));
+        yield return new Pawn(Black, new Position('b', 7));
+        yield return new Pawn(Black, new Position('c', 7));
+        yield return new Pawn(Black, new Position('d', 7));
+        yield return new Pawn(Black, new Position('e', 7));
+        yield return new Pawn(Black, new Position('f', 7));
+        yield return new Pawn(Black, new Position('g', 7));
+        yield return new Pawn(Black, new Position('h', 7));
+        yield return new King(Black, new Position('d', 8));
     }
 }

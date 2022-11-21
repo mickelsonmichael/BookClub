@@ -33,15 +33,13 @@ public record Position
             return Invalid();
         }
 
-        string[] coords = positionString.Split();
+        char[] coords = positionString.ToCharArray();
 
-        if (!int.TryParse(coords[1], out int n))
+        if (!int.TryParse(coords[1].ToString(), out int n))
         {
             return Invalid();
         }
 
-        char l = coords[0].First();
-
-        return new(l, n);
+        return new(coords[0], n);
     }
 }

@@ -9,5 +9,5 @@ public record GetGameResponse(
     string? BlackPlayerId,
     Player? Winner,
     Player Turn,
-    ICollection<IChessPiece> Pieces
+    ICollection<Piece> Pieces
 );

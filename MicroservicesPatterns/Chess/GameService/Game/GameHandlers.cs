@@ -8,24 +8,29 @@ namespace GameService.Game;
 public static class GameHandlers
 {
     public static IResult CreateGame(
-        string playerId,
+        [FromBody] string playerId,
         [FromServices] GameController gameController
     )
     {
         ChessGame game = gameController.CreateGame(playerId);
 
-        return Results.Ok(game);
+        CreateGameResponse resp = CreateGameResponse.From(game);
+
+        return Results.Ok(resp);
     }
 
     public static IResult GetGame(
         string gameId,
-        [FromServices] GameController gameController
+        [FromServices] GameController gameController,
+        [FromServices] ILogger<GameController> logger
     )
     {
         ChessGame? game = gameController.GetGame(gameId);
 
         if (game == null)
         {
+            logger.LogWarning("Unable to find game with id {GameId}", gameId);
+
             return Results.NotFound();
         }
 
@@ -35,8 +40,10 @@ public static class GameHandlers
             game.BlackPlayerId != null ? (string?)game.BlackPlayerId : null,
             game.GetWinner(),
             game.Turn,
-            game.GetPieces()
+            game.GetPieces().Select(Piece.From).ToArray()
         );
+
+        logger.LogInformation("Returned response \n{GetGameResponse}", resp);
 
         return game != null
             ? Results.Ok(resp)

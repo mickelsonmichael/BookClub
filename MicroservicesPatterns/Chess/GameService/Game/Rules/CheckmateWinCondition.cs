@@ -62,7 +62,7 @@ public class CheckmateWinCondition : IWinCondition
                 return true;
             }
 
-            return kingMoves.Except(positionsCoveredByEnemies).Any();
+            return !kingMoves.Except(positionsCoveredByEnemies).Any();
         };
     }
 }
