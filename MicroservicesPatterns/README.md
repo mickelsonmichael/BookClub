@@ -21,6 +21,21 @@
       - [Version file](#version-file)
       - [By value](#by-value)
     - [Articles and Resources](#articles-and-resources-3)
+  - [Chapter 5 - Designing business logic in a microservice architecture](#chapter-5---designing-business-logic-in-a-microservice-architecture)
+    - [Notes](#notes)
+      - [Transaction script pattern](#transaction-script-pattern)
+      - [Domain model pattern](#domain-model-pattern)
+      - [Domain-Driven Design](#domain-driven-design)
+      - [Aggregate Rules](#aggregate-rules)
+      - [Domain events](#domain-events)
+    - [Articles and Resources](#articles-and-resources-4)
+  - [Chapter 6 - Developing business logic with event sourcing](#chapter-6---developing-business-logic-with-event-sourcing)
+    - [Articles and Resources](#articles-and-resources-5)
+  - [Chapter 7](#chapter-7)
+  - [Chapter 8](#chapter-8)
+  - [Chapter 9 - Testing microservices (part 1)](#chapter-9---testing-microservices-part-1)
+    - [Consumer-driven contract testing](#consumer-driven-contract-testing)
+    - [Articles and Resources](#articles-and-resources-6)
 
 ## Chapter 1 - Escaping monolithic hell
 
@@ -440,3 +455,142 @@ Utilize sagas or distributed transactions base on business risk. Higher-risk sce
 - [_Semantic ACID properties in multidatabases using remote procedure calls and update propagations_, ACM Digital Library](https://dl.acm.org/citation.cfm?id=284472.284478)
 - [_Optimistic Offline Lock_, MartinFowler.com](https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html)
 - [_About Eventuate Tram_, eventuate.io](https://eventuate.io/abouteventuatetram.html)
+
+## Chapter 5 - Designing business logic in a microservice architecture
+
+### Notes
+
+- Two methods for organizing a microservice's business logic
+  - *Transaction script pattern* or procedural code
+  - *Domain model pattern* or object-oriented code
+
+#### Transaction script pattern
+
+- "Organize the business logic as a collection of procedural transaction scripts, one for each type of request"
+- Methods called _transaction scripts_ handle requests
+- Classes are split into state holders and access objects (DTO and DAO models)
+  - DTO models are POCOs and don't do much
+  - DAO models don't have much data but perform the actions for the DTOs
+- Usually coordinated in a `*Service` classes with a method per request type
+- Best for simple business logic
+- Continuously grow and get harder to maintain
+
+#### Domain model pattern
+
+- "Organize the business logic as an object model consisting of classes that have state and behavior"
+- Classes often have both state and behavior
+- Still has `*Service` class, but the logic within is simple and most of the complexity is passed into the domain models
+- Classes closely model the real-world
+- Classes are generally easier to test because they are simpler
+
+#### Domain-Driven Design
+
+- A refinement on object-oriented design focused on complex business logic
+- Types of DDD concepts
+  - _Entities_ have persistent identities
+    - Two entities with the same property values are still different entities
+  - _Value objects_ are collections of values
+    - Two value objects with the same property values are considered the same
+  - _Factories_ are objects or methods that implement complex construction logic
+    - Could be static methods on the class
+  - _Repositories_ handle the database access logic
+  - _Services_ implement business logic that doesn't belong in an entity or a value object
+  - _Aggregates_ are a set of domain objects with a boundary, letting them be treated as a single unit
+    - "Organize a domain model as a collection of aggregates, each of which is a graph of objects that can be treated as a unit"
+    - Have a single _root entity_ with additional entities and value objects
+    - Updates to an aggregate must be performed on the root entity
+  - _Invariants_ are business rules that must always be enforced
+
+#### Aggregate Rules
+
+1. "Reference only the aggregate root"
+2. "Inter-aggregate references must use primary keys"
+3. "One transaction create or updates on aggregate"
+
+#### Domain events
+
+- "...a domain event is something that has happened to an aggregate" and is a class in the domain model
+
+### Articles and Resources
+
+- [_Patterns of Enterprise Application Architecture_ by Martin Fowler](https://www.martinfowler.com/books/eaa.html)
+- [_Domain-Driven Design: Tackling Complexity in the Heart of Software_ by Eric Evans](https://www.betterworldbooks.com/product/detail/Domain-Driven-Design---Tackling-Complexity-in-the-Heart-of-Software-9780321125217)
+- [_What's New in Spring Data Release Ingalls?_, Spring.io](https://spring.io/blog/2017/01/30/what-s-new-in-spring-data-release-ingalls)
+
+## Chapter 6 - Developing business logic with event sourcing
+
+> Note: Graham was bursting at the seams for the discussion this week. We'll see what has him so riled up
+
+- The downside to returning a list of domain events from a domain model modification is that there is no guarantee that the events will be published; they could be ignored by the developer
+- Event sourcing, on the other hand, guarantees that an event will be published after a modification or creation of an aggregate
+
+> Event sourcing: Persist an aggregate as a sequence of domain events that represent state changes
+
+- Event sourcing has several perks:
+  - History is preserved
+  - Domain events are published every time
+- Event sourcing has several drawbacks
+  - Has a steeper learning curve
+  - Querying can be more difficult
+- _Object-Relational impedance mismatch_ is when there is a "fundamental conceptual mismatch between the tabular relational schema and the graph structure of a rich domain model with its complex relationships"
+
+> Note: The author mentions that "developers must implement [a history] mechanism themselves" when working with traditional persistance but that isn't exactly true. Many have history including MSSQL
+
+### Articles and Resources
+
+- [_Pattern: Event Sourcing_, Microservices.io](http://microservices.io/patterns/data/event-sourcing.html)
+- [_The Vietnam of Computer Science_, Ted Neward](http://blogs.tedneward.com/post/the-vietnam-of-computer-science/)
+  - [August 23 Mirror](https://web.archive.org/web/20220823105749/http://blogs.tedneward.com/post/the-vietnam-of-computer-science/)
+- [_Introduce Parameter Object_, Refactoring.com](https://refactoring.com/catalog/introduceParameterObject.html)
+- [_Memento pattern_, WikiPedia](https://en.wikipedia.org/wiki/Memento_pattern)
+
+## Chapter 7
+
+## Chapter 8
+
+## Chapter 9 - Testing microservices (part 1)
+
+- Chapter begins with a general overview of testing. Includes types of testing, stages of testing, and pipelines
+- Rather than the 3-A strategy (Arrange/Assert/Act) it utilizes a four step strategy (Setup/Exercise/Verify/Teardown)
+  - Odd that the author chose to make this divergence from such a popular standard
+  - Apparently introduced in the book [__xUnit Test Patterns__ by Gerard Meszaros](http://xunitpatterns.com/index.html)
+- Asserts that there are four types of tests
+  1. Unit tests
+  2. Integration tests
+  3. Component tests
+  4. End-to-end tests
+- Uniquely, it uses *component* tests and *end-to-end*, rather than a single *acceptance* test category
+  - *Component* tests are acceptance tests for a single component
+  - *End-to-end* tests are acceptance tests for the application as a whole
+
+### Consumer-driven contract testing
+
+- When it is necessary to test the communication between to tests, it's preferable to use *consumer-driven contract testing*
+  1. Consumer submits tests to some provider using a contract language (e.g., [Pact](https://pact.io/))
+  2. Provider compiles tests using the contract(s)
+  3. Provider publishes the produced tests to a repository (e.g., Maven, NuGet)
+  4. Consumer creates tests for the consumer code using the published test package 
+- Frameworks exist for most languages, but **Pact** appears to be the crowd favorite framework
+  - [Pact-Net](https://github.com/pact-foundation/pact-net)
+    - Uses a shared Rust backend, meaning compatibility is lacking
+      - Must use an actual HTTP server, rather than the .NET testing apparatus
+      - Does not support x86 systems or ARM architectures
+  - [Microsoft's Code with Engineering Playbook: CDC Testing](https://microsoft.github.io/code-with-engineering-playbook/automated-testing/cdc-testing/)
+- Contract testing is preferable to schema-based testing (e.g., OpenAPI, JSON schema) because they aren't dynamic enough
+- Contracts do not test the provider's business logic, rather that the responses are the proper format (e.g., HTTP method, path, headers, etc.)
+
+### Articles and Resources
+
+- [_Testing Trends for 2018_, Sauce Labs](https://saucelabs.com/assets/3NT3Y0vhCKyVZQjbNCWvjo/204c6fa91deb8adb18813e33d884a8a9/sauce-labs-state-of-testing-2018.pdf)
+- [_Test case_, Wikipedia](https://en.wikipedia.org/wiki/Test_case)
+- [_Four-Phase Test_, xUnit Patterns](http://xunitpatterns.com/Four%20Phase%20Test.html)
+- [_TestPyramid_, Martin Fowler](https://martinfowler.com/bliki/TestPyramid.html)
+- [_Pattern: Service Integration Contract Test_, Microservices.io](https://microservices.io/patterns/testing/service-integration-contract-test.html)
+- [_Pattern: Consumer-side contract test_, Microservices.io](https://microservices.io/patterns/testing/consumer-side-contract-test.html)
+  - Not a very useful link...
+- [_Spring Cloud Contract_, Spring.io](https://cloud.spring.io/spring-cloud-contract/reference/html/documentation-overview.html#contract-documentation)
+- [_Pact Foundation_, Github](https://github.com/pact-foundation)
+- [_UnitTest_, Martin Fowler](https://martinfowler.com/bliki/UnitTest.html)
+- [_Eventuate Tram Sagas_, GitHub](https://github.com/eventuate-tram/eventuate-tram-sagas)
+- [_MockMvc vs End-toEnd Tests_, Spring.io](https://docs.spring.io/spring-framework/docs/current/reference/html/testing.html#spring-mvc-test-vs-end-to-end-integration-tests)
+- [_Rest-assured_, GitHub](https://github.com/rest-assured/rest-assured/wiki/Spring#spring-mock-mvc-module)
