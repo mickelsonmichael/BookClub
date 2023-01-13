@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*Microservices Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
+### TBD
 
 ## Previous Conquests
 
@@ -20,6 +20,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 10. [*API Security in Action*](https://www.manning.com/books/api-security-in-action) by Neil Madden
 11. [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp-second-edition) by Erico Buonanno
 12. [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
+13. [*Microservices Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 
 ## Future Prospects
 
@@ -34,7 +35,6 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action) by Justin Richer, Antonio Sanso
 - [*Design Patterns: Elements of Reusable Object-Oriented Software (Gang of Four)*](https://smile.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=martinfowlerc-20) by Erich Gamme, Richard Helm, Ralph Johnson, John Vlissides
 - [*Introduction to Algorithms, 3rd Edition*](https://smile.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844/ref=sr_1_5?crid=2NXQ68BGSXTOY&keywords=algorithms&qid=1640878057&s=books&sprefix=algorithms%2Cstripbooks%2C133&sr=1-5) by Thomas M. Cormen, Charles E. Levisseron, Ronald L. Rivest, Clifford Stein
-- [*Microservice Patterns*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 - [*Machine Learning Bookcamp*](https://www.manning.com/books/machine-learning-bookcamp) by Alexey Grigorev
 
 ### Language Specific
@@ -43,6 +43,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*Real-World Functional Programming: With examples in F# and C#*](https://www.manning.com/books/real-world-functional-programming) by Tomas Petricek, Jon Skeet
 - [*Eloquent Javascript (Free)*](https://eloquentjavascript.net/) by Marijn Haverbeke
 - [*Automate the Boring Stuff with Python (Free)*](https://automatetheboringstuff.com/) by Al Sweigart
+- [*Pro .NET Benchmarking: The Art of Performance Measurement*](https://aakinshin.net/prodotnetbenchmarking/) by Andrey Akinshin
 
 ### Non-technical
 
