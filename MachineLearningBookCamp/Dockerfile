@@ -10,6 +10,8 @@ RUN sudo mkdir notebooks
 
 ENV PATH="${PATH}:/home/test_user/.local/lib:/home/test_user/.local/bin"
 
+RUN alias launch-notebooks='jupyter notebook --no-browser --ip=0.0.0.0 --notebook-dir=/mlbc/notebooks'
+
 # Update kaggle cli
 
 RUN pip install kaggle --upgrade
@@ -25,3 +27,5 @@ RUN kaggle datasets download -d CooperUnion/cardataset
 # Clone the repo
 
 RUN git clone https://github.com/alexeygrigorev/mlbookcamp-code.git
+
+EXPOSE 8888
