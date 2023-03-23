@@ -29,3 +29,6 @@ RUN kaggle datasets download -d CooperUnion/cardataset
 RUN git clone https://github.com/alexeygrigorev/mlbookcamp-code.git
 
 EXPOSE 8888
+
+ENTRYPOINT [ "/bin/bash", "-c" ]
+CMD [ "jupyter notebook --no-browser --ip=0.0.0.0 --notebook-dir=/mlbc/notebooks --allow-root" ]
