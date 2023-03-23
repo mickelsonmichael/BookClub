@@ -2,13 +2,15 @@ FROM continuumio/conda-ci-linux-64-python3.8:latest
 
 WORKDIR /mlbc
 
-# Update jupyter
+# Update PIP packages
 
-RUN pip install jupyter --upgrade
+COPY requirements.txt .
 
-RUN sudo mkdir notebooks
+RUN pip install -r requirements.txt --upgrade
 
 ENV PATH="${PATH}:/home/test_user/.local/lib:/home/test_user/.local/bin"
+
+WORKDIR /mlbc/notebooks
 
 RUN alias launch-notebooks='jupyter notebook --no-browser --ip=0.0.0.0 --notebook-dir=/mlbc/notebooks'
 
@@ -22,11 +24,17 @@ COPY kaggle.json /home/test_user/.kaggle/kaggle.json
 
 RUN kaggle datasets list
 
-RUN kaggle datasets download -d CooperUnion/cardataset
-
 # Clone the repo
 
 RUN git clone https://github.com/alexeygrigorev/mlbookcamp-code.git
+
+# ==== CHAPTER 6 ====
+
+WORKDIR /mlbc/chapter-06-credit-risk
+
+RUN wget https://raw.githubusercontent.com/gastonstat/CreditScoring/master/CreditScoring.csv
+
+RUN sudo chown -R test_user:test_user ~/.local/share/jupyter 
 
 EXPOSE 8888
 

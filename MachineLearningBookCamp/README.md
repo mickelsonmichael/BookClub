@@ -4,11 +4,11 @@
 
 The [Dockerfile](./Dockerfile) here can be used to easily spin up an environment based on the instructions within Appendix A. It will perform the following actions:
 
-- Update jupyter
-- Create the `~/notebooks` directory
+- Installs necessary python dependencies
+- Create the `/mlbc/notebooks` directory
 - Update the kaggle CLI
 - Copy `kaggle.json` to the proper location
-- Clones the source code into `~/mlbookcamp-code`
+- Clones the source code into `/mlbc/mlbookcamp-code`
 - Creates a `launch-notebook` command
 
 The only manual step required is to create a Kaggle account and then create an access token and put the resulting `kaggle.json` file here, next to the Dockerfile.
@@ -19,7 +19,25 @@ Then, you can simply perform the following commands:
 ```shell
 $> docker build --tag mlbc .
 
-$> docker run -p 8888:8888 -it mlbc
+$> docker run -p 8888:8888 -it -v /some/local/path:/mlbc/notebooks mlbc
 ```
 
-To launch the Jupyter notebooks (at `/mlbc/notebooks`) you can use the `launch-notebook` command.
+> NOTE: The `-v` option is required if you want your progress to be saved.
+
+The container will automatically launch the Jupyter notebooks command when run.
+To skip this, simply add `/bin/bash` to the end of your `docker run` command to specify the entry command (e.g., `docker run mlbc /bin/bash`).
+
+### Installing Python Packages
+
+You can add new dependencies in two ways.
+If you plan to check the dependencies in to the repository, add them to the [requirements.txt](./requirements.txt) file on a new line.
+
+If you want to just install them in the Jupyter notebook, you can simply use `!pip install <package>` inside a Jupyter code block.
+
+For example, to install pandas:
+
+```jupyter
+!pip install pandas
+```
+
+Then press `Ctrl+Enter` to execute the code block.
