@@ -41,3 +41,20 @@ For example, to install pandas:
 ```
 
 Then press `Ctrl+Enter` to execute the code block.
+
+### Using datasets
+
+Data sets (if pre-installed) should be available in the `/mlbc` directory.
+For example, to import the CSV from chapter 6, rather than using
+
+```python
+# incorrect
+df = pd.read_csv("CreditScoring.csv")
+```
+
+You must prepend the `/mlbc/` directory to the path
+
+```python
+# correct
+df = pd.read_csv("/mlbc/CreditScoring.csv")
+```

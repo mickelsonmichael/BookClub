@@ -30,7 +30,7 @@ RUN git clone https://github.com/alexeygrigorev/mlbookcamp-code.git
 
 # ==== CHAPTER 6 ====
 
-WORKDIR /mlbc/chapter-06-credit-risk
+WORKDIR /mlbc
 
 RUN wget https://raw.githubusercontent.com/gastonstat/CreditScoring/master/CreditScoring.csv
 
