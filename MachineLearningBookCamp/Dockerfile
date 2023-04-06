@@ -24,15 +24,19 @@ COPY kaggle.json /home/test_user/.kaggle/kaggle.json
 
 RUN kaggle datasets list
 
-# Clone the repo
+WORKDIR /mlbc
 
 RUN git clone https://github.com/alexeygrigorev/mlbookcamp-code.git
 
 # ==== CHAPTER 6 ====
 
-WORKDIR /mlbc
-
 RUN wget https://raw.githubusercontent.com/gastonstat/CreditScoring/master/CreditScoring.csv
+
+# ==== CHAPTER 7 ====
+
+# RUN git clone https://github.com/alexeygrigorev/clothing-dataset.git
+
+RUN git clone https://github.com/alexeygrigorev/clothing-dataset-small.git
 
 RUN sudo chown -R test_user:test_user ~/.local/share/jupyter 
 

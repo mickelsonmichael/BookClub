@@ -6,3 +6,5 @@ matplotlib
 scikit-learn
 sklearn
 xgboost
+# Chapter 7
+tensorflow
