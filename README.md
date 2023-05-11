@@ -4,7 +4,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### TBD
+### [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
 
 ## Previous Conquests
 
@@ -21,12 +21,12 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 11. [*Functional Programming in C#: How to write better C# code*](https://www.manning.com/books/functional-programming-in-c-sharp-second-edition) by Erico Buonanno
 12. [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
 13. [*Microservices Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
+14. [*Machine Learning Bookcamp*](https://www.manning.com/books/machine-learning-bookcamp) by Alexey Grigorev
 
 ## Future Prospects
 
 ### General Programming
 
-- [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
 - [*Dependency Injection: Principles, Practices, and Patterns*](https://www.manning.com/books/dependency-injection-principles-practices-patterns) by Steven van Deursen, Mark Seeman
 - [*Clean Code: An Handbook of Agile Software Craftsmanship*](https://smile.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882) by Robert C. Martin
 - [*Clean Architecture: A Craftsman's Guide to Software Structure and Design*](https://smile.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164) by Robert C. Martin
@@ -35,7 +35,6 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*OAuth 2 in Action*](https://www.manning.com/books/oauth-2-in-action) by Justin Richer, Antonio Sanso
 - [*Design Patterns: Elements of Reusable Object-Oriented Software (Gang of Four)*](https://smile.amazon.com/gp/product/0201633612/ref=as_li_tl?ie=UTF8&camp=1789&creative=9325&creativeASIN=0201633612&linkCode=as2&tag=martinfowlerc-20) by Erich Gamme, Richard Helm, Ralph Johnson, John Vlissides
 - [*Introduction to Algorithms, 3rd Edition*](https://smile.amazon.com/Introduction-Algorithms-3rd-MIT-Press/dp/0262033844/ref=sr_1_5?crid=2NXQ68BGSXTOY&keywords=algorithms&qid=1640878057&s=books&sprefix=algorithms%2Cstripbooks%2C133&sr=1-5) by Thomas M. Cormen, Charles E. Levisseron, Ronald L. Rivest, Clifford Stein
-- [*Machine Learning Bookcamp*](https://www.manning.com/books/machine-learning-bookcamp) by Alexey Grigorev
 
 ### Language Specific
 
@@ -60,6 +59,7 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - Microservices
 - Functional Programming
 - Domain-Driven Design
+- Machine learning
 
 ## Other Resources
 
