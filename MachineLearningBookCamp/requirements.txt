@@ -1,0 +1,10 @@
+jupyter
+pandas
+numpy
+seaborn
+matplotlib
+scikit-learn
+sklearn
+xgboost
+# Chapter 7
+tensorflow
