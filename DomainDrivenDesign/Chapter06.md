@@ -4,17 +4,17 @@
 
 ### 1. What is an _invariant_?
 
-A. An object that does not change once it is created
-B. A property of an object that cannot change once initialized
-C. A domain rule that must be enforced for an entity or group of entities
-D. A constant variable that can be used by multiple entities similar to a singleton
+-A. An object that does not change once it is created
+-B. A property of an object that cannot change once initialized
+-C. A domain rule that must be enforced for an entity or group of entities
+-D. A constant variable that can be used by multiple entities similar to a singleton
 
 ### 2. What is the primary purpose of an _aggregate root_?
 
-A. To hold direct references to all objects in the aggregate
-B. To serve as an entrypoint to the aggregate
-C. To be the only object from the aggregate that external entities can hold a reference to
-D. Both `B` and `C`
+-A. To hold direct references to all objects in the aggregate
+-B. To serve as an entrypoint to the aggregate
+-C. To be the only object from the aggregate that external entities can hold a reference to
+-D. Both `B` and `C`
 
 ### 3. True or False: Entities within the bounds of the aggregate (and not the root) should maintain their global identity
 
@@ -22,10 +22,10 @@ D. Both `B` and `C`
 
 ### 5. Factories are part of which layer of an application?
 
-A. Domain
-B. Application/Client
-C. UI
-D. Repository/Data
+- A. Domain
+- B. Application/Client
+- C. UI
+- D. Repository/Data
 
 ### Answers
 
