@@ -1,0 +1,9 @@
+--extra-index-url https://download.pytorch.org/whl/cu118
+--trusted-host download.pytorch.org
+torch
+torchvision
+torchaudio
+numpy
+pandas
+d2l
+matplotlib
