@@ -1,8 +1,4 @@
 import time
-import torch
-import torchvision
-from torchvision import transforms
-from d2l import torch as d2l
 from FashionMNIST import FashionMNIST
 
 # https://stackoverflow.com/questions/24374288/where-to-put-freeze-support-in-a-python-script
