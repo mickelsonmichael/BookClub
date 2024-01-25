@@ -15,7 +15,6 @@ var net = new MLP("myMlp");
 
 Console.WriteLine($"[{string.Join(", ", net.call(X).shape)}]");
 
-
 var net2 = new MySequential(
     nn.Linear(20, 256),
     nn.ReLU(),
@@ -25,3 +24,9 @@ var net2 = new MySequential(
 X = rand(2, 20);
 
 Console.WriteLine($"[{string.Join(", ", net2.call(X).shape)}]");
+
+var net3 = nn.Sequential(
+    nn.Linear(20, 256),
+    nn.ReLU(),
+    nn.Linear(256, 10)
+);
