@@ -1,0 +1,10 @@
+# Linux users must include this extra index
+# --extra-index-url https://download.pytorch.org/whl/cpu
+# --trusted-host download.pytorch.org
+torch
+torchvision
+torchaudio
+numpy
+pandas
+d2l
+matplotlib
