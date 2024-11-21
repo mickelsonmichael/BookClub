@@ -47,6 +47,8 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 ### Non-technical
 
 - [*Algorithms to Live By*](https://algorithmstoliveby.com/) by Brian Christian, Tom Griffiths
+- [*The Five Dysfunctions of a Team*](https://bookshop.org/p/books/the-five-dysfunctions-of-a-team-a-leadership-fable-patrick-m-lencioni/9742373?ean=9780787960759) by Patrick M Lencioni
+- [*The Goal*](https://bookshop.org/p/books/the-goal-a-process-of-ongoing-improvement-eliyahu-m-goldratt/9895070?ean=9780884271956) by Jeff Cox, Eliyahu M. Goldratt
 
 ### Topics of Interest
 
