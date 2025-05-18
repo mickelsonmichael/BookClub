@@ -4,9 +4,11 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 
 ## Current Book
 
-### [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
+### TBD
 
 ## Previous Conquests
+
+Listed here are all the books the club has previously read.
 
 1. [*The Art of Unit Testing*](https://www.manning.com/books/the-art-of-unit-testing-second-edition) by Roy Osherove
 2. [*ASP.NET Core in Action*](https://www.manning.com/books/asp-net-core-in-action-second-edition) by Andrew Lock
@@ -22,8 +24,14 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 12. [*Microservices in .NET, Second Edition*](https://www.manning.com/books/microservices-in-net-second-edition) by Christian Horsdal Gammelgaard
 13. [*Microservices Patterns: With Examples in Java*](https://www.manning.com/books/microservices-patterns) by Chris Richardson
 14. [*Machine Learning Bookcamp*](https://www.manning.com/books/machine-learning-bookcamp) by Alexey Grigorev
+15. [*Domain-driven Design*](https://smile.amazon.com/Domain-Driven-Design-Tackling-Complexity-Software/dp/0321125215) by Eric Evans
+16. [*Dive into Deep Learning*](https://d2l.ai/) by various artists
+17. [*The Phoenix Project*](https://itrevolution.com/product/the-phoenix-project/) by Gene Kim, Kevin Behr, George Spafford
+18. [*The DevOps Handbook: How to Create Wold-Class Agility Realiability, & Security in Technology Organizations*](https://itrevolution.com/product/the-devops-handbook-second-edition/) by Gene Kim, Jez Humble, Patrick DeBois, John Willis
 
 ## Future Prospects
+
+Each of these books is a potential candidate for the book club to read next, separated by category.
 
 ### General Programming
 
@@ -49,6 +57,9 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - [*Algorithms to Live By*](https://algorithmstoliveby.com/) by Brian Christian, Tom Griffiths
 - [*The Five Dysfunctions of a Team*](https://bookshop.org/p/books/the-five-dysfunctions-of-a-team-a-leadership-fable-patrick-m-lencioni/9742373?ean=9780787960759) by Patrick M Lencioni
 - [*The Goal*](https://bookshop.org/p/books/the-goal-a-process-of-ongoing-improvement-eliyahu-m-goldratt/9895070?ean=9780884271956) by Jeff Cox, Eliyahu M. Goldratt
+- [*Staff Engineer: Leadership beyond the management track*](https://staffeng.com/book/) by Will Larson
+- [*The Hundred-Page Machine Learning Book*](https://themlbook.com/) by Andriy Burkov
+- [*Yes, And! Harnessing the Power of Improvisation to Transform your Life and Work*](https://www.lulu.com/shop/mary-jane-pories/yes-and-harnessing-the-power-of-improvisation-to-transform-your-life-and-work/paperback/product-21859771.html?page=1&pageSize=4) by Mary Jane Pories
 
 ### Topics of Interest
 
@@ -61,9 +72,11 @@ Welcome to the Developer Book Club! We read and have weekly discussions about pr
 - Microservices
 - Functional Programming
 - Domain-Driven Design
-- Machine learning
+- Machine learning & AI
 
 ## Other Resources
+
+Here are some useful resources we've found during out various readings and discussions
 
 - [Martin Fowler's Catalogue of Refactorings](https://refactoring.com/catalog/) - helpful list of refactorings from *Refactoring*
 - [Regex Crossword](https://regexcrossword.com/) - fun activity for practicing your Regex
